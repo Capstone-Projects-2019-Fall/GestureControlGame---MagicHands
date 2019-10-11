@@ -51,9 +51,12 @@ fps = None
 started = False
 left_sample = None
 right_sample = None
-hsv_mean = None
-hsv_low = None
-hsv_high = None
+hsv_mean_left = None
+hsv_mean_right = None
+hsv_low_left = None
+hsv_high_left = None
+hsv_low_right = None
+hsv_high_right = None
 current_face = None
 num_frame_with_no_face = 0
 WIDTH = 500
@@ -128,10 +131,9 @@ def get_hsv_mask(frame, low, high):
 
     return np.logical_and(h_mask, v_mask).astype(np.uint8)
 
-def get_hsv_mean(left_sample, right_sample):
-    left_sample = cv2.cvtColor(left_sample, cv2.COLOR_BGR2HSV)
-    right_sample = cv2.cvtColor(right_sample, cv2.COLOR_RGB2HSV)
-    mean = np.mean(np.mean(left_sample+left_sample, axis=0), axis=0)/2
+def get_hsv_mean(sample):
+    sample = cv2.cvtColor(sample, cv2.COLOR_BGR2HSV)
+    mean = np.mean(np.mean(sample, axis=0), axis=0)
     mean = mean.astype(np.int32)
     print("hsv_mean:", mean)
     return mean
@@ -239,11 +241,14 @@ while True:
             right_sample = frame[y2:y2+h, x2:x2+w]
             cv2.imwrite("left.jpg",left_sample)
             cv2.imwrite("right.jpg", right_sample)
-            hsv_mean = get_hsv_mean(left_sample, right_sample)
-            hsv_low = hsv_mean - HSV_OFFSET_LOW
-            hsv_high = hsv_mean + HSV_OFFSET_HIGH
-            print(hsv_low)
-            print(hsv_high)
+            hsv_mean_left = get_hsv_mean(left_sample)
+            hsv_mean_right = get_hsv_mean(right_sample)
+            hsv_low_left = hsv_mean_left - HSV_OFFSET_LOW
+            hsv_high_left = hsv_mean_left + HSV_OFFSET_HIGH
+
+            hsv_low_right = hsv_mean_right - HSV_OFFSET_LOW
+            hsv_high_right = hsv_mean_right + HSV_OFFSET_HIGH
+
             fps = FPS().start()
 
 
@@ -253,7 +258,7 @@ while True:
         cv2.rectangle(frame, (x2, y2), (x2 + w, y2 + h), (0, 255, 0), 2)
 
 
-    if background is not None and hsv_mean is not None:
+    if background is not None and hsv_mean_left is not None and hsv_mean_right is not None:
         pure = frame.copy()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
@@ -276,7 +281,9 @@ while True:
         fg_mask = get_fore_ground_mask(frame, background, 20)
         # fg_mask = get_foreground_mask_hsv(hsv_frame, background_hsv, BACKGROUND_OFFSET)
 
-        hsv_mask = get_hsv_mask(frame, hsv_low, hsv_high)
+        hsv_mask_left = get_hsv_mask(frame, hsv_low_left, hsv_high_left)
+        hsv_mask_right = get_hsv_mask(frame, hsv_low_right, hsv_high_right)
+        hsv_mask = np.logical_or(hsv_mask_left, hsv_mask_right).astype(np.uint8)
 
         face_mask = get_face_mask(faces, frame)
 
