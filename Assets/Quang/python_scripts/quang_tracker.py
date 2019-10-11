@@ -8,6 +8,7 @@ import socket
 import time
 import math
 import numpy as np
+import collections
 
 def get_fore_ground_mask(frame, background, offset):
     a = np.any(np.greater(frame, background + offset), axis=-1)
@@ -29,8 +30,8 @@ def get_foreground_mask_hsv(frame, background, offset):
     # v_mask = get_foreground_mask_channel(frame, background, 2, offset[2])
     return np.any(mask,0)
 
-HSV_OFFSET_HIGH = np.array([25,70,255])
-HSV_OFFSET_LOW = np.array([25,70,255])
+HSV_OFFSET_HIGH = np.array([30,80,255])
+HSV_OFFSET_LOW = np.array([30,80,255])
 BACKGROUND_OFFSET = np.array([3,0,0])
 
 vs = VideoStream(src=0).start()
@@ -61,9 +62,12 @@ current_face = None
 num_frame_with_no_face = 0
 WIDTH = 500
 fist_points = []
+mask_trail = collections.deque()
+MAX_TRAIL_LEN = 2
+
 
 erode_kernel = np.ones((8, 8), np.uint8)
-dilate_kernel = np.ones((20,20), np.uint8)
+dilate_kernel = np.ones((30,30), np.uint8)
 
 # face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
@@ -99,6 +103,11 @@ def get_blob_detector():
     else:
         detector = cv2.SimpleBlobDetector_create(params)
     return detector
+
+def remove_flickering(trail):
+    ret = np.all(np.stack(trail), axis=0).astype(np.uint8)
+    return ret
+
 
 def stat_to_normal(stat):
     return stat[cv2.CC_STAT_LEFT], stat[cv2.CC_STAT_TOP], stat[cv2.CC_STAT_WIDTH], stat[cv2.CC_STAT_HEIGHT], stat[cv2.CC_STAT_AREA]
@@ -160,7 +169,7 @@ def get_face_mask(faces, frame):
     mask = np.mean(frame, axis=-1) * 0
     for (x, y, w, h) in faces:
         # To draw a rectangle in a face
-        cv2.rectangle(mask, (x, y), (x + w, y + int(h * 1.4)), (255, 255, 255), -1)
+        cv2.rectangle(mask, (x, int(y-0.15*h)), (x + w, y + int(h * 1.4)), (255, 255, 255), -1)
     mask = (1 - mask // 254).astype(np.uint8)
     return mask
 
@@ -212,6 +221,7 @@ while True:
     print("frame first:", frame.shape)
     grey_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     hsv_frame = frame
+    pure = frame.copy()
     # hsv_frame = cv2.cvtColor(frame, cv2.COLOR_RGB2HSV)
 
 
@@ -259,7 +269,6 @@ while True:
 
 
     if background is not None and hsv_mean_left is not None and hsv_mean_right is not None:
-        pure = frame.copy()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
         if len(faces) == 0:
@@ -289,7 +298,13 @@ while True:
 
         mask = hsv_mask * fg_mask * face_mask
         mask = cv2.erode(mask, erode_kernel, iterations=1)
-        mask = remove_small_regions(mask, min_area=5)
+        # mask = remove_small_regions(mask, min_area=5)
+        mask_trail.append(mask)
+        if len(mask_trail) > MAX_TRAIL_LEN:
+            mask_trail.popleft()
+        mask = remove_flickering(mask_trail)
+
+
         mask = cv2.dilate(mask, dilate_kernel, iterations=1)
         mask_img = (mask * 224).astype(np.uint8)
         print("mask:",mask.shape)
@@ -302,11 +317,12 @@ while True:
             stats = sorted(stats, key= lambda x: -x[cv2.CC_STAT_AREA])
             fist_points = []
             for stat in stats[:2]:
-                if stat[cv2.CC_STAT_AREA] > 400:
+                if stat[cv2.CC_STAT_AREA] > 1000:
                     fist_points.append(get_fist_point(mask, stat))
 
         for p in fist_points:
             cv2.circle(mask_img, p, 5, (255,0,0), -1)
+            cv2.circle(pure, p, 5, (0, 0, 255), -1)
 
 
 
@@ -351,11 +367,15 @@ while True:
 
         fps.update()
         fps.stop()
-        cv2.putText(frame, "FPS: %.2f"%(fps.fps()), (10, H-20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
-        print("frame after text:",frame.shape)
+
         frame = mask_img
 
+        cv2.putText(frame, "FPS: %.2f"%(fps.fps()), (10, H-20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+        print("frame after text:",frame.shape)
+
+
     cv2.imshow("Frame", frame)
+    cv2.imshow("Pure", pure)
     key = cv2.waitKey(1) & 0xFF
 
     if key == ord("q"):
