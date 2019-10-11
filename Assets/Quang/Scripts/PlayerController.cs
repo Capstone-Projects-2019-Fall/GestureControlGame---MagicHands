@@ -155,7 +155,14 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    void SpeedBoost(bool isSpeedBoost)
+    {
+        if (isSpeedBoost == true)
+        {
+            speed = speed * 2;
 
+        }
+    }
    /* void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("pickUp"))
