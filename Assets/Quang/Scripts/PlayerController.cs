@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public float rotationSpeed;
     private int count;
     Controller controller;
-    bool useMotionControl;
+    public bool useMotionControl;
 
     public GameObject player;
 
@@ -19,8 +19,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         count = 0;
-        useMotionControl = false;
-
+        //useMotionControl = true;
         controller = initializeController(useMotionControl);
     }
 
@@ -28,7 +27,7 @@ public class PlayerController : MonoBehaviour
     {
         if (useMotionControl)
         {
-            return null;
+            return new MotionControl();
         }
         else
         {
@@ -49,24 +48,13 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // mouse control
-        //Vector3 rotate = Input.mousePosition;
-        //float speedMag = 1f;
-        //rotate.x = (rotate.x - Screen.width / 2) / Screen.width;
-        //rotate.y = (rotate.y - Screen.height / 2) / Screen.height;
-        //rotate.z = 0f;
-
         Vector3 rotate = controller.GetRotation();
         float speedMag = controller.GetSpeed();
 
-        // hand control
-        // Vector3 rotate = GetRotation();
-        // float speedMag = GetSpeed();
-
-
+        rotate = rotate * Time.deltaTime * rotationSpeed;
         
-        player.transform.Rotate(-rotate.y * Time.deltaTime * rotationSpeed, rotate.x * Time.deltaTime * rotationSpeed, rotate.z * Time.deltaTime * rotationSpeed, Space.Self);
-        player.transform.position += speed * player.transform.forward * Time.deltaTime * speedMag * 1f;
+        player.transform.Rotate(-rotate.y, rotate.x, rotate.z, Space.Self);
+        player.transform.position += speed * player.transform.forward * Time.deltaTime * speedMag;
 
         if (Input.GetKeyDown("v"))
         {

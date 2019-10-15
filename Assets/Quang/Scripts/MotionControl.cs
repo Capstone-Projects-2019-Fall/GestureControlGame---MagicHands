@@ -92,7 +92,7 @@ public class MotionControl : Controller
             angle = Vector3.SignedAngle(new Vector3(1f, 0f, 0f), leftRight, new Vector3(0f, 0f, 1f));
         }
         vec.z = angle / 360;
-        return vec;
+        return vec*20f;
     }
 
     public override float GetSpeed()
