@@ -16,6 +16,7 @@ public class MouseControl : Controller
         rotate.x = (rotate.x - Screen.width / 2) / Screen.width;
         rotate.y = (rotate.y - Screen.height / 2) / Screen.height;
         rotate.z = 0f;
+        rotate = rotate * 20;
         return rotate;
     }
 
