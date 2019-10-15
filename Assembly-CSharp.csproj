@@ -70,9 +70,12 @@
      <Compile Include="Assets\Quang\EZ Camera Shake\Scripts\CameraShaker.cs" />
      <Compile Include="Assets\Quang\EZ Camera Shake\Scripts\Utilities\CameraUtilities.cs" />
      <Compile Include="Assets\Quang\Scripts\AI.cs" />
+     <Compile Include="Assets\Quang\Scripts\Controller.cs" />
      <Compile Include="Assets\Quang\Scripts\EnemyFollowAndPatrol.cs" />
      <Compile Include="Assets\Quang\Scripts\EnemyPatrol.cs" />
      <Compile Include="Assets\Quang\Scripts\EnemySpawner.cs" />
+     <Compile Include="Assets\Quang\Scripts\MotionControl.cs" />
+     <Compile Include="Assets\Quang\Scripts\MouseControl.cs" />
      <Compile Include="Assets\Quang\Scripts\path.cs" />
      <Compile Include="Assets\Quang\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Quang\Scripts\quangDummyTest.cs" />
