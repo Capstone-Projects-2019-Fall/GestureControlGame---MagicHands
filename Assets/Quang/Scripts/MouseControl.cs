@@ -5,6 +5,7 @@ using UnityEngine;
 public class MouseControl : Controller
 {
     float dummy;
+    
     public MouseControl()
     {
         dummy = 1f;

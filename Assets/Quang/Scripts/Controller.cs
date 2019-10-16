@@ -6,4 +6,6 @@ public abstract class Controller
 {
     public abstract Vector3 GetRotation();
     public abstract float GetSpeed();
+    public bool InMenu;
+
 }

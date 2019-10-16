@@ -10,29 +10,16 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public float rotationSpeed;
     private int count;
-    Controller controller;
-    public bool useMotionControl;
-
+    //Controller controller;
+    public GameObject gameManager;
     public GameObject player;
+    GameManager gameManagerCode;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         count = 0;
-        //useMotionControl = true;
-        controller = initializeController(useMotionControl);
-    }
-
-    private Controller initializeController(bool useMotionControl)
-    {
-        if (useMotionControl)
-        {
-            return new MotionControl();
-        }
-        else
-        {
-            return new MouseControl();
-        }
+        gameManagerCode = gameManager.GetComponent<GameManager>();
     }
 
     void FixedUpdateQuang()
@@ -48,8 +35,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Vector3 rotate = controller.GetRotation();
-        float speedMag = controller.GetSpeed();
+        Vector3 rotate = gameManagerCode.controller.GetRotation();
+        float speedMag = gameManagerCode.controller.GetSpeed();
 
         rotate = rotate * Time.deltaTime * rotationSpeed;
         
