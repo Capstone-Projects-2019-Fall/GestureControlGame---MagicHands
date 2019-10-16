@@ -6,6 +6,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using UnityEngine;
+using System.Runtime.InteropServices;
+using System.Drawing;
+using System.Diagnostics;
 
 public class MotionControl : Controller
 {
@@ -15,6 +18,8 @@ public class MotionControl : Controller
     int port;
     Vector3 leftVec;
     Vector3 rightVec;
+    int EllapsedTime;
+    Stopwatch stopwatch;
 
     public MotionControl()
     {
@@ -22,6 +27,8 @@ public class MotionControl : Controller
         InitUDP();
         leftVec = new Vector3(0f, 0f, 0f);
         rightVec = new Vector3(0f, 0f, 0f);
+        EllapsedTime = 0;
+        stopwatch = new Stopwatch();
     }
 
     // 3. InitUDP
@@ -53,7 +60,21 @@ public class MotionControl : Controller
                 Console.WriteLine(e.ToString());
                 //print(e.ToString());
             }
+
+            if (InMenu)
+            {
+                UpdateMouse();
+            }
         }
+
+    }
+
+    void UpdateMouse()
+    {
+        Vector3 vec = (leftVec + rightVec) / 2 * 30f;
+        Point cursorPos = new Point();
+        GetCursorPos(out cursorPos);
+        SetCursorPos(cursorPos.X + (int) Math.Ceiling(vec.x), cursorPos.Y - (int) Math.Ceiling(vec.y));
     }
 
     void UpdateLeftRightVec(string signal)
@@ -92,11 +113,16 @@ public class MotionControl : Controller
             angle = Vector3.SignedAngle(new Vector3(1f, 0f, 0f), leftRight, new Vector3(0f, 0f, 1f));
         }
         vec.z = angle / 360;
-        return vec*20f;
+        return vec*40f;
     }
 
     public override float GetSpeed()
     {
         return (leftVec - rightVec).magnitude;
     }
+
+    [DllImport("user32.dll")]
+    public static extern bool SetCursorPos(int X, int Y);
+    [DllImport("user32.dll")]
+    public static extern bool GetCursorPos(out Point pos);
 }

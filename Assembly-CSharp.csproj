@@ -74,11 +74,13 @@
      <Compile Include="Assets\Quang\Scripts\EnemyFollowAndPatrol.cs" />
      <Compile Include="Assets\Quang\Scripts\EnemyPatrol.cs" />
      <Compile Include="Assets\Quang\Scripts\EnemySpawner.cs" />
+     <Compile Include="Assets\Quang\Scripts\GameManager.cs" />
      <Compile Include="Assets\Quang\Scripts\MotionControl.cs" />
      <Compile Include="Assets\Quang\Scripts\MouseControl.cs" />
      <Compile Include="Assets\Quang\Scripts\path.cs" />
      <Compile Include="Assets\Quang\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Quang\Scripts\quangDummyTest.cs" />
+     <Compile Include="Assets\Quang\Scripts\ScratchScripts\MouseMover.cs" />
      <Compile Include="Assets\Quang\Scripts\selfDestruct.cs" />
      <Compile Include="Assets\Quang\Scripts\SpeedBoostPowerUp.cs" />
      <Compile Include="Assets\Quang\Scripts\Teleport.cs" />

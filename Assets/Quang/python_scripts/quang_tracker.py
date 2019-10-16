@@ -352,7 +352,7 @@ while True:
         break
     elif key == ord("b"): # take background picture
         background = frame
-        cv2.imwrite("background.jpg", background)
+        # cv2.imwrite("background.jpg", background)
         # background_hsv = cv2.cvtColor(background, cv2.COLOR_RGB2HSV)
         background_hsv = frame
         background_int32 = background.astype(np.int32)
