@@ -71,6 +71,7 @@
      <Compile Include="Assets\Quang\EZ Camera Shake\Scripts\Utilities\CameraUtilities.cs" />
      <Compile Include="Assets\Quang\Scripts\AI.cs" />
      <Compile Include="Assets\Quang\Scripts\Controller.cs" />
+     <Compile Include="Assets\Quang\Scripts\ControlSelectionMenu.cs" />
      <Compile Include="Assets\Quang\Scripts\EnemyFollowAndPatrol.cs" />
      <Compile Include="Assets\Quang\Scripts\EnemyPatrol.cs" />
      <Compile Include="Assets\Quang\Scripts\EnemySpawner.cs" />
@@ -166,17 +167,11 @@
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
- <Reference Include="Unity.TextMeshPro.Editor">
- <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
- </Reference>
  <Reference Include="Unity.Timeline">
  <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
  </Reference>
  <Reference Include="Unity.CollabProxy.Editor">
  <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.TextMeshPro">
- <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Analytics.DataPrivacy">
  <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
@@ -379,6 +374,12 @@
  <Reference Include="Poly2Tri">
  <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Assets/ProCore/ProBuilder/Classes/ClassesLib/Poly2Tri.dll</HintPath>
  </Reference>
+ <Reference Include="TextMeshPro-2017.3-Editor">
+ <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.3-Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="TextMeshPro-2017.3-Runtime">
+ <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.3-Runtime.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.Analytics.Editor">
  <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Editor.dll</HintPath>
  </Reference>
@@ -387,12 +388,6 @@
  </Reference>
  <Reference Include="Unity.Analytics.Tracker">
  <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
- </Reference>
- <Reference Include="TextMeshPro-2017.3-Runtime">
- <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.3-Runtime.dll</HintPath>
- </Reference>
- <Reference Include="TextMeshPro-2017.3-Editor">
- <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.3-Editor.dll</HintPath>
  </Reference>
  <Reference Include="netstandard">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.14f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>

@@ -108,17 +108,11 @@
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
- <Reference Include="Unity.TextMeshPro.Editor">
- <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
- </Reference>
  <Reference Include="Unity.Timeline">
  <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
  </Reference>
  <Reference Include="Unity.CollabProxy.Editor">
  <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.TextMeshPro">
- <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Analytics.DataPrivacy">
  <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
@@ -339,6 +333,12 @@
  <Reference Include="ProBuilderEditor-Unity5">
  <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Assets/ProCore/ProBuilder/Editor/ProBuilderEditor-Unity5.dll</HintPath>
  </Reference>
+ <Reference Include="TextMeshPro-2017.3-Editor">
+ <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.3-Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="TextMeshPro-2017.3-Runtime">
+ <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.3-Runtime.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
  </Reference>
@@ -353,12 +353,6 @@
  </Reference>
  <Reference Include="UnityEditor.Purchasing">
  <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Library/PackageCache/com.unity.purchasing@2.0.6/Editor/UnityEditor.Purchasing.dll</HintPath>
- </Reference>
- <Reference Include="TextMeshPro-2017.3-Runtime">
- <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.3-Runtime.dll</HintPath>
- </Reference>
- <Reference Include="TextMeshPro-2017.3-Editor">
- <HintPath>C:/Users/tug64107/Desktop/Poetry/Unity/MagicHands/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.3-Editor.dll</HintPath>
  </Reference>
  <Reference Include="mscorlib">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.14f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

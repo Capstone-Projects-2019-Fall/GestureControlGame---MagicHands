@@ -2,37 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public static class GameManager
 {
-    public Controller controller;
-    public bool useMotionControl;
-    public bool InMenu;
-    // Start is called before the first frame update
-    void Start()
-    {
-        controller = InitializeController(useMotionControl);
-    }
+    public static bool useMotionControl = false;
+    public static Controller controller = new MouseControl();
+    public static bool InMenu = false;
 
-    // Update is called once per frame
-    void Update()
+    public static void UpdateInMenu(bool isInMenu)
     {
+        InMenu = isInMenu;
         controller.InMenu = InMenu;
     }
 
-    public Controller GetController()
+    public static void UpdateController(bool motionControl)
     {
-        return controller;
-    }
-
-    private Controller InitializeController(bool useMotionControl)
-    {
+        useMotionControl = motionControl;
         if (useMotionControl)
         {
-            return new MotionControl();
+            controller = new MotionControl();
         }
         else
         {
-            return new MouseControl();
+            controller = new MouseControl();
         }
     }
 }

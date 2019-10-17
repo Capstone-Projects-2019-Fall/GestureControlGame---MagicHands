@@ -11,15 +11,15 @@ public class PlayerController : MonoBehaviour
     public float rotationSpeed;
     private int count;
     //Controller controller;
-    public GameObject gameManager;
+    //public GameObject gameManager;
     public GameObject player;
-    GameManager gameManagerCode;
+    //GameManager gameManagerCode;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         count = 0;
-        gameManagerCode = gameManager.GetComponent<GameManager>();
+        //gameManagerCode = gameManager.GetComponent<GameManager>();
     }
 
     void FixedUpdateQuang()
@@ -35,8 +35,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Vector3 rotate = gameManagerCode.controller.GetRotation();
-        float speedMag = gameManagerCode.controller.GetSpeed();
+        Vector3 rotate = GameManager.controller.GetRotation();
+        float speedMag = GameManager.controller.GetSpeed();
 
         rotate = rotate * Time.deltaTime * rotationSpeed;
         
