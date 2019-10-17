@@ -41,10 +41,19 @@
 #
 # cv2.waitKey(0)
 
-import numpy as np
+# import numpy as np
+#
+# a = np.array([1,1,0,0], np.uint8)
+# b = np.array([1,0,1,0], np.uint8)
+#
+# c = np.logical_or(a,b).astype(np.uint8)
+# print(c)
 
-a = np.array([1,1,0,0], np.uint8)
-b = np.array([1,0,1,0], np.uint8)
+# import requests
+# import cv2
+#
+# print(cv2.data.haarcascades)
 
-c = np.logical_or(a,b).astype(np.uint8)
-print(c)
+import executable.scratch
+
+print("fire")
