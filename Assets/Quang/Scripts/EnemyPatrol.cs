@@ -10,6 +10,7 @@ public class EnemyPatrol : MonoBehaviour
     public Transform[] moveSpots;
     private int circularMove;
     private int counter=0;
+    static public bool speedBoostState = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,9 +24,12 @@ public class EnemyPatrol : MonoBehaviour
         
                 transform.position = Vector3.MoveTowards(transform.position, moveSpots[circularMove].position,
                     speed * Time.deltaTime);
-               
-       
-        if(Vector3.Distance(transform.position, moveSpots[circularMove].position) < 0.2f)
+        if (speedBoostState == true)
+        {
+            StartCoroutine(SpeedBoost());
+        }
+
+        if (Vector3.Distance(transform.position, moveSpots[circularMove].position) < 0.2f)
         {
                 if (waitTime <= 0)
                 {
@@ -42,5 +46,16 @@ public class EnemyPatrol : MonoBehaviour
                 }
             
         }
+    }
+    IEnumerator SpeedBoost()
+    {
+
+        float oldspeed = speed;
+        float newspeed = speed * 2;
+        speed = newspeed;
+        yield return new WaitForSeconds(3);
+        speed = oldspeed;
+        speedBoostState = false;
+
     }
 }

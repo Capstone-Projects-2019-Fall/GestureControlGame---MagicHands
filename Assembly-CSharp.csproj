@@ -75,6 +75,7 @@
      <Compile Include="Assets\Quang\Scripts\EnemySpawner.cs" />
      <Compile Include="Assets\Quang\Scripts\path.cs" />
      <Compile Include="Assets\Quang\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\Quang\Scripts\PowerUpSpawner.cs" />
      <Compile Include="Assets\Quang\Scripts\selfDestruct.cs" />
      <Compile Include="Assets\Quang\Scripts\SpeedBoostPowerUp.cs" />
      <Compile Include="Assets\Quang\Scripts\Teleport.cs" />
