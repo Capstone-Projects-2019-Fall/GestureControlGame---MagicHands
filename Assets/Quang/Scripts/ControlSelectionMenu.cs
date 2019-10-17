@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class ControlSelectionMenu : MonoBehaviour
 {
-    public void UseMouse()
+
+    public void UseMouseControl()
     {
         GameManager.UpdateController(motionControl: false);
         GameManager.UpdateInMenu(isInMenu: false);
@@ -17,5 +18,10 @@ public class ControlSelectionMenu : MonoBehaviour
         GameManager.UpdateController(motionControl: true);
         GameManager.UpdateInMenu(isInMenu: false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void UseCustomMotionControl()
+    {
+        
     }
 }
