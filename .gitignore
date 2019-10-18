@@ -12,7 +12,10 @@
 [Aa]ssets/Scripts/Client/*.meta
 
 # Python scripts
-[Aa]ssets/Quang/python_scripts/*.meta
+[Aa]ssets/Quang/python_scripts/*.meta*
+
+# pycache
+[Aa]ssets/Quang/python_scripts/__pycache__/
 
 # Doxygen html files
 [Aa]ssets/**/html/
