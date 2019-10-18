@@ -8,6 +8,7 @@ using System.Diagnostics;
 public class MouseMover : MonoBehaviour
 {
     // test github desktop
+    // test gitignore
 
     Stopwatch stopwatch;
     // Start is called before the first frame update
