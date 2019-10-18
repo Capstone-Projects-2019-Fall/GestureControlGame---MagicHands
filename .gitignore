@@ -11,6 +11,9 @@
 # Client script meta files
 [Aa]ssets/Scripts/Client/*.meta
 
+# Python scripts
+[Aa]ssets/Quang/python_scripts/*.meta
+
 # Doxygen html files
 [Aa]ssets/**/html/
 [Dd]ocs/html/
