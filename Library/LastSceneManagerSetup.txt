@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Quang/Scenes/MainMenu.unity
+- path: Assets/Quang/Scenes/Quang's test scene.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
