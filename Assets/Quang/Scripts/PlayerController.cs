@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using EZCameraShake;
+using System.Collections;
 
 
 
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour
     //Controller controller;
     //public GameObject gameManager;
     public GameObject player;
+    public static bool speedBoostState = false;
     //GameManager gameManagerCode;
 
     void Start()
