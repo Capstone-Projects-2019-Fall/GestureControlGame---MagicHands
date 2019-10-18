@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using EZCameraShake;
-
-
+using Photon.Pun;
 
 public class PlayerController : MonoBehaviour
 {
-//this is test message
+    //this is test message
+    private PhotonView PV;
     private Rigidbody rb;
     public float speed;
     public float rotationSpeed;
@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+       
         rb = GetComponent<Rigidbody>();
         count = 0;
         //gameManagerCode = gameManager.GetComponent<GameManager>();
