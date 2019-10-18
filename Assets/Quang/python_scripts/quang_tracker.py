@@ -1,14 +1,22 @@
 from imutils.video import VideoStream
 from imutils.video import FPS
-import argparse
 import imutils
-import time
 import cv2
 import socket
 import time
 import math
 import numpy as np
 import collections
+import os
+import argparse
+
+ap = argparse.ArgumentParser()
+ap.add_argument("-F", "--face", type=str, default="haarcascade_frontalface_default.xml", help="path to face cascade file")
+ap.add_argument("-H", "--hue", type=int, default=20, help="hue offset")
+ap.add_argument("-S", "--saturation", type=int, default=90, help="saturation offset")
+ap.add_argument("-V", "--value", type=int, default=100, help="value offset")
+ap.add_argument("-B", "--background", type=int, default=20, help="background offset")
+args = vars(ap.parse_args())
 
 def get_fore_ground_mask(frame, background, offset):
     a = np.any(np.greater(frame, background + offset), axis=-1)
@@ -30,9 +38,8 @@ def get_foreground_mask_hsv(frame, background, offset):
     # v_mask = get_foreground_mask_channel(frame, background, 2, offset[2])
     return np.any(mask,0)
 
-HSV_OFFSET_HIGH = np.array([30,80,255])
-HSV_OFFSET_LOW = np.array([30,80,255])
-BACKGROUND_OFFSET = np.array([3,0,0])
+HSV_OFFSET_HIGH = np.array([args["hue"],args["saturation"],args["value"]])
+HSV_OFFSET_LOW = HSV_OFFSET_HIGH
 
 vs = VideoStream(src=0).start()
 
@@ -45,6 +52,7 @@ first_grey_frame = None
 prev_frame = None
 background = None
 background_hsv = None
+background_int32 = None
 sampling_color = False
 sampling_start = None
 sampling_time = 5 #seconds
@@ -64,50 +72,18 @@ WIDTH = 500
 fist_points = []
 mask_trail = collections.deque()
 MAX_TRAIL_LEN = 2
+last_fistpoints = []
+SMALL_WIDTH = 20
 
 
 erode_kernel = np.ones((8, 8), np.uint8)
 dilate_kernel = np.ones((30,30), np.uint8)
 
-# face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
-
-def get_blob_detector():
-    # Setup SimpleBlobDetector parameters.
-    params = cv2.SimpleBlobDetector_Params()
-
-    # # Change thresholds
-    # params.minThreshold = 10
-    # params.maxThreshold = 200
-
-    # # Filter by Area.
-    # params.filterByArea = True
-    # params.minArea = 1500
-    #
-    # Filter by Circularity
-    params.filterByCircularity = True
-    params.minCircularity = 0.1
-    #
-    # # Filter by Convexity
-    # params.filterByConvexity = True
-    # params.minConvexity = 0.87
-    #
-    # Filter by Inertia
-    params.filterByInertia = True
-    params.minInertiaRatio = 0.01
-
-    # Create a detector with the parameters
-    ver = (cv2.__version__).split('.')
-    if int(ver[0]) < 3:
-        detector = cv2.SimpleBlobDetector(params)
-    else:
-        detector = cv2.SimpleBlobDetector_create(params)
-    return detector
+face_cascade = cv2.CascadeClassifier(args["face"])
 
 def remove_flickering(trail):
     ret = np.all(np.stack(trail), axis=0).astype(np.uint8)
     return ret
-
 
 def stat_to_normal(stat):
     return stat[cv2.CC_STAT_LEFT], stat[cv2.CC_STAT_TOP], stat[cv2.CC_STAT_WIDTH], stat[cv2.CC_STAT_HEIGHT], stat[cv2.CC_STAT_AREA]
@@ -125,7 +101,7 @@ def get_fist_point(mask, stat, n=10, p=0.8):
     if forward > backward:
         return int(x + p*w), int(y+(1-p)*h)
     else:
-        return int(x+(1-p)*w), int(y+(1-p)*h)
+        return (int(x+(1-p)*w), int(y+(1-p)*h))
 
 def get_hsv_mask(frame, low, high):
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -134,11 +110,11 @@ def get_hsv_mask(frame, low, high):
     h_mask2 = np.less(frame[:,:,0], high[0])
     h_mask = np.logical_and(h_mask1, h_mask2)
 
-    v_mask1 = np.greater(frame[:,:,1], low[1])
-    v_mask2 = np.less(frame[:,:,1], high[1])
-    v_mask = np.logical_and(v_mask1, v_mask2)
+    s_mask1 = np.greater(frame[:,:,1], low[1])
+    s_mask2 = np.less(frame[:,:,1], high[1])
+    s_mask = np.logical_and(s_mask1, s_mask2)
 
-    return np.logical_and(h_mask, v_mask).astype(np.uint8)
+    return np.logical_and(h_mask, s_mask).astype(np.uint8)
 
 def get_hsv_mean(sample):
     sample = cv2.cvtColor(sample, cv2.COLOR_BGR2HSV)
@@ -184,8 +160,8 @@ def get_biggest_face(faces):
                 area = w*h
                 return_index = i
     except:
-        print(faces)
-        print(current_face)
+        # print(faces)
+        # print(current_face)
         exit()
     return return_index
 
@@ -209,16 +185,28 @@ def remove_small_regions(mask, min_area):
             ret[labels == i] = 1
     return ret
 
+def distance(point1, point2):
+    return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
 
-detector = get_blob_detector()
-# detector = cv2.SimpleBlobDetector()
+def get_closest_point(this_point, other_points):
+    ret = other_points[0]
+    for p in other_points:
+        if distance(p, this_point) < distance(ret, this_point):
+            ret = p
+
+
+
+UDP_IP = "127.0.0.1"
+UDP_PORT = 5065
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 while True:
     frame = vs.read()
     frame = imutils.resize(frame, width=WIDTH)
     frame = cv2.flip(frame, 1)
     frame = remove_black_bars(frame)
-    print("frame first:", frame.shape)
+    # print("frame first:", frame.shape)
     grey_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     hsv_frame = frame
     pure = frame.copy()
@@ -227,21 +215,27 @@ while True:
 
     H, W = frame.shape[:2]
     w, h = W // 16, W // 16
-    x1, y1 = W // 6, H // 3
-    x2, y2 = 4 * W // 6, H // 3
+    x1, y1 = 2 * W // 6, H // 2
+    x2, y2 = 4 * W // 6, H // 2
 
     if is_first:
         is_first = False
         first_frame = frame
         first_grey_frame = cv2.cvtColor(first_frame, cv2.COLOR_BGR2GRAY)
         prev_frame = frame
+        last_fistpoints = [(x1, y1),(x2, y2)]
+
+    if left_sample is None and not sampling_color:
+        cv2.putText(frame, "take hand color sample: press H", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+    elif background is None and not sampling_color:
+        cv2.putText(frame, "take background sample: get out of camera then press B", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
     # getting hands' color
     if sampling_color:
         # count down from 5
         sec = sampling_time - (time.time() - sampling_start)
         cv2.putText(frame, str(math.ceil(sec)), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
-
+        cv2.putText(frame, "make a fist, put each square inside a fist", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
         if sec < 0:
             sampling_color = False
             started = True
@@ -249,8 +243,6 @@ while True:
             initBB_right = (x2, y2, w, h)
             left_sample = frame[y1:y1+h, x1:x1+w]
             right_sample = frame[y2:y2+h, x2:x2+w]
-            cv2.imwrite("left.jpg",left_sample)
-            cv2.imwrite("right.jpg", right_sample)
             hsv_mean_left = get_hsv_mean(left_sample)
             hsv_mean_right = get_hsv_mean(right_sample)
             hsv_low_left = hsv_mean_left - HSV_OFFSET_LOW
@@ -287,7 +279,7 @@ while True:
         # mask = backSub.apply(frame) // 224
 
 
-        fg_mask = get_fore_ground_mask(frame, background, 20)
+        fg_mask = get_fore_ground_mask(frame, background_int32, args["background"])
         # fg_mask = get_foreground_mask_hsv(hsv_frame, background_hsv, BACKGROUND_OFFSET)
 
         hsv_mask_left = get_hsv_mask(frame, hsv_low_left, hsv_high_left)
@@ -296,7 +288,7 @@ while True:
 
         face_mask = get_face_mask(faces, frame)
 
-        mask = hsv_mask * fg_mask * face_mask
+        mask = fg_mask * hsv_mask * face_mask
         mask = cv2.erode(mask, erode_kernel, iterations=1)
         # mask = remove_small_regions(mask, min_area=5)
         mask_trail.append(mask)
@@ -307,60 +299,44 @@ while True:
 
         mask = cv2.dilate(mask, dilate_kernel, iterations=1)
         mask_img = (mask * 224).astype(np.uint8)
-        print("mask:",mask.shape)
+        # print("mask:",mask.shape)
 
         connectivity = 4
         num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(mask, connectivity, cv2.CV_32S)
 
         stats = list(stats[1:])
-        if len(stats) >= 2:
-            stats = sorted(stats, key= lambda x: -x[cv2.CC_STAT_AREA])
-            fist_points = []
-            for stat in stats[:2]:
-                if stat[cv2.CC_STAT_AREA] > 1000:
-                    fist_points.append(get_fist_point(mask, stat))
+        stats = sorted(stats, key= lambda x: -x[cv2.CC_STAT_AREA])
+        fist_points = []
+        for stat in stats:
+            if stat[cv2.CC_STAT_AREA] > 1500:
+                fist_points.append(get_fist_point(mask, stat))
+            if len(fist_points) >= 2:
+                break
+
+        if len(fist_points) == 0:
+            fist_points = last_fistpoints
+        elif len(fist_points) == 1:
+            height = fist_points[0][1]
+            fist_points = [(W//2 - SMALL_WIDTH, height + 50),(W//2 + SMALL_WIDTH, height + 50)]
+
+        # smaller x means left
+        fist_points = sorted(fist_points)
+        normalize = []
+        for a, b in fist_points:
+            a = (a - W // 2) / W
+            b = - (b - H//2) / H
+            normalize.append(f"{a} {b}")
+        sock.sendto(",".join(normalize).encode(), (UDP_IP, UDP_PORT))
 
         for p in fist_points:
             cv2.circle(mask_img, p, 5, (255,0,0), -1)
             cv2.circle(pure, p, 5, (0, 0, 255), -1)
 
-
-
-        cnts, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        cnts = sorted(cnts, key=cv2.contourArea)
-
-
-
-        # mask = get_fore_ground_mask(frame, prev_frame, 10)
+        # cnts, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        # cnts = sorted(cnts, key=cv2.contourArea)
 
         frame = frame * np.expand_dims(mask, axis=-1)
         frame = frame.astype(np.uint8)
-
-        keypoints = detector.detect(mask_img)
-        print(len(keypoints))
-
-        # cv2.drawContours(frame, cnts, -1, (0, 255, 0), 3)
-        print("frame:", frame.shape)
-        frame =  cv2.drawKeypoints(frame, keypoints, np.array([]), (0, 0, 255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-
-        # for cnt in cnts[-2:]:
-        #     if cv2.contourArea(cnt) < 1000:
-        #         continue
-        #     ellipse = cv2.fitEllipse(cnt)
-        #     # print(ellipse)
-        #     cv2.ellipse(frame, ellipse, (255, 0, 0), 2)
-        #     hand_pos = get_hand_pos(ellipse)
-        #     cv2.circle(frame, hand_pos, 8, (0,0,255),-1)
-
-
-
-        # remove face
-
-
-        # remove everything but hands
-
-
-
 
 
         prev_frame = frame
@@ -371,8 +347,6 @@ while True:
         frame = mask_img
 
         cv2.putText(frame, "FPS: %.2f"%(fps.fps()), (10, H-20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
-        print("frame after text:",frame.shape)
-
 
     cv2.imshow("Frame", frame)
     cv2.imshow("Pure", pure)
@@ -382,8 +356,7 @@ while True:
         break
     elif key == ord("b"): # take background picture
         background = frame
-        # background_hsv = cv2.cvtColor(background, cv2.COLOR_RGB2HSV)
-        background_hsv = frame
+        background_int32 = background.astype(np.int32)
     elif key == ord("h"): # get hands' color
         # give the user 5 secs to put their hands in the box
         sampling_color = True
