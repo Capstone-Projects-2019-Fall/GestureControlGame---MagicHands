@@ -47,17 +47,27 @@ public class PlayerController : MonoBehaviour
         {
             CameraShaker.Instance.ShakeOnce(10f, 10f, .5f, 1.5f);
         }
-
-    }
-
-    void SpeedBoost(bool isSpeedBoost)
-    {
-        if (isSpeedBoost == true)
+        if (Input.GetKeyDown("space"))
         {
-            speed = speed * 2;
-
+            if (speedBoostState == true)
+            {
+                StartCoroutine(SpeedBoost());
+            }
         }
+
     }
+    IEnumerator SpeedBoost()
+    {
+        
+        float oldspeed = speed;
+        float newspeed = speed * 2;
+        speed = newspeed;
+        yield return new WaitForSeconds(3);
+        speed = oldspeed;
+        speedBoostState=false;
+
+    }
+    
    /* void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("pickUp"))
