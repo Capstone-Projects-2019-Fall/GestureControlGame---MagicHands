@@ -31,11 +31,6 @@ public class VoiceController : MonoBehaviour
         keyActs.Add("green", Green);
         keyActs.Add("blue", Blue);
         keyActs.Add("white", White);
-        keyActs.Add("up", Up);
-        keyActs.Add("down", Down);
-        keyActs.Add("left", Left);
-        keyActs.Add("right", Right);
-
     
         recognizer = new KeywordRecognizer(keyActs.Keys.ToArray());
         recognizer.OnPhraseRecognized += OnPhraseRecognized;
@@ -59,25 +54,11 @@ public class VoiceController : MonoBehaviour
     void Blue()
     {
         cubeRend.material.SetColor("_Color", Color.blue);
+       
     }
     void White()
     {
         cubeRend.material.SetColor("_Color", Color.white);
     }
-    void Up()
-    {
 
-    }
-    void Down()
-    {
-
-    }
-    void Left()
-    {
-
-    }
-    void Right()
-    {
-
-    }
 }
