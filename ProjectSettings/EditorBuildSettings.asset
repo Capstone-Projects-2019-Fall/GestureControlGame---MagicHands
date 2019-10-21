@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Quang/Scenes/Menu.unity
-    guid: daa839a27ce2c8e49ac1a69ddc880ae7
+    path: Assets/Quang/Scenes/MainMenu.unity
+    guid: 846cb224f72cb65449e158cd706fbb49
   - enabled: 1
     path: Assets/Quang/Scenes/main.unity
-    guid: 7769f33fb4fa2e5458344a36556ad760
+    guid: e0078778fdd77d64282432d75e7bac4b
   m_configObjects: {}
