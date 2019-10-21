@@ -6,11 +6,14 @@ public class AI : MonoBehaviour
 {
 
     public Transform path;
+    public Transform powerUp;
     public float speed;
     public float rotationSpeed;
 
     private List<Transform> nodes;
     private int current = 0;
+    private Transform target;
+
 
     private Rigidbody rb;
     public GameObject player;
@@ -35,7 +38,9 @@ public class AI : MonoBehaviour
         {
             //Vector3 pos = Vector3.MoveTowards(transform.position, nodes[current].position, speed * Time.deltaTime);
             //GetComponent<Rigidbody>().MovePosition(pos);
-            ApplyRotate();
+            //ApplyRotate();
+            PikcUpPower();
+            TrackThePath();
         }
         else
         {
@@ -54,6 +59,23 @@ public class AI : MonoBehaviour
 
         player.transform.Rotate(-rotate.y * Time.deltaTime * rotationSpeed, rotate.x*Time.deltaTime*rotationSpeed, rotate.z*Time.deltaTime*rotationSpeed, Space.Self);
         player.transform.position += speed * player.transform.forward * Time.deltaTime * speedMag * 1f;
+    }
+
+    private void TrackThePath()
+    {
+        Vector3 targetDir = nodes[current].position - transform.position;
+        Vector3 tarDir = Vector3.RotateTowards(transform.forward, targetDir, speed * Time.deltaTime, rotationSpeed);
+        transform.forward = targetDir;
+        transform.position = Vector3.MoveTowards(transform.position, nodes[current].position, speed * Time.deltaTime);
+
+    }
+
+    private void PikcUpPower()
+    {
+        if((powerUp.position - transform.position).magnitude < (nodes[current].position - transform.position).magnitude)
+        {
+
+        }
     }
 
 }
