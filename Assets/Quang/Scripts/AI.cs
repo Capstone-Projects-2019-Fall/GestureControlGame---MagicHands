@@ -7,12 +7,13 @@ public class AI : MonoBehaviour
 
     public Transform path;
     public Transform powerUp;
+    public Transform target;
     public float speed;
     public float rotationSpeed;
+    public static bool speedBoostState = false;
 
     private List<Transform> nodes;
     private int current = 0;
-    private Transform target;
 
 
     private Rigidbody rb;
@@ -39,6 +40,7 @@ public class AI : MonoBehaviour
             //Vector3 pos = Vector3.MoveTowards(transform.position, nodes[current].position, speed * Time.deltaTime);
             //GetComponent<Rigidbody>().MovePosition(pos);
             //ApplyRotate();
+            target.position = nodes[current].position;
             PikcUpPower();
             TrackThePath();
         }
@@ -52,7 +54,7 @@ public class AI : MonoBehaviour
     {
         float speedMag = 1f;
         Vector3 rotate;
-        Vector3 relativeVector = transform.InverseTransformPoint(nodes[current].position);
+        Vector3 relativeVector = transform.InverseTransformPoint(target.position);
         rotate.x = (relativeVector.x / relativeVector.magnitude) * rotationSpeed;
         rotate.y = (relativeVector.y / relativeVector.magnitude) * rotationSpeed;
         rotate.z = 0f;
@@ -63,19 +65,35 @@ public class AI : MonoBehaviour
 
     private void TrackThePath()
     {
-        Vector3 targetDir = nodes[current].position - transform.position;
+        Vector3 targetDir = target.position - transform.position;
         Vector3 tarDir = Vector3.RotateTowards(transform.forward, targetDir, speed * Time.deltaTime, rotationSpeed);
         transform.forward = targetDir;
-        transform.position = Vector3.MoveTowards(transform.position, nodes[current].position, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
 
     }
 
     private void PikcUpPower()
     {
-        if((powerUp.position - transform.position).magnitude < (nodes[current].position - transform.position).magnitude)
+        if(Vector3.Distance(powerUp.position, transform.position) < Vector3.Distance(nodes[current].position, transform.position))
         {
-
+            target.position = powerUp.position;
         }
+        else if(transform.position == powerUp.position)
+        {
+            StartCoroutine(SpeedBoost());
+        }
+    }
+
+    IEnumerator SpeedBoost()
+    {
+
+        float oldspeed = speed;
+        float newspeed = speed * 2;
+        speed = newspeed;
+        yield return new WaitForSeconds(3);
+        speed = oldspeed;
+        speedBoostState = false;
+
     }
 
 }
