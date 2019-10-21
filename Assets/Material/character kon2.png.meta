@@ -1,0 +1,712 @@
+fileFormatVersion: 2
+guid: e285415e7950a8c4da974aaafb8d6b82
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8416713990956007629
+    second: full image
+  - first:
+      213: 6119848060253012521
+    second: character kon2_1
+  - first:
+      213: 8931978401245965770
+    second: character kon2_2
+  - first:
+      213: 3543416347882549499
+    second: character kon2_3
+  - first:
+      213: -8264933952716345862
+    second: character kon2_4
+  - first:
+      213: 7931082281481037910
+    second: character kon2_5
+  - first:
+      213: -8759628160685302266
+    second: character kon2_6
+  - first:
+      213: -8324050232783647470
+    second: character kon2_7
+  - first:
+      213: 2031658601251882814
+    second: character kon2_8
+  - first:
+      213: 7103734941713913375
+    second: character kon2_9
+  - first:
+      213: -5848243406555357288
+    second: character kon2_10
+  - first:
+      213: 4011428985076434226
+    second: character kon2_11
+  - first:
+      213: -6811916024914522263
+    second: character kon2_12
+  - first:
+      213: 8625093562706715205
+    second: character kon2_13
+  - first:
+      213: 8432721854102791042
+    second: character kon2_14
+  - first:
+      213: -6377557339386221778
+    second: character kon2_15
+  - first:
+      213: 5652855359139025241
+    second: character kon2_16
+  - first:
+      213: -2787018015100289829
+    second: character kon2_17
+  - first:
+      213: 3354454624219926711
+    second: character kon2_18
+  - first:
+      213: 7312975450773017199
+    second: character kon2_19
+  - first:
+      213: -3903109157577470649
+    second: character kon2_20
+  - first:
+      213: 4126794340059645004
+    second: character kon2_21
+  - first:
+      213: 8075817937007983853
+    second: character kon2_22
+  - first:
+      213: 6793554221144098295
+    second: walking
+  - first:
+      213: -1846784345090356148
+    second: head
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: full image
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 233
+        width: 1343
+        height: 2964
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6667fdd5feab8c241a7ac354bba806e4
+      internalID: 8416713990956007629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_1
+      rect:
+        serializedVersion: 2
+        x: 1722
+        y: 2052
+        width: 494
+        height: 1141
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6eb1a1ea6e6b35549be5bb850801c2b7
+      internalID: 6119848060253012521
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_2
+      rect:
+        serializedVersion: 2
+        x: 2446
+        y: 2705
+        width: 19
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 623d4358419700a4b9c9a015adca8ae1
+      internalID: 8931978401245965770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_3
+      rect:
+        serializedVersion: 2
+        x: 2489
+        y: 2035
+        width: 489
+        height: 1139
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad42ca45d9b09794aa3706737973d69b
+      internalID: 3543416347882549499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_4
+      rect:
+        serializedVersion: 2
+        x: 3064
+        y: 2030
+        width: 492
+        height: 1148
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 571a1262b67d8cc4ba4863b69857e89f
+      internalID: -8264933952716345862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_5
+      rect:
+        serializedVersion: 2
+        x: 3650
+        y: 2032
+        width: 499
+        height: 1146
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c27b2396e1e3bd47a2008ebaa70ccdf
+      internalID: 7931082281481037910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_6
+      rect:
+        serializedVersion: 2
+        x: 4290
+        y: 2575
+        width: 9
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 413cfe438a65e1c49be4ee18aad486f4
+      internalID: -8759628160685302266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_7
+      rect:
+        serializedVersion: 2
+        x: 5026
+        y: 2705
+        width: 37
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3b9f2f255f057a4bb4ad4f454185c00
+      internalID: -8324050232783647470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_8
+      rect:
+        serializedVersion: 2
+        x: 5018
+        y: 2712
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 665c29e601dbc3c4084399f7e616dd18
+      internalID: 2031658601251882814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_9
+      rect:
+        serializedVersion: 2
+        x: 2343
+        y: 2649
+        width: 18
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5565deaf93ad52469c600119617cb49
+      internalID: 7103734941713913375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_10
+      rect:
+        serializedVersion: 2
+        x: 4271
+        y: 2650
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fce60cad02784e94ca880a730ec67607
+      internalID: -5848243406555357288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_11
+      rect:
+        serializedVersion: 2
+        x: 4916
+        y: 2649
+        width: 18
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7057be3767175fa44b7098ccb9571db9
+      internalID: 4011428985076434226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_12
+      rect:
+        serializedVersion: 2
+        x: 2363
+        y: 2574
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 670b29352226e9749ab4f77bdb8c8b6b
+      internalID: -6811916024914522263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_13
+      rect:
+        serializedVersion: 2
+        x: 4936
+        y: 2574
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eaa72ccb98ec57e499bc53a991487893
+      internalID: 8625093562706715205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_14
+      rect:
+        serializedVersion: 2
+        x: 2147
+        y: 2018
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72046ec60712fcb429a0a74e0efb7385
+      internalID: 8432721854102791042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_15
+      rect:
+        serializedVersion: 2
+        x: 2069
+        y: 1968
+        width: 6
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed5a3c8bf6b9e604181541c0f196f394
+      internalID: -6377557339386221778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_16
+      rect:
+        serializedVersion: 2
+        x: 2142
+        y: 1978
+        width: 7
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50422664948dc3d4999411446fcc2943
+      internalID: 5652855359139025241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_17
+      rect:
+        serializedVersion: 2
+        x: 2030
+        y: 1943
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 971ce07eaf3bca54c9fd9afe5b27325f
+      internalID: -2787018015100289829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_18
+      rect:
+        serializedVersion: 2
+        x: 2077
+        y: 1938
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 167bf81a551593a438566a1f247f5e35
+      internalID: 3354454624219926711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_19
+      rect:
+        serializedVersion: 2
+        x: 2050
+        y: 1851
+        width: 69
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41255a727c83eba4ca64435c6e5724d5
+      internalID: 7312975450773017199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_20
+      rect:
+        serializedVersion: 2
+        x: 1748
+        y: 1831
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81cf634cd4882544580636fbef702f56
+      internalID: -3903109157577470649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_21
+      rect:
+        serializedVersion: 2
+        x: 1782
+        y: 1774
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd1464b25eeab6b498c376ac65af7a0c
+      internalID: 4126794340059645004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: character kon2_22
+      rect:
+        serializedVersion: 2
+        x: 1803
+        y: 1569
+        width: 22
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 371837d8413125949994f25bb0f87194
+      internalID: 8075817937007983853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walking
+      rect:
+        serializedVersion: 2
+        x: 4298
+        y: 2033
+        width: 504
+        height: 1133
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea7b9f21976d5ec459cd2e067eb59299
+      internalID: 6793554221144098295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: head
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 2633
+        width: 843
+        height: 581
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3bd73bc3c796c7438ae9b12a4d0010a
+      internalID: -1846784345090356148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: f9cc90f8b0adee249934697cffab4b72
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

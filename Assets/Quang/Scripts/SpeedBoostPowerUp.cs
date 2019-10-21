@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpeedBoostPowerUp : MonoBehaviour
 {
-    public GameObject player;
     
 
     void Start()
