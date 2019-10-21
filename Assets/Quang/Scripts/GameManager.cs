@@ -5,7 +5,7 @@ using UnityEngine;
 public static class GameManager
 {
     public static bool useMotionControl = false;
-    public static Controller controller = new MouseControl();
+    public static ControllerQuang controller = new MouseControl();
     public static bool InMenu = false;
 
     public static void UpdateInMenu(bool isInMenu)

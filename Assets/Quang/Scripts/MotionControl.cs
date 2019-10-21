@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Diagnostics;
 
-public class MotionControl : Controller
+public class MotionControl : ControllerQuang
 {
 
     Thread receiveThread;
