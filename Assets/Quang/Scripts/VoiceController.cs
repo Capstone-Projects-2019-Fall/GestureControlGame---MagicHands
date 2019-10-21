@@ -23,6 +23,7 @@ public class VoiceController : MonoBehaviour
 
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
 
         cubeRend = GetComponent<MeshRenderer>();
         
@@ -31,11 +32,22 @@ public class VoiceController : MonoBehaviour
         keyActs.Add("green", Green);
         keyActs.Add("blue", Blue);
         keyActs.Add("white", White);
+        keyActs.Add("zoom", Zoom);
     
         recognizer = new KeywordRecognizer(keyActs.Keys.ToArray());
         recognizer.OnPhraseRecognized += OnPhraseRecognized;
         recognizer.Start();
         
+    }
+    void FixedUpdate()
+    {
+        float xMove = Input.GetAxis("Horizontal");
+        float zMove = Input.GetAxis("Vertical");
+    
+        Vector3 move = new Vector3(xMove, 0.0f, zMove);
+        //Vector3 move = new Vector3(rightForce, 0.0f, upForce).normalized;
+
+        rb.AddForce(move * speed);
     }
 
     void OnPhraseRecognized(PhraseRecognizedEventArgs args)
@@ -60,5 +72,26 @@ public class VoiceController : MonoBehaviour
     {
         cubeRend.material.SetColor("_Color", Color.white);
     }
+    void Zoom()
+    {
+        if (PlayerController.speedBoostState == true)
+        {
+            StartCoroutine(SpeedBoost());
+        }
+        else
+        {
+            Debug.Log("No powerup");
+        }
+    }
+    IEnumerator SpeedBoost()
+    {
+        
+        float oldspeed = speed;
+        float newspeed = speed * 2;
+        speed = newspeed;
+        yield return new WaitForSeconds(3);
+        speed = oldspeed;
+        PlayerController.speedBoostState=false;
 
+    }
 }
