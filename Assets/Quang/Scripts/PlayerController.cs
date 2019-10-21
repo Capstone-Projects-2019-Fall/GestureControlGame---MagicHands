@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using EZCameraShake;
 using System.Collections;
+using System;
 
 
 
@@ -16,23 +17,28 @@ public class PlayerController : MonoBehaviour
     public GameObject player;
     public static bool speedBoostState = false;
     //GameManager gameManagerCode;
+    Vector3 PrevPos; 
+    Vector3 NewPos; 
+    Vector3 ObjVelocity;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         count = 0;
+        PrevPos = transform.position;
+        NewPos = transform.position;
         //gameManagerCode = gameManager.GetComponent<GameManager>();
     }
-
-    void FixedUpdateQuang()
+    void FixedUpdate()
     {
         float xMove = Input.GetAxis("Horizontal");
         float zMove = Input.GetAxis("Vertical");
-
+        
         Vector3 move = new Vector3(xMove, 0.0f, zMove);
         //Vector3 move = new Vector3(rightForce, 0.0f, upForce).normalized;
 
         rb.AddForce(move * speed);
+
     }
 
     void Update()
@@ -44,6 +50,7 @@ public class PlayerController : MonoBehaviour
         
         player.transform.Rotate(-rotate.y, rotate.x, rotate.z, Space.Self);
         player.transform.position += speed * player.transform.forward * Time.deltaTime * speedMag;
+        
 
         if (Input.GetKeyDown("v"))
         {
@@ -56,7 +63,11 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(SpeedBoost());
             }
         }
-
+        NewPos = transform.position;  // each frame track the new position
+        ObjVelocity = (NewPos - PrevPos) / Time.fixedDeltaTime;  // velocity = dist/time
+        PrevPos = NewPos;  // update position for next frame calculation
+        Debug.Log("velocity "+ Math.Round(ObjVelocity.magnitude, 0));
+    
     }
     IEnumerator SpeedBoost()
     {
