@@ -35,13 +35,13 @@ public class AI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (transform.position != nodes[current].position)
+        if (Vector3.Distance(transform.position, nodes[current].position) > 1.5)
         {
             //Vector3 pos = Vector3.MoveTowards(transform.position, nodes[current].position, speed * Time.deltaTime);
             //GetComponent<Rigidbody>().MovePosition(pos);
             //ApplyRotate();
             target.position = nodes[current].position;
-            PikcUpPower();
+            //PikcUpPower();
             TrackThePath();
         }
         else
