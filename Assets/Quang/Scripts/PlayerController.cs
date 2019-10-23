@@ -45,6 +45,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (!GameManager.started)
+        {
+            return;
+        }
         Vector3 rotate = GameManager.controller.GetRotation();
         float speedMag = GameManager.controller.GetSpeed();
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StartButton : MonoBehaviour
 {
-
+   
     public GameObject PauseAtStart;
     // Start is called before the first frame update
     void Start()
@@ -15,6 +15,7 @@ public class StartButton : MonoBehaviour
 
     public void ButtonPressed()
     {
+        GameManager.started = true;
         PauseAtStart.SetActive(false);
         Time.timeScale = 1f;
     }

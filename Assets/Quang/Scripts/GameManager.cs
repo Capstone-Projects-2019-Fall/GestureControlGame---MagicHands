@@ -7,6 +7,7 @@ public static class GameManager
     public static bool useMotionControl = false;
     public static ControllerQuang controller = new MouseControl();
     public static bool InMenu = false;
+    public static bool started = false;
 
     public static void UpdateInMenu(bool isInMenu)
     {
