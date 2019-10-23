@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour
         {
             if (speedBoostState == true)
             {
+                Debug.Log(speedBoostState);
                 StartCoroutine(SpeedBoost());
             }
         }
