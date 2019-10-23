@@ -60,9 +60,9 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown("space"))
         {
+            Debug.Log("this is speed boost state" + speedBoostState);
             if (speedBoostState == true)
             {
-                Debug.Log(speedBoostState);
                 StartCoroutine(SpeedBoost());
             }
         }
