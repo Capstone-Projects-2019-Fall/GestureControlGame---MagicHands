@@ -11,8 +11,10 @@ public class AI : MonoBehaviour
     public float speed;
     public float rotationSpeed;
     public static bool speedBoostState = false;
+    Vector3 positionCorrection = new Vector3(0f, -2f, 0f);
 
     private List<Transform> nodes;
+    List<Vector3> positions;
     private int current = 0;
 
 
@@ -23,30 +25,33 @@ public class AI : MonoBehaviour
     {
         Transform[] pathTransform = path.GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
+        positions = new List<Vector3>();
 
         for (int i = 0; i < pathTransform.Length; i++)
         {
             if (pathTransform[i] != path.transform)
             {
                 nodes.Add(pathTransform[i]);
+                positions.Add(pathTransform[i].position + positionCorrection);
             }
         }
     }
 
     private void FixedUpdate()
     {
-        if (Vector3.Distance(transform.position, nodes[current].position) > 1.5)
+        if (Vector3.Distance(transform.position, positions[current]) > 1f)
         {
             //Vector3 pos = Vector3.MoveTowards(transform.position, nodes[current].position, speed * Time.deltaTime);
             //GetComponent<Rigidbody>().MovePosition(pos);
             //ApplyRotate();
-            target.position = nodes[current].position;
+            //target.position = nodes[current].position + positionCorrection;
+            target.position = positions[current];
             //PikcUpPower();
             TrackThePath();
         }
         else
         {
-            current = (current + 1) % nodes.Count;
+            current = (current + 1) % positions.Count;
         }
     }
 
@@ -74,7 +79,7 @@ public class AI : MonoBehaviour
 
     private void PikcUpPower()
     {
-        if(Vector3.Distance(powerUp.position, transform.position) < Vector3.Distance(nodes[current].position, transform.position))
+        if(Vector3.Distance(powerUp.position, transform.position) < Vector3.Distance(positions[current], transform.position))
         {
             target.position = powerUp.position;
         }
