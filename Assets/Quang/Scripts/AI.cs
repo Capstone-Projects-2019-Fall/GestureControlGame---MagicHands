@@ -37,7 +37,7 @@ public class AI : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (Vector3.Distance(transform.position, positions[current]) > 1f)
         {
@@ -47,7 +47,7 @@ public class AI : MonoBehaviour
             //target.position = nodes[current].position + positionCorrection;
             target.position = positions[current];
             //PikcUpPower();
-            TrackThePath();
+            ApplyRotate();
         }
         else
         {
@@ -60,12 +60,16 @@ public class AI : MonoBehaviour
         float speedMag = 1f;
         Vector3 rotate;
         Vector3 relativeVector = transform.InverseTransformPoint(target.position);
-        rotate.x = (relativeVector.x / relativeVector.magnitude) * rotationSpeed;
-        rotate.y = (relativeVector.y / relativeVector.magnitude) * rotationSpeed;
-        rotate.z = 0f;
 
-        player.transform.Rotate(-rotate.y * Time.deltaTime * rotationSpeed, rotate.x*Time.deltaTime*rotationSpeed, rotate.z*Time.deltaTime*rotationSpeed, Space.Self);
-        player.transform.position += speed * player.transform.forward * Time.deltaTime * speedMag * 1f;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(target.position - transform.position), rotationSpeed * Time.deltaTime);
+
+
+        rotate.x = (-transform.eulerAngles.x + relativeVector.x / relativeVector.magnitude) * rotationSpeed;
+        rotate.y = (-transform.eulerAngles.y + relativeVector.y / relativeVector.magnitude) * rotationSpeed;
+        rotate.z = (-transform.eulerAngles.z) * rotationSpeed;
+
+        //transform.Rotate(-rotate.y * Time.deltaTime, rotate.x * Time.deltaTime, rotate.z*Time.deltaTime, Space.Self);
+        transform.position += speed * player.transform.forward * Time.deltaTime * speedMag * 1f;
     }
 
     private void TrackThePath()
