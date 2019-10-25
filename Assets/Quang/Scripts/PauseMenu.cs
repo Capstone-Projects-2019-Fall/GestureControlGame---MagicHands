@@ -18,6 +18,7 @@ public class PauseMenu : MonoBehaviour
 
     void Start()
     {
+        
         pauseMenu.SetActive(false);
 
         keyActs.Add("stop", Pause);
@@ -81,8 +82,10 @@ public class PauseMenu : MonoBehaviour
     {   
         if(isPaused)
         {
-            Debug.Log("Quitting game");
-            Application.Quit();
+            Time.timeScale = 1f;
+            SceneManager.LoadScene("Menu2");
+            Debug.Log("Quitting Scene");
+            //Application.Quit();
         }
 
     }

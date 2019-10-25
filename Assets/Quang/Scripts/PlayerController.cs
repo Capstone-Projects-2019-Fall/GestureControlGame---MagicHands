@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     Vector3 PrevPos; 
     Vector3 NewPos; 
     Vector3 ObjVelocity;
+    float speedMultiplier;
 
     void Start()
     {
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
         count = 0;
         PrevPos = transform.position;
         NewPos = transform.position;
+        speedMultiplier = 1f;
         //gameManagerCode = gameManager.GetComponent<GameManager>();
     }
     void FixedUpdate()
@@ -43,13 +45,17 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (!GameManager.started)
+        {
+            return;
+        }
         Vector3 rotate = GameManager.controller.GetRotation();
         float speedMag = GameManager.controller.GetSpeed();
 
         rotate = rotate * Time.deltaTime * rotationSpeed;
         
         player.transform.Rotate(-rotate.y, rotate.x, rotate.z, Space.Self);
-        player.transform.position += speed * player.transform.forward * Time.deltaTime * speedMag;
+        player.transform.position += speedMultiplier * speed * player.transform.forward * Time.deltaTime * speedMag;
         
 
         if (Input.GetKeyDown("v"))
@@ -58,10 +64,19 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown("space"))
         {
+            Debug.Log("this is speed boost state" + speedBoostState);
             if (speedBoostState == true)
             {
                 StartCoroutine(SpeedBoost());
             }
+        }
+        if (Input.GetKeyDown("p"))
+        {
+            speedMultiplier = 0f;
+        }
+        if (Input.GetKeyUp("p"))
+        {
+            speedMultiplier = 1f;
         }
         NewPos = transform.position;  // each frame track the new position
         ObjVelocity = (NewPos - PrevPos) / Time.fixedDeltaTime;  // velocity = dist/time
