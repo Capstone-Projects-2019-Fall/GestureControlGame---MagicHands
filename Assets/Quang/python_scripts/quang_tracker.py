@@ -271,7 +271,11 @@ def combine_hsv_face_masks(hsv_mask, face_mask):
 
 # vs = VideoStream(src=0).start()
 vs = cv2.VideoCapture(0)
+if not vs.isOpened():
+    vs.open(-1)
 
+if not vs.isOpened():
+    print("Tried to open the camera but couldn't")
 # reset_cam(vs)
 adjust_exposure(vs, 50)
 
