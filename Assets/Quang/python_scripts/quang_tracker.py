@@ -158,6 +158,15 @@ def get_fist_point(mask, stat, n=10, p=0.8):
     else:
         return (int(x+(1-p)*w), int(y+(1-p)*h))
 
+def get_fist_point_highest(mask, stat):
+    x,y,w,h,a = stat_to_normal(stat)
+    top_row = mask[y+5,x:x+w]
+    one_indices = np.array([i for i in range(len(top_row)) if top_row[i] == 1])
+    x_top = np.mean(one_indices).astype(np.int32) + x
+    return (x_top,y)
+
+
+
 def get_hsv_mask(frame_hsv, low, high):
     # print(frame.shape)
     h_mask1 = np.greater(frame_hsv[:,:,0], low[0])
@@ -371,7 +380,7 @@ while True:
         mask = fg_mask * hsv_mask * face_mask
         # mask = fg_mask
         # mask = hsv_mask
-        # mask = cv2.erode(mask, erode_kernel, iterations=1)
+        mask = cv2.erode(mask, erode_kernel, iterations=1)
         # mask = remove_small_regions(mask, min_area=5)
         mask_trail.append(mask)
         if len(mask_trail) > MAX_TRAIL_LEN:
@@ -379,7 +388,7 @@ while True:
         mask = remove_flickering(mask_trail)
 
 
-        # mask = cv2.dilate(mask, dilate_kernel, iterations=1)
+        mask = cv2.dilate(mask, dilate_kernel, iterations=1)
         mask_img = (mask * 224).astype(np.uint8)
 
         connectivity = 4
@@ -390,7 +399,7 @@ while True:
         fist_points = []
         for stat in stats:
             if stat[cv2.CC_STAT_AREA] > 1500:
-                fist_points.append(get_fist_point(mask, stat))
+                fist_points.append(get_fist_point_highest(mask, stat))
             if len(fist_points) >= 2:
                 break
 
