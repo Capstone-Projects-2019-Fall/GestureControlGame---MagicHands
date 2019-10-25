@@ -9,11 +9,14 @@ public class MainMenu : MonoBehaviour
     public void Multyplayer()
     {
         Debug.Log("Multyplayer pressed");
+        
 
     }
 
     public void SinglePlayer()
     {
+        Debug.Log("Single player pressed");
+        SceneManager.LoadScene("Main");
 
     }
 

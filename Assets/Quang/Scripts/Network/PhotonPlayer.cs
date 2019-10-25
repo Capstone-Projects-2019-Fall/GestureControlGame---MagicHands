@@ -19,7 +19,7 @@ public class PhotonPlayer : MonoBehaviour
         if (PV.IsMine)
         {
             Debug.Log("within PPlayer.Start ismine");
-            myAvatar = PhotonNetwork.Instantiate(Path.Combine("Prefabs", "Player"),
+            myAvatar = PhotonNetwork.Instantiate(Path.Combine("Prefabs", "PlayerAvatar"),
                 GameSetup.GS.spawnPoints[spawnSelector].position, GameSetup.GS.spawnPoints[spawnSelector].rotation, 0); //*/ transform.position, Quaternion.identity, 0);//
         }
 

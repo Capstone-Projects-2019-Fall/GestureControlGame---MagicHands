@@ -115,8 +115,10 @@ GameObject:
   - component: {fileID: 1406024170658578516}
   - component: {fileID: 1406024170658578515}
   - component: {fileID: 1406024170658578514}
+  - component: {fileID: -6877756118775053781}
+  - component: {fileID: 6487092911258412587}
   m_Layer: 0
-  m_Name: Player
+  m_Name: PlayerAvatar
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -240,6 +242,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+--- !u!114 &-6877756118775053781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1406024170658578537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &6487092911258412587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1406024170658578537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
 --- !u!1001 &6225316709319990867
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -327,12 +366,12 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.2
       objectReference: {fileID: 0}
-    - target: {fileID: 7070571767519843054, guid: bf06b65ee976ca043b8333a9f87b0a60,
+    - target: {fileID: 7070571767819040928, guid: bf06b65ee976ca043b8333a9f87b0a60,
         type: 3}
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 7070571767819040928, guid: bf06b65ee976ca043b8333a9f87b0a60,
+    - target: {fileID: 7070571767519843054, guid: bf06b65ee976ca043b8333a9f87b0a60,
         type: 3}
       propertyPath: m_TagString
       value: Player

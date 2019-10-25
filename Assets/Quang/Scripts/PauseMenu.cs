@@ -82,7 +82,9 @@ public class PauseMenu : MonoBehaviour
     {   
         if(isPaused)
         {
-            Debug.Log("Quitting game");
+            Time.timeScale = 1f;
+            SceneManager.LoadScene("Menu2");
+            //Debug.Log("Quitting Scene");
             Application.Quit();
         }
 
