@@ -7,15 +7,14 @@ import time
 import math
 import numpy as np
 import collections
-import os
 import argparse
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-F", "--face", type=str, default="haarcascade_frontalface_default.xml", help="path to face cascade file")
-ap.add_argument("-H", "--hue", type=int, default=20, help="hue offset")
+ap.add_argument("-H", "--hue", type=int, default=30, help="hue offset")
 ap.add_argument("-S", "--saturation", type=int, default=90, help="saturation offset")
 ap.add_argument("-V", "--value", type=int, default=100, help="value offset")
-ap.add_argument("-B", "--background", type=int, default=20, help="background offset")
+ap.add_argument("-B", "--background", type=int, default=10, help="background offset")
 args = vars(ap.parse_args())
 
 def get_fore_ground_mask(frame, background, offset):
@@ -38,10 +37,11 @@ def get_foreground_mask_hsv(frame, background, offset):
     # v_mask = get_foreground_mask_channel(frame, background, 2, offset[2])
     return np.any(mask,0)
 
-HSV_OFFSET_HIGH = np.array([args["hue"],args["saturation"],args["value"]])
-HSV_OFFSET_LOW = HSV_OFFSET_HIGH
+HSV_OFFSET = np.array([args["hue"],args["saturation"],args["value"]])
+BACKGROUND_OFFSET = args["background"]
 
-vs = VideoStream(src=0).start()
+
+
 
 is_first = True
 fps_started = False
@@ -49,7 +49,6 @@ start_time = time.time()
 backSub = cv2.createBackgroundSubtractorMOG2()
 first_frame = None
 first_grey_frame = None
-prev_frame = None
 background = None
 background_hsv = None
 background_int32 = None
@@ -74,12 +73,50 @@ mask_trail = collections.deque()
 MAX_TRAIL_LEN = 2
 last_fistpoints = []
 SMALL_WIDTH = 20
+reverse = False
 
+class Keys:
+    def __init__(self):
+        self.SAMPLE_HAND = "a"
+        self.SAMPLE_BACKGROUND = "b"
+        self.QUIT = "q"
+        self.HUE = "h"
+        self.SAT = "s"
+        self.VAL = "v"
+        self.REVERSE = "r"
+        self.BACKGROUND_OFFSET = "o"
+
+keys = Keys()
 
 erode_kernel = np.ones((8, 8), np.uint8)
 dilate_kernel = np.ones((30,30), np.uint8)
 
 face_cascade = cv2.CascadeClassifier(args["face"])
+def reset_cam(cam):
+    # cam.set(cv2.CAP_PROP_BRIGHTNESS, 255//2)  # brightness     min: 0   , max: 255 , increment:1
+    # cam.set(cv2.CAP_PROP_CONTRAST, 255//2)  # contrast       min: 0   , max: 255 , increment:1
+    # cam.set(cv2.CAP_PROP_SATURATION, 255//2)  # saturation     min: 0   , max: 255 , increment:1
+    # cam.set(cv2.CAP_PROP_HUE, 255//2)  # hue
+    # cam.set(cv2.CAP_PROP_GAIN, 127//2)  # gain           min: 0   , max: 127 , increment:1
+    cam.set(cv2.CAP_PROP_EXPOSURE, -4)  # exposure       min: -7  , max: -1  , increment:1
+    # cam.set(cv2.CAP_PROP_WHITE_BALANCE_BLUE_U, 5500)  # white_balance  min: 4000, max: 7000, increment:1
+    # cam.set(cv2.CAP_PROP_FOCUS, 10)  # focus          min: 0   , max: 255 , increment:5
+    # cam.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.75)
+    return
+
+def reset_cam_0(cam):
+    cam.set(cv2.CAP_PROP_BRIGHTNESS, cam.get(cv2.CAP_PROP_BRIGHTNESS))  # brightness     min: 0   , max: 255 , increment:1
+    cam.set(cv2.CAP_PROP_CONTRAST, cam.get(cv2.CAP_PROP_CONTRAST))  # contrast       min: 0   , max: 255 , increment:1
+    cam.set(cv2.CAP_PROP_SATURATION, 255)  # saturation     min: 0   , max: 255 , increment:1
+    cam.set(cv2.CAP_PROP_HUE, cam.get(cv2.CAP_PROP_HUE))  # hue
+    cam.set(cv2.CAP_PROP_GAIN, cam.get(cv2.CAP_PROP_GAIN))  # gain           min: 0   , max: 127 , increment:1
+    cam.set(cv2.CAP_PROP_EXPOSURE, cam.get(cv2.CAP_PROP_EXPOSURE))  # exposure       min: -7  , max: -1  , increment:1
+    cam.set(cv2.CAP_PROP_WHITE_BALANCE_BLUE_U, cam.get(cv2.CAP_PROP_WHITE_BALANCE_BLUE_U))  # white_balance  min: 4000, max: 7000, increment:1
+    cam.set(cv2.CAP_PROP_FOCUS, cam.get(cv2.CAP_PROP_FOCUS))  # focus          min: 0   , max: 255 , increment:5
+
+    return
+
+print(cv2.CAP_PROP_CONTRAST)
 
 def remove_flickering(trail):
     ret = np.all(np.stack(trail), axis=0).astype(np.uint8)
@@ -103,15 +140,18 @@ def get_fist_point(mask, stat, n=10, p=0.8):
     else:
         return (int(x+(1-p)*w), int(y+(1-p)*h))
 
-def get_hsv_mask(frame, low, high):
-    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+def get_hsv_mask(frame_hsv, low, high):
+    print("frame_hsv:", frame_hsv.dtype)
+    print("low:", low)
+    print("high:", high)
+
     # print(frame.shape)
-    h_mask1 = np.greater(frame[:,:,0], low[0])
-    h_mask2 = np.less(frame[:,:,0], high[0])
+    h_mask1 = np.greater(frame_hsv[:,:,0], low[0])
+    h_mask2 = np.less(frame_hsv[:,:,0], high[0])
     h_mask = np.logical_and(h_mask1, h_mask2)
 
-    s_mask1 = np.greater(frame[:,:,1], low[1])
-    s_mask2 = np.less(frame[:,:,1], high[1])
+    s_mask1 = np.greater(frame_hsv[:,:,1], low[1])
+    s_mask2 = np.less(frame_hsv[:,:,1], high[1])
     s_mask = np.logical_and(s_mask1, s_mask2)
 
     return np.logical_and(h_mask, s_mask).astype(np.uint8)
@@ -144,8 +184,16 @@ def remove_black_bars(frame):
 def get_face_mask(faces, frame):
     mask = np.mean(frame, axis=-1) * 0
     for (x, y, w, h) in faces:
+        x_center = x + w//2
+        y_center = y + h//2
+        neck_width = int(0.6*w)
+        neck_height = int(h)
         # To draw a rectangle in a face
-        cv2.rectangle(mask, (x, int(y-0.15*h)), (x + w, y + int(h * 1.4)), (255, 255, 255), -1)
+        # cv2.rectangle(pure, (x, int(y-0.15*h)), (x + w, y + int(h * 1.4)), (255, 255, 255))
+        cv2.ellipse(pure, (x_center, y_center), (w//2, int(h*1.2)//2), 0, 0, 360, color=(255, 255, 255))
+        cv2.rectangle(pure, (x_center-neck_width//2, y_center), (x_center + neck_width//2, y_center + neck_height), (255, 255, 255))
+        cv2.ellipse(mask, (x_center, y_center), (w // 2, int(h * 1.2) // 2), 0, 0, 360, color=(255, 255, 255), thickness=-1)
+        cv2.rectangle(mask, (x_center - neck_width // 2, y_center),(x_center + neck_width // 2, y_center + neck_height), (255, 255, 255), -1)
     mask = (1 - mask // 254).astype(np.uint8)
     return mask
 
@@ -194,7 +242,14 @@ def get_closest_point(this_point, other_points):
         if distance(p, this_point) < distance(ret, this_point):
             ret = p
 
+def combine_hsv_face_masks(hsv_mask, face_mask):
+    mask = np.logical_or(hsv_mask, np.logical_and(hsv_mask, face_mask).astype(np.uint8)).astype(np.uint8)
+    return mask
 
+# vs = VideoStream(src=0).start()
+vs = cv2.VideoCapture(0)
+
+reset_cam(vs)
 
 UDP_IP = "127.0.0.1"
 UDP_PORT = 5065
@@ -202,7 +257,12 @@ UDP_PORT = 5065
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 while True:
-    frame = vs.read()
+
+    # vs.set(10, 120)
+    # print(HSV_OFFSET)
+    if hsv_mean_right is not None:
+        print(hsv_mean_right - HSV_OFFSET)
+    ret, frame = vs.read()
     frame = imutils.resize(frame, width=WIDTH)
     frame = cv2.flip(frame, 1)
     frame = remove_black_bars(frame)
@@ -222,13 +282,13 @@ while True:
         is_first = False
         first_frame = frame
         first_grey_frame = cv2.cvtColor(first_frame, cv2.COLOR_BGR2GRAY)
-        prev_frame = frame
         last_fistpoints = [(x1, y1),(x2, y2)]
 
     if left_sample is None and not sampling_color:
-        cv2.putText(frame, "take hand color sample: press H", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+        cv2.putText(frame, f"take hand color sample: press {keys.SAMPLE_HAND.upper()}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
     elif background is None and not sampling_color:
-        cv2.putText(frame, "take background sample: get out of camera then press B", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+        print("yo")
+        cv2.putText(frame, f"take background sample: get out of camera then press {keys.SAMPLE_BACKGROUND.upper()}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
     # getting hands' color
     if sampling_color:
@@ -245,11 +305,11 @@ while True:
             right_sample = frame[y2:y2+h, x2:x2+w]
             hsv_mean_left = get_hsv_mean(left_sample)
             hsv_mean_right = get_hsv_mean(right_sample)
-            hsv_low_left = hsv_mean_left - HSV_OFFSET_LOW
-            hsv_high_left = hsv_mean_left + HSV_OFFSET_HIGH
+            hsv_low_left = hsv_mean_left - HSV_OFFSET
+            hsv_high_left = hsv_mean_left + HSV_OFFSET
 
-            hsv_low_right = hsv_mean_right - HSV_OFFSET_LOW
-            hsv_high_right = hsv_mean_right + HSV_OFFSET_HIGH
+            hsv_low_right = hsv_mean_right - HSV_OFFSET
+            hsv_high_right = hsv_mean_right + HSV_OFFSET
 
             fps = FPS().start()
 
@@ -276,19 +336,24 @@ while True:
 
 
         frame = cv2.GaussianBlur(frame, (5, 5), 0)
+        frame_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV).astype(np.int32)
+        frame = frame.astype(np.int32)
         # mask = backSub.apply(frame) // 224
 
 
-        fg_mask = get_fore_ground_mask(frame, background_int32, args["background"])
+        fg_mask = get_fore_ground_mask(frame, background_int32, BACKGROUND_OFFSET)
         # fg_mask = get_foreground_mask_hsv(hsv_frame, background_hsv, BACKGROUND_OFFSET)
 
-        hsv_mask_left = get_hsv_mask(frame, hsv_low_left, hsv_high_left)
-        hsv_mask_right = get_hsv_mask(frame, hsv_low_right, hsv_high_right)
+        # hsv_mask_left = get_hsv_mask(frame, hsv_low_left, hsv_high_left)
+        hsv_mask_left = get_hsv_mask(frame_hsv, hsv_mean_left - HSV_OFFSET, hsv_mean_left + HSV_OFFSET)
+        hsv_mask_right = get_hsv_mask(frame_hsv, hsv_mean_right - HSV_OFFSET, hsv_mean_right + HSV_OFFSET)
         hsv_mask = np.logical_or(hsv_mask_left, hsv_mask_right).astype(np.uint8)
 
         face_mask = get_face_mask(faces, frame)
 
         mask = fg_mask * hsv_mask * face_mask
+        # mask = fg_mask
+        # mask = hsv_mask
         mask = cv2.erode(mask, erode_kernel, iterations=1)
         # mask = remove_small_regions(mask, min_area=5)
         mask_trail.append(mask)
@@ -299,7 +364,6 @@ while True:
 
         mask = cv2.dilate(mask, dilate_kernel, iterations=1)
         mask_img = (mask * 224).astype(np.uint8)
-        # print("mask:",mask.shape)
 
         connectivity = 4
         num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(mask, connectivity, cv2.CV_32S)
@@ -339,7 +403,6 @@ while True:
         frame = frame.astype(np.uint8)
 
 
-        prev_frame = frame
 
         fps.update()
         fps.stop()
@@ -352,12 +415,29 @@ while True:
     cv2.imshow("Pure", pure)
     key = cv2.waitKey(1) & 0xFF
 
-    if key == ord("q"):
+    if key == ord(keys.QUIT):
         break
-    elif key == ord("b"): # take background picture
+    elif key == ord(keys.SAMPLE_BACKGROUND): # take background picture
         background = frame
         background_int32 = background.astype(np.int32)
-    elif key == ord("h"): # get hands' color
+    elif key == ord(keys.SAMPLE_HAND): # get hands' color
         # give the user 5 secs to put their hands in the box
         sampling_color = True
         sampling_start = time.time()
+    elif key == ord(keys.HUE):
+        if not reverse: HSV_OFFSET[0] += 1
+        else: HSV_OFFSET[0] -= 1
+    elif key == ord(keys.SAT):
+        if not reverse: HSV_OFFSET[1] += 1
+        else: HSV_OFFSET[1] -= 1
+    elif key == ord(keys.VAL):
+        if not reverse: HSV_OFFSET[2] += 1
+        else: HSV_OFFSET[2] -= 1
+    elif key == ord(keys.BACKGROUND_OFFSET):
+        if not reverse: BACKGROUND_OFFSET += 1
+        else: BACKGROUND_OFFSET -= 1
+    elif key == ord(keys.REVERSE):
+        reverse = not reverse
+
+vs.release()
+
