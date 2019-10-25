@@ -79,7 +79,9 @@ public class PlayerController : MonoBehaviour
             speedMultiplier = 1f;
         }
         NewPos = transform.position;  // each frame track the new position
-        ObjVelocity = (NewPos - PrevPos) / Time.fixedDeltaTime;  // velocity = dist/time
+        //Debug.Log("delta time:" + Time.deltaTime);
+        //Debug.Log("fixed delta time:" + Time.fixedDeltaTime);
+        ObjVelocity = (NewPos - PrevPos) / Time.deltaTime;  // velocity = dist/time
         PrevPos = NewPos;  // update position for next frame calculation
         Debug.Log("velocity "+ Math.Round(ObjVelocity.magnitude, 0));
     
