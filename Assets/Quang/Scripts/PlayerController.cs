@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     Vector3 NewPos; 
     Vector3 ObjVelocity;
     float speedMultiplier;
+    public float hp;
 
     void Start()
     {
@@ -64,7 +65,6 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown("space"))
         {
-            Debug.Log("this is speed boost state" + speedBoostState);
             if (speedBoostState == true)
             {
                 StartCoroutine(SpeedBoost());
@@ -95,7 +95,19 @@ public class PlayerController : MonoBehaviour
         speedBoostState=false;
 
     }
-    
+    public float GetHealth()
+    {
+        return hp;
+    }
+    public float GetSpeed()
+    {
+        return speed;
+    }
+
+    public void SetHealth(int hpnew)
+    {
+        hp = hpnew;
+    }
    /* void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("pickUp"))
