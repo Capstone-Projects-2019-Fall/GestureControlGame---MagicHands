@@ -18,6 +18,7 @@ ap.add_argument("-B", "--background", type=int, default=10, help="background off
 args = vars(ap.parse_args())
 
 def get_fore_ground_mask(frame, background, offset):
+
     a = np.any(np.greater(frame, background + offset), axis=-1)
     b = np.any(np.less(frame, background - offset), axis=-1)
     return np.logical_or(a, b).astype(np.uint8)
@@ -98,7 +99,7 @@ def reset_cam(cam):
     # cam.set(cv2.CAP_PROP_SATURATION, 255//2)  # saturation     min: 0   , max: 255 , increment:1
     # cam.set(cv2.CAP_PROP_HUE, 255//2)  # hue
     # cam.set(cv2.CAP_PROP_GAIN, 127//2)  # gain           min: 0   , max: 127 , increment:1
-    cam.set(cv2.CAP_PROP_EXPOSURE, -4)  # exposure       min: -7  , max: -1  , increment:1
+    cam.set(cv2.CAP_PROP_EXPOSURE, -5)  # exposure       min: -7  , max: -1  , increment:1
     # cam.set(cv2.CAP_PROP_WHITE_BALANCE_BLUE_U, 5500)  # white_balance  min: 4000, max: 7000, increment:1
     # cam.set(cv2.CAP_PROP_FOCUS, 10)  # focus          min: 0   , max: 255 , increment:5
     # cam.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.75)
@@ -116,7 +117,24 @@ def reset_cam_0(cam):
 
     return
 
-print(cv2.CAP_PROP_CONTRAST)
+def adjust_exposure(cam, target_brightness):
+    exposures = list(range(-9,1))
+    vals = []
+    for ex in exposures:
+        cam.set(cv2.CAP_PROP_EXPOSURE, ex)
+        _, frame = cam.read()
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        vals.append(np.mean(frame[:,:,-1]))
+        cv2.waitKey(0)
+
+    # find vals closest to target_brightness
+    dist = np.array([abs(x-target_brightness) for x in vals])
+    print(dist)
+    chosen_exposure = exposures[np.argmin(dist)]
+    cam.set(cv2.CAP_PROP_EXPOSURE, chosen_exposure)
+    print(f"exposure set to {chosen_exposure}")
+
+
 
 def remove_flickering(trail):
     ret = np.all(np.stack(trail), axis=0).astype(np.uint8)
@@ -141,10 +159,6 @@ def get_fist_point(mask, stat, n=10, p=0.8):
         return (int(x+(1-p)*w), int(y+(1-p)*h))
 
 def get_hsv_mask(frame_hsv, low, high):
-    print("frame_hsv:", frame_hsv.dtype)
-    print("low:", low)
-    print("high:", high)
-
     # print(frame.shape)
     h_mask1 = np.greater(frame_hsv[:,:,0], low[0])
     h_mask2 = np.less(frame_hsv[:,:,0], high[0])
@@ -249,7 +263,9 @@ def combine_hsv_face_masks(hsv_mask, face_mask):
 # vs = VideoStream(src=0).start()
 vs = cv2.VideoCapture(0)
 
-reset_cam(vs)
+# reset_cam(vs)
+adjust_exposure(vs, 50)
+
 
 UDP_IP = "127.0.0.1"
 UDP_PORT = 5065
@@ -260,8 +276,8 @@ while True:
 
     # vs.set(10, 120)
     # print(HSV_OFFSET)
-    if hsv_mean_right is not None:
-        print(hsv_mean_right - HSV_OFFSET)
+    # if hsv_mean_right is not None:
+    #     print(hsv_mean_right - HSV_OFFSET)
     ret, frame = vs.read()
     frame = imutils.resize(frame, width=WIDTH)
     frame = cv2.flip(frame, 1)
@@ -287,7 +303,6 @@ while True:
     if left_sample is None and not sampling_color:
         cv2.putText(frame, f"take hand color sample: press {keys.SAMPLE_HAND.upper()}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
     elif background is None and not sampling_color:
-        print("yo")
         cv2.putText(frame, f"take background sample: get out of camera then press {keys.SAMPLE_BACKGROUND.upper()}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
     # getting hands' color
@@ -303,6 +318,8 @@ while True:
             initBB_right = (x2, y2, w, h)
             left_sample = frame[y1:y1+h, x1:x1+w]
             right_sample = frame[y2:y2+h, x2:x2+w]
+            cv2.imwrite("left.png", left_sample)
+            cv2.imwrite("right.png", right_sample)
             hsv_mean_left = get_hsv_mean(left_sample)
             hsv_mean_right = get_hsv_mean(right_sample)
             hsv_low_left = hsv_mean_left - HSV_OFFSET
@@ -354,7 +371,7 @@ while True:
         mask = fg_mask * hsv_mask * face_mask
         # mask = fg_mask
         # mask = hsv_mask
-        mask = cv2.erode(mask, erode_kernel, iterations=1)
+        # mask = cv2.erode(mask, erode_kernel, iterations=1)
         # mask = remove_small_regions(mask, min_area=5)
         mask_trail.append(mask)
         if len(mask_trail) > MAX_TRAIL_LEN:
@@ -362,7 +379,7 @@ while True:
         mask = remove_flickering(mask_trail)
 
 
-        mask = cv2.dilate(mask, dilate_kernel, iterations=1)
+        # mask = cv2.dilate(mask, dilate_kernel, iterations=1)
         mask_img = (mask * 224).astype(np.uint8)
 
         connectivity = 4
@@ -413,6 +430,7 @@ while True:
 
     cv2.imshow("Frame", frame)
     cv2.imshow("Pure", pure)
+    # cv2.imshow()
     key = cv2.waitKey(1) & 0xFF
 
     if key == ord(keys.QUIT):
