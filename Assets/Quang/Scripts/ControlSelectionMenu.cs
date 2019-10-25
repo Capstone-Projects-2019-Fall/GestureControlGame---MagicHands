@@ -18,7 +18,7 @@ public class ControlSelectionMenu : MonoBehaviour
     {
         GameManager.UpdateController(motionControl: false);
         GameManager.UpdateInMenu(isInMenu: false);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene("main");
     }
 
     public void UsePredefinedMotionControl()
@@ -41,7 +41,7 @@ public class ControlSelectionMenu : MonoBehaviour
         {
             if (GameManager.controller.GetSpeed() > 0f)
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                SceneManager.LoadScene("main");
                 break;
             }
         }
