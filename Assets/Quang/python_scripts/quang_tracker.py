@@ -134,6 +134,7 @@ def adjust_exposure(cam, target_brightness):
     chosen_exposure = exposures[np.argmin(dist)]
     cam.set(cv2.CAP_PROP_EXPOSURE, chosen_exposure)
     print(f"exposure set to {chosen_exposure}")
+    return chosen_exposure
 
 
 
@@ -277,8 +278,9 @@ if not vs.isOpened():
 
 if not vs.isOpened():
     print("Tried to open the camera but couldn't")
+
 # reset_cam(vs)
-adjust_exposure(vs, 50)
+chosen_exposure = adjust_exposure(vs, 50)
 
 
 UDP_IP = "127.0.0.1"
@@ -287,7 +289,7 @@ UDP_PORT = 5065
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 while True:
-
+    vs.set(cv2.CAP_PROP_EXPOSURE, chosen_exposure)
     # vs.set(10, 120)
     # print(HSV_OFFSET)
     # if hsv_mean_right is not None:
