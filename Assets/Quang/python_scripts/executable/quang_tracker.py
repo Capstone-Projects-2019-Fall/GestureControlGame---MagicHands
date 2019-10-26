@@ -118,6 +118,7 @@ def reset_cam_0(cam):
     return
 
 def adjust_exposure(cam, target_brightness):
+    cam.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
     exposures = list(range(-9,1))
     vals = []
     for ex in exposures:
@@ -271,7 +272,11 @@ def combine_hsv_face_masks(hsv_mask, face_mask):
 
 # vs = VideoStream(src=0).start()
 vs = cv2.VideoCapture(0)
+if not vs.isOpened():
+    vs.open(-1)
 
+if not vs.isOpened():
+    print("Tried to open the camera but couldn't")
 # reset_cam(vs)
 adjust_exposure(vs, 50)
 

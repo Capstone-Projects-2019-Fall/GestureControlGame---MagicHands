@@ -118,6 +118,7 @@ def reset_cam_0(cam):
     return
 
 def adjust_exposure(cam, target_brightness):
+    cam.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
     exposures = list(range(-9,1))
     vals = []
     for ex in exposures:
