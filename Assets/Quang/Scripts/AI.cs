@@ -46,7 +46,7 @@ public class AI : MonoBehaviour
             //ApplyRotate();
             //target.position = nodes[current].position + positionCorrection;
             target.position = positions[current];
-            //PikcUpPower();
+            PikcUpPower();
             ApplyRotate();
         }
         else
@@ -87,7 +87,8 @@ public class AI : MonoBehaviour
         {
             target.position = powerUp.position;
         }
-        else if(transform.position == powerUp.position)
+
+        if(transform.position == powerUp.position)
         {
             StartCoroutine(SpeedBoost());
         }

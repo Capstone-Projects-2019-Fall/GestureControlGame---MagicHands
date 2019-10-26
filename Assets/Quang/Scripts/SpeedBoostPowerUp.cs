@@ -28,7 +28,10 @@ public class SpeedBoostPowerUp : MonoBehaviour
             EnemyPatrol.speedBoostState = true;
         }
         Destroy(gameObject);
-        PowerUpSpawner.counter--;
+        if (PowerUpSpawner.counter > 0)
+        {
+            PowerUpSpawner.counter--;
+        }
 
 
     }

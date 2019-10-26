@@ -20,6 +20,11 @@ public class MainMenu : MonoBehaviour
 
     }
 
+    public void Tutorial()
+    {
+        Debug.Log("Tutorial pressed");
+        SceneManager.LoadScene("Tutorial");
+    }
 
     public void ExitGame()
     {

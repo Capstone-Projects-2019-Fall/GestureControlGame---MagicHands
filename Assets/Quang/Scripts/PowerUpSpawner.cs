@@ -17,6 +17,7 @@ public class PowerUpSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("this is counter "+counter);
         if (counter == 0)
         {
             Spawner();
