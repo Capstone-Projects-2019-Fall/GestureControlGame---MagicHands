@@ -30,21 +30,25 @@ public class ControlSelectionMenu : MonoBehaviour
         System.Diagnostics.Process process = new System.Diagnostics.Process();
 
         // Set the StartInfo of process
-        string exeDir = Application.dataPath + "\\Quang\\python_scripts\\executable\\dist";
+        string exeDir = Application.dataPath + "/Quang/python_scripts/executable/dist";
         process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
-        process.StartInfo.FileName = exeDir + "\\quang_tracker.exe";
-        process.StartInfo.Arguments = "-F " + exeDir + "\\haarcascade_frontalface_default.xml";
+        process.StartInfo.FileName = exeDir + "/quang_tracker.exe";
+        Debug.Log(exeDir);
+        string argument = "-F \"" + exeDir + "/haarcascade_frontalface_default.xml\"";
+        Debug.Log(argument);
+        process.StartInfo.Arguments = argument;
 
         // Start the process
         process.Start();
-        while (true)
-        {
-            if (GameManager.controller.GetSpeed() > 0f)
-            {
-                SceneManager.LoadScene("main");
-                break;
-            }
-        }
+        SceneManager.LoadScene("main");
+        //while (true)
+        //{
+        //    if (GameManager.controller.GetSpeed() > 0f)
+        //    {
+        //        SceneManager.LoadScene("main");
+        //        break;
+        //    }
+        //}
     }
 
     public void UseCustomMotionControl()
