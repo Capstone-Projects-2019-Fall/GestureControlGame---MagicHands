@@ -215,7 +215,7 @@ def get_face_mask(faces, frame):
         neck_height = int(h)
         # To draw a rectangle in a face
         # cv2.rectangle(pure, (x, int(y-0.15*h)), (x + w, y + int(h * 1.4)), (255, 255, 255))
-        cv2.ellipse(pure, (x_center, y_center), (w//2, int(h*1.2)//2), 0, 0, 360, color=(255, 255, 255))
+        cv2.ellipse(pure, (x_center, y_center-int(h/10)), (w//2, int(h*1.4)//2), 0, 0, 360, color=(255, 255, 255))
         cv2.rectangle(pure, (x_center-neck_width//2, y_center), (x_center + neck_width//2, y_center + neck_height), (255, 255, 255))
         cv2.ellipse(mask, (x_center, y_center), (w // 2, int(h * 1.2) // 2), 0, 0, 360, color=(255, 255, 255), thickness=-1)
         cv2.rectangle(mask, (x_center - neck_width // 2, y_center),(x_center + neck_width // 2, y_center + neck_height), (255, 255, 255), -1)
@@ -410,11 +410,12 @@ while True:
             if len(fist_points) >= 2:
                 break
 
-        if len(fist_points) == 0:
-            fist_points = last_fistpoints
-        elif len(fist_points) == 1:
-            height = fist_points[0][1]
-            fist_points = [(W//2 - SMALL_WIDTH, height + 50),(W//2 + SMALL_WIDTH, height + 50)]
+        # if len(fist_points) == 0:
+        #     fist_points = last_fistpoints
+        # elif len(fist_points) == 1:
+        #     height = fist_points[0][1]
+        #     fist_points = [(W//2 - SMALL_WIDTH, height + 50),(W//2 + SMALL_WIDTH, height + 50)]
+
 
         # smaller x means left
         fist_points = sorted(fist_points)
@@ -423,6 +424,8 @@ while True:
             a = (a - W // 2) / W
             b = - (b - H//2) / H
             normalize.append(f"{a} {b}")
+        for i in range(len(normalize),2):
+            normalize.append("x x")
         sock.sendto(",".join(normalize).encode(), (UDP_IP, UDP_PORT))
 
         for p in fist_points:
