@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
 //this is test message
     private Rigidbody rb;
     public ParticleSystem warp;
+    public ParticleSystem flame;
     public float speed;
     public float rotationSpeed;
     private int count;
@@ -34,7 +35,9 @@ public class PlayerController : MonoBehaviour
     // Var needed for color manipulation
 
     void Start()
-    {   
+    {  
+        flame.Clear();
+        flame.Stop();
         warp.Clear();
         warp.Stop();
         rb = GetComponent<Rigidbody>();
@@ -120,11 +123,13 @@ public class PlayerController : MonoBehaviour
     IEnumerator SpeedBoost()
     {
         warp.Play();
+        flame.Play();
         float oldspeed = speed;
         float newspeed = speed * 2;
         speed = newspeed;
         yield return new WaitForSeconds(3);
         warp.Stop();
+        flame.Stop();
         speed = oldspeed;
         speedBoostState=false;
 
