@@ -32,7 +32,6 @@ public class BarFunction : MonoBehaviour
     public void SpeedCheck()
     {
         float newSpeed=player.GetComponent<PlayerController>().GetSpeed();
-        Debug.Log("this is current speed" + newSpeed);
         if (currentSpeed< newSpeed)
         {
             speed.fillAmount = 1.0f;

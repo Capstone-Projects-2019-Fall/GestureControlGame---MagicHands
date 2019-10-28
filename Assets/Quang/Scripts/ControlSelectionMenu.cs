@@ -18,7 +18,7 @@ public class ControlSelectionMenu : MonoBehaviour
     {
         GameManager.UpdateController(motionControl: false);
         GameManager.UpdateInMenu(isInMenu: false);
-        SceneManager.LoadScene("main");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("main");
     }
 
     public void UsePredefinedMotionControl()

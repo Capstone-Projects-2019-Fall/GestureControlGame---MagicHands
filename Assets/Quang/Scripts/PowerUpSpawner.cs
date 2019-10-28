@@ -17,8 +17,11 @@ public class PowerUpSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("this is counter "+counter);
-        if (counter == 0)
+        GameObject[] bettercounter = GameObject.FindGameObjectsWithTag("PowerUp");
+
+        int newcounter = bettercounter.Length;
+        Debug.Log("this is counter "+ newcounter);
+        if (newcounter == 0)
         {
             Spawner();
         }
@@ -27,8 +30,9 @@ public class PowerUpSpawner : MonoBehaviour
     {
         for (int i = 0; i < SpeedBoostSpawnPoint.Length; i++)
         {
+            Debug.Log("this is i " + i);
             Instantiate(SpeedBoostPowerUpObject, SpeedBoostSpawnPoint[i].transform.position, Quaternion.identity);
-            counter++;
+            //counter++;
         }
     }
 }

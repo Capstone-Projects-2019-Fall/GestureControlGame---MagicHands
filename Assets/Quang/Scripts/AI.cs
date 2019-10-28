@@ -46,7 +46,7 @@ public class AI : MonoBehaviour
             //ApplyRotate();
             //target.position = nodes[current].position + positionCorrection;
             target.position = positions[current];
-            PikcUpPower();
+            //PikcUpPower();
             ApplyRotate();
         }
         else

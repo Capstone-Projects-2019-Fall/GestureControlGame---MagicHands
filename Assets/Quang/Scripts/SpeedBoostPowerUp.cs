@@ -21,17 +21,19 @@ public class SpeedBoostPowerUp : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             PlayerController.speedBoostState=true;
-            
+            //if put Destroy(gameObject) outside of these tag condition, cause too many problems
+            Destroy(gameObject);
+
         }
         else if(other.gameObject.tag == "Enemy")
         {
             EnemyPatrol.speedBoostState = true;
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
-        if (PowerUpSpawner.counter > 0)
+        /*if (PowerUpSpawner.counter > 0)
         {
             PowerUpSpawner.counter--;
-        }
+        }*/
 
 
     }

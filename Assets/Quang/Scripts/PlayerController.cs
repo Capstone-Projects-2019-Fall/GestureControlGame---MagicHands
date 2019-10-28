@@ -83,7 +83,6 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("fixed delta time:" + Time.fixedDeltaTime);
         ObjVelocity = (NewPos - PrevPos) / Time.deltaTime;  // velocity = dist/time
         PrevPos = NewPos;  // update position for next frame calculation
-        Debug.Log("velocity "+ Math.Round(ObjVelocity.magnitude, 0));
     
     }
     IEnumerator SpeedBoost()
