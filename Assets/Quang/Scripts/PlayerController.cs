@@ -2,6 +2,11 @@
 using EZCameraShake;
 using System.Collections;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine.Windows.Speech;
+
+
 
 
 
@@ -22,6 +27,10 @@ public class PlayerController : MonoBehaviour
     Vector3 ObjVelocity;
     float speedMultiplier;
     public float hp;
+    private Dictionary<string, Action> keyActs = new Dictionary<string, Action>();
+    
+    private KeywordRecognizer recognizer;
+    // Var needed for color manipulation
 
     void Start()
     {
@@ -30,6 +39,11 @@ public class PlayerController : MonoBehaviour
         PrevPos = transform.position;
         NewPos = transform.position;
         speedMultiplier = 1f;
+        keyActs.Add("zoom", Zoom);
+    
+        recognizer = new KeywordRecognizer(keyActs.Keys.ToArray());
+        recognizer.OnPhraseRecognized += OnPhraseRecognized;
+        recognizer.Start();
         //gameManagerCode = gameManager.GetComponent<GameManager>();
     }
     void FixedUpdate()
@@ -43,7 +57,22 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(move * speed);
 
     }
-
+    void OnPhraseRecognized(PhraseRecognizedEventArgs args)
+    {
+        Debug.Log("Command: " + args.text);
+        keyActs[args.text].Invoke();
+    }
+    void Zoom()
+    {
+        if (speedBoostState == true)
+        {
+            StartCoroutine(SpeedBoost());
+        }
+        else
+        {
+            Debug.Log("No powerup");
+        }
+    }
     void Update()
     {
         if (!GameManager.started)
