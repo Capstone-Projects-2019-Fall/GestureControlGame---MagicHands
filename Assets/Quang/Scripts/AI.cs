@@ -6,7 +6,6 @@ public class AI : MonoBehaviour
 {
 
     public Transform path;
-    public Transform powerUp;
     public Transform target;
     public float speed;
     public float rotationSpeed;
@@ -39,15 +38,15 @@ public class AI : MonoBehaviour
 
     private void Update()
     {
-        if (Vector3.Distance(transform.position, positions[current]) > 1f)
+        if (Vector3.Distance(transform.position, positions[current]) > 2f)
         {
             //Vector3 pos = Vector3.MoveTowards(transform.position, nodes[current].position, speed * Time.deltaTime);
             //GetComponent<Rigidbody>().MovePosition(pos);
             //ApplyRotate();
             //target.position = nodes[current].position + positionCorrection;
             target.position = positions[current];
-            //PikcUpPower();
-            ApplyRotate();
+            PikcUpPower();
+            TrackThePath();
         }
         else
         {
@@ -55,7 +54,7 @@ public class AI : MonoBehaviour
         }
     }
 
-    private void ApplyRotate()
+    private void TrackThePath()
     {
         float speedMag = 1f;
         Vector3 rotate;
@@ -72,18 +71,10 @@ public class AI : MonoBehaviour
         transform.position += speed * player.transform.forward * Time.deltaTime * speedMag * 1f;
     }
 
-    private void TrackThePath()
-    {
-        Vector3 targetDir = target.position - transform.position;
-        Vector3 tarDir = Vector3.RotateTowards(transform.forward, targetDir, speed * Time.deltaTime, rotationSpeed);
-        transform.forward = targetDir;
-        transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-
-    }
-
     private void PikcUpPower()
     {
-        if(Vector3.Distance(powerUp.position, transform.position) < Vector3.Distance(positions[current], transform.position))
+        Transform powerUp = FindClosestPowerUp().transform;
+        if(Vector3.Distance(powerUp.position, transform.position) < (Vector3.Distance(positions[current], transform.position))*0.3)
         {
             target.position = powerUp.position;
         }
@@ -92,6 +83,26 @@ public class AI : MonoBehaviour
         {
             StartCoroutine(SpeedBoost());
         }
+    }
+
+    private GameObject FindClosestPowerUp()
+    {
+        GameObject[] gos;
+        gos = GameObject.FindGameObjectsWithTag("PowerUp");
+        GameObject closest = null;
+        float distance = Mathf.Infinity;
+        Vector3 position = transform.position;
+        foreach (GameObject go in gos)
+        {
+            Vector3 diff = go.transform.position - position;
+            float curDistance = diff.sqrMagnitude;
+            if (curDistance < distance)
+            {
+                closest = go;
+                distance = curDistance;
+            }
+        }
+        return closest;
     }
 
     IEnumerator SpeedBoost()
