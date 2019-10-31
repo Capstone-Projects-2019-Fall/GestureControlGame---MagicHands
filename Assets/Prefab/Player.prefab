@@ -114,7 +114,6 @@ GameObject:
   - component: {fileID: 5037266394953749927}
   - component: {fileID: 5037266394953749915}
   - component: {fileID: 5037266394953749916}
-  - component: {fileID: 5037266394953749917}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -224,22 +223,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e47109df18c8174dbc645d87d52d6fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  warp: {fileID: 0}
+  flame: {fileID: 0}
   speed: 10
   rotationSpeed: 10
   player: {fileID: 5037266394953749926}
---- !u!114 &5037266394953749917
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5037266394953749926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39dcee300e380fa4cb9ff437d21697ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
+  hp: 0
 --- !u!1001 &987663260
 PrefabInstance:
   m_ObjectHideFlags: 0
