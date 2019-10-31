@@ -9,7 +9,7 @@ public class AI : MonoBehaviour
     public Transform target;
     public float speed;
     public float rotationSpeed;
-    public static bool speedBoostState = false;
+    public bool speedBoostState = false;
     Vector3 positionCorrection = new Vector3(0f, -2f, 0f);
 
     private List<Transform> nodes;
@@ -19,6 +19,7 @@ public class AI : MonoBehaviour
 
     private Rigidbody rb;
     public GameObject player;
+    
 
     void Start()
     {
@@ -73,13 +74,16 @@ public class AI : MonoBehaviour
 
     private void PikcUpPower()
     {
-        Transform powerUp = FindClosestPowerUp().transform;
+        GameObject ClosestPowerUp = FindClosestPowerUp();
+        if (ClosestPowerUp == null) return;
+        Transform powerUp = ClosestPowerUp.transform;
+   
         if(Vector3.Distance(powerUp.position, transform.position) < (Vector3.Distance(positions[current], transform.position))*0.3)
         {
             target.position = powerUp.position;
         }
 
-        if(transform.position == powerUp.position)
+        if(speedBoostState == true)
         {
             StartCoroutine(SpeedBoost());
         }

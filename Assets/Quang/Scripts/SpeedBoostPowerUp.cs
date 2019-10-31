@@ -23,10 +23,10 @@ public class SpeedBoostPowerUp : MonoBehaviour
             PlayerController.speedBoostState=true;
             //if put Destroy(gameObject) outside of these tag condition, cause too many problems
             Destroy(gameObject);
-
         }
         else if(other.gameObject.tag == "Enemy")
         {
+            other.GetComponent<AI>().speedBoostState = true;
             EnemyPatrol.speedBoostState = true;
             Destroy(gameObject);
         }
