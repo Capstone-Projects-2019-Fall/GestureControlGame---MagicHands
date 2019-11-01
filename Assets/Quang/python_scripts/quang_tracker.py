@@ -11,14 +11,16 @@ import argparse
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-F", "--face", type=str, default="haarcascade_frontalface_default.xml", help="path to face cascade file")
-ap.add_argument("-H", "--hue", type=int, default=30, help="hue offset")
+ap.add_argument("-H", "--hue", type=int, default=7, help="hue offset")
 ap.add_argument("-S", "--saturation", type=int, default=90, help="saturation offset")
 ap.add_argument("-V", "--value", type=int, default=100, help="value offset")
 ap.add_argument("-B", "--background", type=int, default=10, help="background offset")
+ap.add_argument("-C", "--custom", type=int, default=1, help="whether to use custom motion control or not")
+ap.add_argument("-O", "--output", type=str, default="", help="the directory to output data files")
+
 args = vars(ap.parse_args())
 
 def get_fore_ground_mask(frame, background, offset):
-
     a = np.any(np.greater(frame, background + offset), axis=-1)
     b = np.any(np.less(frame, background - offset), axis=-1)
     return np.logical_or(a, b).astype(np.uint8)
@@ -75,6 +77,21 @@ MAX_TRAIL_LEN = 2
 last_fistpoints = []
 SMALL_WIDTH = 20
 reverse = False
+custom_control = args["custom"]
+is_in_data_process = False
+data_names = {"right":[], "up":[], "roll":[], "speed":[]}
+data_names_list = list(data_names.keys())
+current_data_index = 0
+is_preparing_for_data_collection = False
+is_in_data_collection = False
+preparing_time = 5
+collecting_time = 5
+preparing_start = None
+collecting_start = None
+levels = list(range(-2,3))
+current_level_index = 0
+done_with_data = False
+
 
 class Keys:
     def __init__(self):
@@ -86,6 +103,7 @@ class Keys:
         self.VAL = "v"
         self.REVERSE = "r"
         self.BACKGROUND_OFFSET = "o"
+        self.NEXT = "n"
 
 keys = Keys()
 
@@ -215,7 +233,7 @@ def get_face_mask(faces, frame):
         neck_height = int(h)
         # To draw a rectangle in a face
         # cv2.rectangle(pure, (x, int(y-0.15*h)), (x + w, y + int(h * 1.4)), (255, 255, 255))
-        cv2.ellipse(pure, (x_center, y_center), (w//2, int(h*1.2)//2), 0, 0, 360, color=(255, 255, 255))
+        cv2.ellipse(pure, (x_center, y_center-int(h/10)), (w//2, int(h*1.4)//2), 0, 0, 360, color=(255, 255, 255))
         cv2.rectangle(pure, (x_center-neck_width//2, y_center), (x_center + neck_width//2, y_center + neck_height), (255, 255, 255))
         cv2.ellipse(mask, (x_center, y_center), (w // 2, int(h * 1.2) // 2), 0, 0, 360, color=(255, 255, 255), thickness=-1)
         cv2.rectangle(mask, (x_center - neck_width // 2, y_center),(x_center + neck_width // 2, y_center + neck_height), (255, 255, 255), -1)
@@ -352,7 +370,7 @@ while True:
         cv2.rectangle(frame, (x1, y1), (x1 + w, y1 + h), (0, 255, 0), 2)
         cv2.rectangle(frame, (x2, y2), (x2 + w, y2 + h), (0, 255, 0), 2)
 
-
+    # the main loop
     if background is not None and hsv_mean_left is not None and hsv_mean_right is not None:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
@@ -398,6 +416,7 @@ while True:
         mask = cv2.dilate(mask, dilate_kernel, iterations=1)
         mask_img = (mask * 224).astype(np.uint8)
 
+        frame = mask_img
         connectivity = 4
         num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(mask, connectivity, cv2.CV_32S)
 
@@ -410,42 +429,98 @@ while True:
             if len(fist_points) >= 2:
                 break
 
-        if len(fist_points) == 0:
-            fist_points = last_fistpoints
-        elif len(fist_points) == 1:
-            height = fist_points[0][1]
-            fist_points = [(W//2 - SMALL_WIDTH, height + 50),(W//2 + SMALL_WIDTH, height + 50)]
+        # if len(fist_points) == 0:
+        #     fist_points = last_fistpoints
+        # elif len(fist_points) == 1:
+        #     height = fist_points[0][1]
+        #     fist_points = [(W//2 - SMALL_WIDTH, height + 50),(W//2 + SMALL_WIDTH, height + 50)]
+
+
 
         # smaller x means left
-        fist_points = sorted(fist_points)
-        normalize = []
+        # fist_points = sorted(fist_points) # has at most 2 elements.
+        normalized_fist_points = []
         for a, b in fist_points:
             a = (a - W // 2) / W
             b = - (b - H//2) / H
-            normalize.append(f"{a} {b}")
-        sock.sendto(",".join(normalize).encode(), (UDP_IP, UDP_PORT))
+            normalized_fist_points.append([a,b])
+
 
         for p in fist_points:
             cv2.circle(mask_img, p, 5, (255,0,0), -1)
             cv2.circle(pure, p, 5, (0, 0, 255), -1)
 
-        # cnts, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        # cnts = sorted(cnts, key=cv2.contourArea)
+        cv2.line(frame, (W // 2, 0), (W // 2, H), 50, 2)
+        cv2.circle(frame, (W // 4, H // 2), 5, 120, -1)
+        cv2.circle(frame, (3 * W // 4, H // 2), 5, 120, -1)
 
-        frame = frame * np.expand_dims(mask, axis=-1)
-        frame = frame.astype(np.uint8)
+        if not is_in_data_process and not done_with_data:
+            if current_data_index < len(data_names):
+                cv2.putText(frame, f"next is {data_names_list[current_data_index]}, press {keys.NEXT.upper()}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120, 2)
+
+
+        if is_in_data_process and not done_with_data:
+            # print(is_in_data_process)
+            if not is_in_data_collection and not is_preparing_for_data_collection:
+                is_preparing_for_data_collection = True
+                preparing_start = time.time()
+            if is_preparing_for_data_collection:
+                sec_preparing = preparing_time - (time.time() - preparing_start)
+                cv2.putText(frame, str(math.ceil(sec_preparing)), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120, 2)
+                cv2.putText(frame, f"prepare for {data_names_list[current_data_index]} level {levels[current_level_index]}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX,
+                            0.6, 120, 2)
+                if sec_preparing <= 0:
+                    is_preparing_for_data_collection = False
+                    is_in_data_collection = True
+                    collecting_start = time.time()
+            if is_in_data_collection:
+                sec_collecting = collecting_time - (time.time() - collecting_start)
+                cv2.putText(frame, str(math.ceil(sec_collecting)), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120,
+                            2)
+                cv2.putText(frame,
+                            f"collecting {data_names_list[current_data_index]} level {levels[current_level_index]}",
+                            (10, 50), cv2.FONT_HERSHEY_SIMPLEX,
+                            0.6, 120, 2)
+                if len(normalized_fist_points) > 0:
+                    current_data = data_names_list[current_data_index]
+                    data_names[current_data].append(f"{','.join([str(_) for _ in normalized_fist_points[0]])},{levels[current_level_index]}\n")
+                if sec_collecting <= 0:
+                    is_in_data_collection = False
+                    current_level_index = (current_level_index + 1) % len(levels)
+                    if current_level_index == 0:
+                        current_data_index = current_data_index + 1
+                        is_in_data_process = False
+                    if current_data_index >= len(data_names_list):
+                        done_with_data = True
+                        for name in data_names:
+                            with open(f"{args['output']}/{name}.csv", "w") as f:
+                                f.writelines(data_names[name])
+
+        if not is_in_data_process:
+            normalized_fist_points = sorted(normalized_fist_points)
+            normalize = []
+            for a, b in normalized_fist_points:
+                normalize.append(f"{a} {b}")
+            for i in range(len(normalize), 2):
+                normalize.append("x x")
+
+            sock.sendto(",".join(normalize).encode(), (UDP_IP, UDP_PORT))
+
+        # frame = frame * np.expand_dims(mask, axis=-1)
+        # frame = frame.astype(np.uint8)
 
 
 
         fps.update()
         fps.stop()
 
-        frame = mask_img
 
-        cv2.putText(frame, "FPS: %.2f"%(fps.fps()), (10, H-20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+
+        cv2.putText(frame, "FPS: %.2f"%(fps.fps()), (10, H-20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120, 2)
+
 
     cv2.imshow("Frame", frame)
-    cv2.imshow("Pure", pure)
+    # cv2.imshow("Pure", pure)
     # cv2.imshow()
     key = cv2.waitKey(1) & 0xFF
 
@@ -454,6 +529,8 @@ while True:
     elif key == ord(keys.SAMPLE_BACKGROUND): # take background picture
         background = frame
         background_int32 = background.astype(np.int32)
+        if custom_control == 0:
+            done_with_data = True
     elif key == ord(keys.SAMPLE_HAND): # get hands' color
         # give the user 5 secs to put their hands in the box
         sampling_color = True
@@ -461,6 +538,7 @@ while True:
     elif key == ord(keys.HUE):
         if not reverse: HSV_OFFSET[0] += 1
         else: HSV_OFFSET[0] -= 1
+        print("Hue:", HSV_OFFSET[0])
     elif key == ord(keys.SAT):
         if not reverse: HSV_OFFSET[1] += 1
         else: HSV_OFFSET[1] -= 1
@@ -472,6 +550,8 @@ while True:
         else: BACKGROUND_OFFSET -= 1
     elif key == ord(keys.REVERSE):
         reverse = not reverse
+    elif key == ord(keys.NEXT):
+        is_in_data_process = True
 
 vs.release()
 

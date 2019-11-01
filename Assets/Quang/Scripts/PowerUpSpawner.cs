@@ -20,7 +20,7 @@ public class PowerUpSpawner : MonoBehaviour
         GameObject[] bettercounter = GameObject.FindGameObjectsWithTag("PowerUp");
 
         int newcounter = bettercounter.Length;
-        Debug.Log("this is counter "+ newcounter);
+        Debug.Log("this is counter " + newcounter);
         if (newcounter == 0)
         {
             Spawner();
