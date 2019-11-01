@@ -53,6 +53,10 @@ public class AI : MonoBehaviour
         {
             current = (current + 1) % positions.Count;
         }
+        if (speedBoostState == true)
+        {
+            StartCoroutine(SpeedBoost());
+        }
     }
 
     private void ApplyRotate()
@@ -87,11 +91,7 @@ public class AI : MonoBehaviour
         {
             target.position = powerUp.position;
         }
-
-        if(transform.position == powerUp.position)
-        {
-            StartCoroutine(SpeedBoost());
-        }
+        
     }
 
     IEnumerator SpeedBoost()
