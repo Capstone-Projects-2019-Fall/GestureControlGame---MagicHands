@@ -11,11 +11,12 @@ import argparse
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-F", "--face", type=str, default="haarcascade_frontalface_default.xml", help="path to face cascade file")
-ap.add_argument("-H", "--hue", type=int, default=30, help="hue offset")
+ap.add_argument("-H", "--hue", type=int, default=7, help="hue offset")
 ap.add_argument("-S", "--saturation", type=int, default=90, help="saturation offset")
 ap.add_argument("-V", "--value", type=int, default=100, help="value offset")
 ap.add_argument("-B", "--background", type=int, default=10, help="background offset")
-ap.add_argument("-C", "--custom", type=int, default=0, help="whether to use custom motion control or not")
+ap.add_argument("-C", "--custom", type=int, default=1, help="whether to use custom motion control or not")
+ap.add_argument("-O", "--output", type=str, default="", help="the directory to output data files")
 
 args = vars(ap.parse_args())
 
@@ -492,7 +493,7 @@ while True:
                     if current_data_index >= len(data_names_list):
                         done_with_data = True
                         for name in data_names:
-                            with open(f"{name}.csv", "w") as f:
+                            with open(f"{args['output']}/{name}.csv", "w") as f:
                                 f.writelines(data_names[name])
 
         if not is_in_data_process:
@@ -537,6 +538,7 @@ while True:
     elif key == ord(keys.HUE):
         if not reverse: HSV_OFFSET[0] += 1
         else: HSV_OFFSET[0] -= 1
+        print("Hue:", HSV_OFFSET[0])
     elif key == ord(keys.SAT):
         if not reverse: HSV_OFFSET[1] += 1
         else: HSV_OFFSET[1] -= 1
