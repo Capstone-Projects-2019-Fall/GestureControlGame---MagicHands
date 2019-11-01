@@ -15,11 +15,11 @@ ap.add_argument("-H", "--hue", type=int, default=30, help="hue offset")
 ap.add_argument("-S", "--saturation", type=int, default=90, help="saturation offset")
 ap.add_argument("-V", "--value", type=int, default=100, help="value offset")
 ap.add_argument("-B", "--background", type=int, default=10, help="background offset")
-ap.add_argument("-C", "--custom", type=int, default=1, help="whether to use custom motion control or not")
+ap.add_argument("-C", "--custom", type=int, default=0, help="whether to use custom motion control or not")
+
 args = vars(ap.parse_args())
 
 def get_fore_ground_mask(frame, background, offset):
-
     a = np.any(np.greater(frame, background + offset), axis=-1)
     b = np.any(np.less(frame, background - offset), axis=-1)
     return np.logical_or(a, b).astype(np.uint8)
@@ -89,6 +89,7 @@ preparing_start = None
 collecting_start = None
 levels = list(range(-2,3))
 current_level_index = 0
+done_with_data = False
 
 
 class Keys:
@@ -101,6 +102,7 @@ class Keys:
         self.VAL = "v"
         self.REVERSE = "r"
         self.BACKGROUND_OFFSET = "o"
+        self.NEXT = "n"
 
 keys = Keys()
 
@@ -447,8 +449,17 @@ while True:
             cv2.circle(mask_img, p, 5, (255,0,0), -1)
             cv2.circle(pure, p, 5, (0, 0, 255), -1)
 
-        if is_in_data_process:
-            print(is_in_data_process)
+        cv2.line(frame, (W // 2, 0), (W // 2, H), 50, 2)
+        cv2.circle(frame, (W // 4, H // 2), 5, 120, -1)
+        cv2.circle(frame, (3 * W // 4, H // 2), 5, 120, -1)
+
+        if not is_in_data_process and not done_with_data:
+            if current_data_index < len(data_names):
+                cv2.putText(frame, f"next is {data_names_list[current_data_index]}, press {keys.NEXT.upper()}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120, 2)
+
+
+        if is_in_data_process and not done_with_data:
+            # print(is_in_data_process)
             if not is_in_data_collection and not is_preparing_for_data_collection:
                 is_preparing_for_data_collection = True
                 preparing_start = time.time()
@@ -477,8 +488,9 @@ while True:
                     current_level_index = (current_level_index + 1) % len(levels)
                     if current_level_index == 0:
                         current_data_index = current_data_index + 1
-                    if current_data_index >= len(data_names_list):
                         is_in_data_process = False
+                    if current_data_index >= len(data_names_list):
+                        done_with_data = True
                         for name in data_names:
                             with open(f"{name}.csv", "w") as f:
                                 f.writelines(data_names[name])
@@ -505,11 +517,9 @@ while True:
 
         cv2.putText(frame, "FPS: %.2f"%(fps.fps()), (10, H-20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120, 2)
 
-    cv2.line(frame, (W//2,0), (W//2,H), 120, 3)
-    cv2.circle(frame, (W//4, H//2), 5, 120, -1)
-    cv2.circle(frame, (3*W//4, H//2), 5, 120, -1)
+
     cv2.imshow("Frame", frame)
-    cv2.imshow("Pure", pure)
+    # cv2.imshow("Pure", pure)
     # cv2.imshow()
     key = cv2.waitKey(1) & 0xFF
 
@@ -518,7 +528,8 @@ while True:
     elif key == ord(keys.SAMPLE_BACKGROUND): # take background picture
         background = frame
         background_int32 = background.astype(np.int32)
-        if custom_control: is_in_data_process = True
+        if custom_control == 0:
+            done_with_data = True
     elif key == ord(keys.SAMPLE_HAND): # get hands' color
         # give the user 5 secs to put their hands in the box
         sampling_color = True
@@ -537,6 +548,8 @@ while True:
         else: BACKGROUND_OFFSET -= 1
     elif key == ord(keys.REVERSE):
         reverse = not reverse
+    elif key == ord(keys.NEXT):
+        is_in_data_process = True
 
 vs.release()
 
