@@ -12,8 +12,8 @@ import argparse
 ap = argparse.ArgumentParser()
 ap.add_argument("-F", "--face", type=str, default="haarcascade_frontalface_default.xml", help="path to face cascade file")
 ap.add_argument("-H", "--hue", type=int, default=7, help="hue offset")
-ap.add_argument("-S", "--saturation", type=int, default=90, help="saturation offset")
-ap.add_argument("-V", "--value", type=int, default=100, help="value offset")
+ap.add_argument("-S", "--saturation", type=int, default=50, help="saturation offset")
+ap.add_argument("-V", "--value", type=int, default=50, help="value offset")
 ap.add_argument("-B", "--background", type=int, default=10, help="background offset")
 ap.add_argument("-C", "--custom", type=int, default=1, help="whether to use custom motion control or not")
 ap.add_argument("-O", "--output", type=str, default="", help="the directory to output data files")
@@ -73,7 +73,7 @@ num_frame_with_no_face = 0
 WIDTH = 500
 fist_points = []
 mask_trail = collections.deque()
-MAX_TRAIL_LEN = 2
+MAX_TRAIL_LEN = 1
 last_fistpoints = []
 SMALL_WIDTH = 20
 reverse = False
