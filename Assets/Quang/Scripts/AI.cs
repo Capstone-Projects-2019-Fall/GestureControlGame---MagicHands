@@ -53,6 +53,10 @@ public class AI : MonoBehaviour
         {
             current = (current + 1) % positions.Count;
         }
+        if (speedBoostState == true)
+        {
+            StartCoroutine(SpeedBoost());
+        }
     }
 
     private void TrackThePath()
