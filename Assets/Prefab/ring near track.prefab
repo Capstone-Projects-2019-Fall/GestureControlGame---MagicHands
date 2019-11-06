@@ -1,0 +1,368 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8950069786473685687
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8950069786473685684}
+  m_Layer: 0
+  m_Name: Torus (14)
+  m_TagString: Untagged
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 127
+  m_IsActive: 1
+--- !u!4 &8950069786473685684
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950069786473685687}
+  m_LocalRotation: {x: 0.057884008, y: 0.057884004, z: 0.70473367, w: 0.7047336}
+  m_LocalPosition: {x: 101.4, y: -11.84, z: -6.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8950069787603546427}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 9.391001, z: 90.00001}
+--- !u!1 &8950069786803379463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8950069786803379460}
+  m_Layer: 0
+  m_Name: Torus (13)
+  m_TagString: Untagged
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 127
+  m_IsActive: 1
+--- !u!4 &8950069786803379460
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950069786803379463}
+  m_LocalRotation: {x: 0.50000006, y: 0.5, z: 0.50000006, w: 0.5}
+  m_LocalPosition: {x: 164, y: -11.41, z: -36}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8950069787603546427}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8950069786854459056
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8950069786854459057}
+  m_Layer: 0
+  m_Name: Torus (18)
+  m_TagString: Untagged
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 127
+  m_IsActive: 1
+--- !u!4 &8950069786854459057
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950069786854459056}
+  m_LocalRotation: {x: 0.63909304, y: 0.63909304, z: 0.30258912, w: 0.30258912}
+  m_LocalPosition: {x: 162.12, y: -14.11, z: -154.63}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8950069787603546427}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 129.328, z: 90.00001}
+--- !u!1 &8950069787136684421
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8950069787136684426}
+  m_Layer: 0
+  m_Name: Torus (19)
+  m_TagString: Untagged
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 127
+  m_IsActive: 1
+--- !u!4 &8950069787136684426
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950069787136684421}
+  m_LocalRotation: {x: -0.21161616, y: -0.21161619, z: 0.67469895, w: 0.67469895}
+  m_LocalPosition: {x: 62.53, y: -11.39, z: -30.54}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8950069787603546427}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: -34.828003, z: 90.00001}
+--- !u!1 &8950069787167040249
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8950069787167040254}
+  m_Layer: 0
+  m_Name: Torus (12)
+  m_TagString: Untagged
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 127
+  m_IsActive: 1
+--- !u!4 &8950069787167040254
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950069787167040249}
+  m_LocalRotation: {x: 0.5200234, y: 0.52002335, z: 0.47914067, w: 0.4791406}
+  m_LocalPosition: {x: 29.75, y: -12.32, z: -143.24}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8950069787603546427}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 94.686005, z: 90.00001}
+--- !u!1 &8950069787555624089
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8950069787555624094}
+  m_Layer: 0
+  m_Name: Torus (17)
+  m_TagString: Untagged
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 127
+  m_IsActive: 1
+--- !u!4 &8950069787555624094
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950069787555624089}
+  m_LocalRotation: {x: 0.38763154, y: 0.38763145, z: 0.5913898, w: 0.5913897}
+  m_LocalPosition: {x: 171.30002, y: -11.82, z: -74.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8950069787603546427}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 66.486, z: 90.00001}
+--- !u!1 &8950069787603546426
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8950069787603546427}
+  - component: {fileID: 8950069787603546424}
+  m_Layer: 0
+  m_Name: ring near track
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8950069787603546427
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950069787603546426}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 8950069787785036473}
+  - {fileID: 8950069786854459057}
+  - {fileID: 8950069787745711388}
+  - {fileID: 8950069787555624094}
+  - {fileID: 8950069786803379460}
+  - {fileID: 8950069786473685684}
+  - {fileID: 8950069787136684426}
+  - {fileID: 8950069787807125042}
+  - {fileID: 8950069787167040254}
+  - {fileID: 8950069787920362697}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8950069787603546424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950069787603546426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b982fb0a3be97449bc059348525d945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RingSpawnPoint:
+  - {fileID: 8950069787785036473}
+  - {fileID: 8950069786854459057}
+  - {fileID: 8950069787745711388}
+  - {fileID: 8950069787555624094}
+  - {fileID: 8950069786803379460}
+  - {fileID: 8950069786473685684}
+  - {fileID: 8950069787136684426}
+  - {fileID: 8950069787807125042}
+  - {fileID: 8950069787167040254}
+  - {fileID: 8950069787920362697}
+  RingObject: {fileID: 4997020744754023671, guid: fd92f1a71f787be45afab298b4e46eda,
+    type: 3}
+--- !u!1 &8950069787745711391
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8950069787745711388}
+  m_Layer: 0
+  m_Name: Torus (15)
+  m_TagString: Untagged
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 127
+  m_IsActive: 1
+--- !u!4 &8950069787745711388
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950069787745711391}
+  m_LocalRotation: {x: 0.62219244, y: 0.62219244, z: 0.33597115, w: 0.33597115}
+  m_LocalPosition: {x: 190.35002, y: -12.94, z: -122.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8950069787603546427}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 123.26401, z: 90.00001}
+--- !u!1 &8950069787785036472
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8950069787785036473}
+  m_Layer: 0
+  m_Name: Torus (10)
+  m_TagString: Untagged
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 127
+  m_IsActive: 1
+--- !u!4 &8950069787785036473
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950069787785036472}
+  m_LocalRotation: {x: -0.31735724, y: -0.31735727, z: 0.63188964, w: 0.63188946}
+  m_LocalPosition: {x: 137.608, y: -13.8, z: -187.681}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8950069787603546427}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: -53.335003, z: 90.00001}
+--- !u!1 &8950069787807125037
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8950069787807125042}
+  m_Layer: 0
+  m_Name: Torus (11)
+  m_TagString: Untagged
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 127
+  m_IsActive: 1
+--- !u!4 &8950069787807125042
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950069787807125037}
+  m_LocalRotation: {x: -0.43859988, y: -0.43859994, z: 0.55464417, w: 0.55464417}
+  m_LocalPosition: {x: 29.1, y: -12.38, z: -84.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8950069787603546427}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: -76.672005, z: 90.00001}
+--- !u!1 &8950069787920362696
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8950069787920362697}
+  m_Layer: 0
+  m_Name: Torus (16)
+  m_TagString: Untagged
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 127
+  m_IsActive: 1
+--- !u!4 &8950069787920362697
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950069787920362696}
+  m_LocalRotation: {x: 0.115578555, y: 0.11557841, z: 0.6975971, w: 0.69759697}
+  m_LocalPosition: {x: 65.6, y: -13.11, z: -184.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8950069787603546427}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 18.815, z: 90.00001}
