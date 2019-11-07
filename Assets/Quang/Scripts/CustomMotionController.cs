@@ -38,7 +38,7 @@ public class CustomMotionController : ControllerQuang
         rightVec = rightCenter;
         rotation = new Vector3(0f, 0f, 0f);
         speed = 0.5f;
-
+        UnityEngine.Debug.Log("init custom motion controller");
     }
 
     // 3. InitUDP
@@ -61,7 +61,7 @@ public class CustomMotionController : ControllerQuang
                 IPEndPoint anyIP = new IPEndPoint(IPAddress.Parse("0.0.0.0"), port);
                 byte[] data = client.Receive(ref anyIP);
                 string text = Encoding.UTF8.GetString(data);
-
+                UnityEngine.Debug.Log("signal: " + text);
                 UpdateControl(text);
             }
 
@@ -89,6 +89,7 @@ public class CustomMotionController : ControllerQuang
 
     void UpdateControl(string signal)
     {
+        UnityEngine.Debug.Log(signal);
         // the signal is never empty
         var controlVec = signal.Split(' ');
         rotation.x = float.Parse(controlVec[0]);

@@ -44,7 +44,8 @@ public class ControlSelectionMenu : MonoBehaviour
 
     public void UseCustomMotionControl()
     {
-        GameManager.UpdateController(true, false);
+        Debug.Log("use custom motion control");
+        GameManager.UpdateController(true, true);
         GameManager.UpdateInMenu(isInMenu: false);
 
         // Create a process
@@ -55,7 +56,7 @@ public class ControlSelectionMenu : MonoBehaviour
         process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
         process.StartInfo.FileName = exeDir + "/quang_tracker.exe";
         Debug.Log(exeDir);
-        string argument = "-F \"" + exeDir + "/haarcascade_frontalface_default.xml\" -H 7 -C 1";
+        string argument = "-F \"" + exeDir + "/haarcascade_frontalface_default.xml\" -H 7 -C 1 -L 1 -O \""+ Application.dataPath + "/Quang/python_scripts\"";
         Debug.Log(argument);
         process.StartInfo.Arguments = argument;
 
@@ -66,7 +67,7 @@ public class ControlSelectionMenu : MonoBehaviour
 
     public void UseSavedCustomMotionControl()
     {
-        GameManager.UpdateController(true, false);
+        GameManager.UpdateController(true, true);
         GameManager.UpdateInMenu(isInMenu: false);
 
         // Create a process
@@ -77,7 +78,7 @@ public class ControlSelectionMenu : MonoBehaviour
         process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
         process.StartInfo.FileName = exeDir + "/quang_tracker.exe";
         Debug.Log(exeDir);
-        string argument = "-F \"" + exeDir + "/haarcascade_frontalface_default.xml\" -H 7 -C 1";
+        string argument = "-F \"" + exeDir + "/haarcascade_frontalface_default.xml\" -H 7 -C 1 -L 1 -O \"" + Application.dataPath + "/Quang/python_scripts\"";
         Debug.Log(argument);
         process.StartInfo.Arguments = argument;
 

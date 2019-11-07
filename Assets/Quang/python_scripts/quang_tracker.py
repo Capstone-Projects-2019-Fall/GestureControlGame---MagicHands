@@ -1,4 +1,7 @@
-from imutils.video import VideoStream
+import sklearn
+import scipy
+import pandas
+import sklearn.neighbors.typedefs
 from imutils.video import FPS
 import imutils
 import cv2
@@ -523,10 +526,10 @@ while True:
                     normalized_fist_points = [normalized_left_center, normalized_right_center]
                 elif len(normalized_fist_points) == 1: # only right hand
                     normalized_fist_points = [normalized_left_center] + normalized_fist_points
-                up_ = models["up"].predict([normalized_fist_points[1]])
-                right_ = models["right"].predict([normalized_fist_points[1]])
-                roll_ = models["roll"].predict([normalized_fist_points[0]])
-                speed_ = models["speed"].predict([normalized_fist_points[0]])
+                up_ = models["up"].predict([normalized_fist_points[1]])[0]
+                right_ = models["right"].predict([normalized_fist_points[1]])[0]
+                roll_ = models["roll"].predict([normalized_fist_points[0]])[0]
+                speed_ = models["speed"].predict([normalized_fist_points[0]])[0]
                 sock.sendto(f"{right_/4} {up_/4} {roll_/4} {speed_/4}".encode(), (UDP_IP, UDP_PORT))
                 print(f"right: {right_}, up: {up_}, roll: {roll_}, speed: {speed_}")
 
