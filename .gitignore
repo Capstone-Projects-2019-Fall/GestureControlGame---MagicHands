@@ -2,6 +2,10 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
+
+Assets/Quang/python_scripts/executable/dist/quang_tracker.exe
+Assets/Quang/python_scripts/executable/make_exe.sh
+
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
