@@ -8,6 +8,9 @@ import math
 import numpy as np
 import collections
 import argparse
+from sklearn.linear_model import LinearRegression
+from pandas import read_csv
+from os.path import join
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-F", "--face", type=str, default="haarcascade_frontalface_default.xml", help="path to face cascade file")
@@ -17,6 +20,7 @@ ap.add_argument("-V", "--value", type=int, default=50, help="value offset")
 ap.add_argument("-B", "--background", type=int, default=10, help="background offset")
 ap.add_argument("-C", "--custom", type=int, default=1, help="whether to use custom motion control or not")
 ap.add_argument("-O", "--output", type=str, default="", help="the directory to output data files")
+ap.add_argument("-L", "--load", type=int, default=1, help="load previously saved custom motion control")
 
 args = vars(ap.parse_args())
 
@@ -91,6 +95,7 @@ collecting_start = None
 levels = list(range(-2,3))
 current_level_index = 0
 done_with_data = False
+load = args["load"] == 1
 
 
 class Keys:
@@ -104,6 +109,12 @@ class Keys:
         self.REVERSE = "r"
         self.BACKGROUND_OFFSET = "o"
         self.NEXT = "n"
+
+def get_trained_model(data):
+    # data shape (?, 3)
+    model = LinearRegression()
+    model.fit(data[:,:-1], data[:,-1])
+    return model
 
 keys = Keys()
 
@@ -153,7 +164,6 @@ def adjust_exposure(cam, target_brightness):
     cam.set(cv2.CAP_PROP_EXPOSURE, chosen_exposure)
     print(f"exposure set to {chosen_exposure}")
     return chosen_exposure
-
 
 
 def remove_flickering(trail):
@@ -493,18 +503,39 @@ while True:
                     if current_data_index >= len(data_names_list):
                         done_with_data = True
                         for name in data_names:
-                            with open(f"{args['output']}/{name}.csv", "w") as f:
+                            with open(join(args['output'],f"{name}.csv"), "w") as f:
                                 f.writelines(data_names[name])
 
-        if not is_in_data_process:
-            normalized_fist_points = sorted(normalized_fist_points)
-            normalize = []
-            for a, b in normalized_fist_points:
-                normalize.append(f"{a} {b}")
-            for i in range(len(normalize), 2):
-                normalize.append("x x")
+        models = {}
+        for name in data_names:
+            model_data = read_csv(join(args['output'],f"{name}.csv"), header=None).values
+            models[name] = get_trained_model(model_data)
 
-            sock.sendto(",".join(normalize).encode(), (UDP_IP, UDP_PORT))
+        normalized_fist_points = sorted(normalized_fist_points)
+
+        normalized_left_center = [-0.25, 0]
+        normalized_right_center = [0.25, 0]
+        if not is_in_data_process:
+            if custom_control == 1:
+                if len(normalized_fist_points) == 0:
+                    normalized_fist_points = [normalized_left_center, normalized_right_center]
+                elif len(normalized_fist_points) == 1: # only right hand
+                    normalized_fist_points = [normalized_left_center] + normalized_fist_points
+                up_ = models["up"].predict([normalized_fist_points[1]])
+                right_ = models["right"].predict([normalized_fist_points[1]])
+                roll_ = models["roll"].predict([normalized_fist_points[0]])
+                speed_ = models["speed"].predict([normalized_fist_points[0]])
+                sock.sendto(f"{right_/4} {up_/4} {roll_/4} {speed_/4}".encode(), (UDP_IP, UDP_PORT))
+                print(f"right: {right_}, up: {up_}, roll: {roll_}, speed: {speed_}")
+
+            else:
+                normalize = []
+                for a, b in normalized_fist_points:
+                    normalize.append(f"{a} {b}")
+                for i in range(len(normalize), 2):
+                    normalize.append("x x")
+
+                sock.sendto(",".join(normalize).encode(), (UDP_IP, UDP_PORT))
 
         # frame = frame * np.expand_dims(mask, axis=-1)
         # frame = frame.astype(np.uint8)
@@ -529,7 +560,7 @@ while True:
     elif key == ord(keys.SAMPLE_BACKGROUND): # take background picture
         background = frame
         background_int32 = background.astype(np.int32)
-        if custom_control == 0:
+        if custom_control == 0 or load==True:
             done_with_data = True
     elif key == ord(keys.SAMPLE_HAND): # get hands' color
         # give the user 5 secs to put their hands in the box
