@@ -30,3 +30,5 @@ def get_tracker(name):
         # OpenCV object tracker objects
         tracker = OPENCV_OBJECT_TRACKERS[name]()
     return tracker
+
+

@@ -1,7 +1,3 @@
-import sklearn
-import scipy
-import pandas
-import sklearn.neighbors.typedefs
 from imutils.video import FPS
 import imutils
 import cv2
@@ -11,9 +7,8 @@ import math
 import numpy as np
 import collections
 import argparse
-from sklearn.linear_model import LinearRegression
-from pandas import read_csv
 from os.path import join
+
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-F", "--face", type=str, default="haarcascade_frontalface_default.xml", help="path to face cascade file")
@@ -26,6 +21,35 @@ ap.add_argument("-O", "--output", type=str, default="", help="the directory to o
 ap.add_argument("-L", "--load", type=int, default=1, help="load previously saved custom motion control")
 
 args = vars(ap.parse_args())
+
+class MyLinearRegression:
+    def __init__(self, X, y):
+        if len(y.shape) < 2:
+            y = np.expand_dims(y, 1)
+        num_features = X.shape[1]
+        num_outputs = y.shape[1]
+        self.X = X
+        self.y = y
+        self.W = np.random.normal(size=[num_features, num_outputs])
+        self.b = np.random.normal(size=[1, num_outputs])
+
+    def predict(self, X):
+        if len(X.shape) < 2:
+            X = np.expand_dims(X, 0)
+        return np.matmul(X, self.W) + self.b
+
+    def fit(self, lr=0.02, n_iter=2000):
+        for i in range(n_iter):
+            dy = -2*(self.y - self.predict(self.X))
+            dw = np.mean(np.matmul(np.expand_dims(self.X,-1), np.expand_dims(dy, 1)), axis=0)
+            db = np.mean(dy, axis=0, keepdims=True)
+
+            self.W -= dw * lr
+            self.b -= db * lr
+        return self
+
+    def loss(self):
+        return np.sqrt(np.mean((self.y - self.predict(self.X))**2))
 
 def get_fore_ground_mask(frame, background, offset):
     a = np.any(np.greater(frame, background + offset), axis=-1)
@@ -117,8 +141,8 @@ class Keys:
 
 def get_trained_model(data):
     # data shape (?, 3)
-    model = LinearRegression()
-    model.fit(data[:,:-1], data[:,-1])
+    model = MyLinearRegression(data[:,:-1], data[:,-1])
+    model.fit()
     return model
 
 keys = Keys()
@@ -304,6 +328,21 @@ def combine_hsv_face_masks(hsv_mask, face_mask):
     mask = np.logical_or(hsv_mask, np.logical_and(hsv_mask, face_mask).astype(np.uint8)).astype(np.uint8)
     return mask
 
+def my_read_csv(path):
+    ret = []
+    with open(path) as f:
+        for line in f:
+            line = line.strip()
+            ret.append(line.split(","))
+    return np.array(ret, np.float32)
+
+def resize(frame, width):
+    old_h, old_w = frame.shape[:2]
+    scale = width / old_w
+    height = int(scale * old_h)
+    return cv2.resize(frame, (width, height))
+
+
 # vs = VideoStream(src=0).start()
 vs = cv2.VideoCapture(0)
 if not vs.isOpened():
@@ -328,7 +367,9 @@ while True:
     # if hsv_mean_right is not None:
     #     print(hsv_mean_right - HSV_OFFSET)
     ret, frame = vs.read()
-    frame = imutils.resize(frame, width=WIDTH)
+    # frame = imutils.resize(frame, width=WIDTH)
+    # frame = cv2.resize(frame, (WIDTH, ))
+    frame = resize(frame, WIDTH)
     frame = cv2.flip(frame, 1)
     frame = remove_black_bars(frame)
     # print("frame first:", frame.shape)
@@ -512,7 +553,7 @@ while True:
                                 f.writelines(data_names[name])
         if done_with_data and not finished_training and custom_control==1:
             for name in data_names:
-                model_data = read_csv(join(args['output'],f"{name}.csv"), header=None).values
+                model_data = my_read_csv(join(args['output'],f"{name}.csv"))
                 models[name] = get_trained_model(model_data)
             finished_training = True
 
@@ -526,10 +567,11 @@ while True:
                     normalized_fist_points = [normalized_left_center, normalized_right_center]
                 elif len(normalized_fist_points) == 1: # only right hand
                     normalized_fist_points = [normalized_left_center] + normalized_fist_points
-                up_ = models["up"].predict([normalized_fist_points[1]])[0]
-                right_ = models["right"].predict([normalized_fist_points[1]])[0]
-                roll_ = models["roll"].predict([normalized_fist_points[0]])[0]
-                speed_ = models["speed"].predict([normalized_fist_points[0]])[0]
+                normalized_fist_points = np.array(normalized_fist_points, np.float32)
+                up_ = models["up"].predict(normalized_fist_points[1])[0,0]
+                right_ = models["right"].predict(normalized_fist_points[1])[0,0]
+                roll_ = models["roll"].predict(normalized_fist_points[0])[0,0]
+                speed_ = models["speed"].predict(normalized_fist_points[0])[0,0]
                 sock.sendto(f"{right_/4} {up_/4} {roll_/4} {speed_/4}".encode(), (UDP_IP, UDP_PORT))
                 print(f"right: {right_}, up: {up_}, roll: {roll_}, speed: {speed_}")
 
@@ -590,4 +632,3 @@ while True:
         is_in_data_process = True
 
 vs.release()
-
