@@ -9,6 +9,7 @@ public static class GameManager
     public static bool UseIntuitiveController = false;
     public static bool InMenu = false;
     public static bool started = false;
+    public static bool customMotionControl = false;
 
     public static void UpdateInMenu(bool isInMenu)
     {
@@ -16,13 +17,25 @@ public static class GameManager
         controller.InMenu = InMenu;
     }
 
-    public static void UpdateController(bool motionControl)
+    public static void UpdateController(bool motionControl, bool customMotionControl)
     {
         useMotionControl = motionControl;
+        GameManager.customMotionControl = customMotionControl;
+
         if (useMotionControl)
         {
             if (UseIntuitiveController) controller = new MotionControlIntuitive();
-            else controller = new MotionControl();
+            else
+            {
+                if (customMotionControl)
+                {
+                    controller = new CustomMotionController();
+                }
+                else
+                {
+                    controller = new MotionControl();
+                }
+            }
         }
         else
         {

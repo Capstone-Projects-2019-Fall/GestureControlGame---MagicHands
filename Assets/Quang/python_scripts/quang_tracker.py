@@ -96,6 +96,8 @@ levels = list(range(-2,3))
 current_level_index = 0
 done_with_data = False
 load = args["load"] == 1
+finished_training = False
+models = {}
 
 
 class Keys:
@@ -505,17 +507,17 @@ while True:
                         for name in data_names:
                             with open(join(args['output'],f"{name}.csv"), "w") as f:
                                 f.writelines(data_names[name])
-
-        models = {}
-        for name in data_names:
-            model_data = read_csv(join(args['output'],f"{name}.csv"), header=None).values
-            models[name] = get_trained_model(model_data)
+        if done_with_data and not finished_training and custom_control==1:
+            for name in data_names:
+                model_data = read_csv(join(args['output'],f"{name}.csv"), header=None).values
+                models[name] = get_trained_model(model_data)
+            finished_training = True
 
         normalized_fist_points = sorted(normalized_fist_points)
 
         normalized_left_center = [-0.25, 0]
         normalized_right_center = [0.25, 0]
-        if not is_in_data_process:
+        if not is_in_data_process and done_with_data:
             if custom_control == 1:
                 if len(normalized_fist_points) == 0:
                     normalized_fist_points = [normalized_left_center, normalized_right_center]

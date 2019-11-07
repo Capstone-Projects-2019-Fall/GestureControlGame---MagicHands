@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class ControlSelectionMenu : MonoBehaviour
 {
-
     public void Start()
     {
         Debug.Log("started");
@@ -16,14 +15,14 @@ public class ControlSelectionMenu : MonoBehaviour
 
     public void UseMouseControl()
     {
-        GameManager.UpdateController(motionControl: false);
+        GameManager.UpdateController(false, false);
         GameManager.UpdateInMenu(isInMenu: false);
         UnityEngine.SceneManagement.SceneManager.LoadScene("main");
     }
 
     public void UsePredefinedMotionControl()
     {
-        GameManager.UpdateController(motionControl: true);
+        GameManager.UpdateController(true, false);
         GameManager.UpdateInMenu(isInMenu: false);
 
         // Create a process
@@ -41,35 +40,49 @@ public class ControlSelectionMenu : MonoBehaviour
         // Start the process
         process.Start();
         SceneManager.LoadScene("main");
-        //while (true)
-        //{
-        //    if (GameManager.controller.GetSpeed() > 0f)
-        //    {
-        //        SceneManager.LoadScene("main");
-        //        break;
-        //    }
-        //}
     }
 
     public void UseCustomMotionControl()
     {
-        //GameManager.UpdateController(motionControl: true);
-        //GameManager.UpdateInMenu(isInMenu: false);
+        GameManager.UpdateController(true, false);
+        GameManager.UpdateInMenu(isInMenu: false);
 
-        //// Create a process
-        //System.Diagnostics.Process process = new System.Diagnostics.Process();
+        // Create a process
+        System.Diagnostics.Process process = new System.Diagnostics.Process();
 
-        //// Set the StartInfo of process
-        //string exeDir = Application.dataPath + "/Quang/python_scripts/executable/dist";
-        //process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
-        //process.StartInfo.FileName = exeDir + "/quang_tracker.exe";
-        //Debug.Log(exeDir);
-        //string argument = "-F \"" + exeDir + "/haarcascade_frontalface_default.xml\" -H 7 -C 1 -O \"" + exeDir + "\"";
-        //Debug.Log(argument);
-        //process.StartInfo.Arguments = argument;
+        // Set the StartInfo of process
+        string exeDir = Application.dataPath + "/Quang/python_scripts/executable/dist";
+        process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
+        process.StartInfo.FileName = exeDir + "/quang_tracker.exe";
+        Debug.Log(exeDir);
+        string argument = "-F \"" + exeDir + "/haarcascade_frontalface_default.xml\" -H 7 -C 1";
+        Debug.Log(argument);
+        process.StartInfo.Arguments = argument;
 
-        //// Start the process
-        //process.Start();
-        //SceneManager.LoadScene("main");
+        // Start the process
+        process.Start();
+        SceneManager.LoadScene("main");
+    }
+
+    public void UseSavedCustomMotionControl()
+    {
+        GameManager.UpdateController(true, false);
+        GameManager.UpdateInMenu(isInMenu: false);
+
+        // Create a process
+        System.Diagnostics.Process process = new System.Diagnostics.Process();
+
+        // Set the StartInfo of process
+        string exeDir = Application.dataPath + "/Quang/python_scripts/executable/dist";
+        process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
+        process.StartInfo.FileName = exeDir + "/quang_tracker.exe";
+        Debug.Log(exeDir);
+        string argument = "-F \"" + exeDir + "/haarcascade_frontalface_default.xml\" -H 7 -C 1";
+        Debug.Log(argument);
+        process.StartInfo.Arguments = argument;
+
+        // Start the process
+        process.Start();
+        SceneManager.LoadScene("main");
     }
 }
