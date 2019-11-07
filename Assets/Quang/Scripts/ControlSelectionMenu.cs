@@ -56,7 +56,7 @@ public class ControlSelectionMenu : MonoBehaviour
         process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
         process.StartInfo.FileName = exeDir + "/quang_tracker.exe";
         Debug.Log(exeDir);
-        string argument = "-F \"" + exeDir + "/haarcascade_frontalface_default.xml\" -H 7 -C 1 -L 1 -O \""+ Application.dataPath + "/Quang/python_scripts\"";
+        string argument = "-F \"" + exeDir + "/haarcascade_frontalface_default.xml\" -H 7 -C 1 -L 0 -O \""+ Application.dataPath + "/Quang/python_scripts\"";
         Debug.Log(argument);
         process.StartInfo.Arguments = argument;
 
