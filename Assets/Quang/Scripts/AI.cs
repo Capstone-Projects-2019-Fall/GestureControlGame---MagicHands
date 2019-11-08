@@ -9,7 +9,9 @@ public class AI : MonoBehaviour
     public Transform target;
     public float speed;
     public float rotationSpeed;
+    public float agressive;
     public bool speedBoostState = false;
+    public bool speedBoostInProgress = false;
     Vector3 positionCorrection = new Vector3(0f, -2f, 0f);
 
     private List<Transform> nodes;
@@ -39,7 +41,7 @@ public class AI : MonoBehaviour
 
     private void Update()
     {
-        if (Vector3.Distance(transform.position, positions[current]) > 2f)
+        if (Vector3.Distance(transform.position, positions[current]) > 1f)
         {
             //Vector3 pos = Vector3.MoveTowards(transform.position, nodes[current].position, speed * Time.deltaTime);
             //GetComponent<Rigidbody>().MovePosition(pos);
@@ -53,17 +55,21 @@ public class AI : MonoBehaviour
         {
             current = (current + 1) % positions.Count;
         }
-        if (speedBoostState == true)
+        if (speedBoostState == true && speedBoostInProgress == false)
         {
             StartCoroutine(SpeedBoost());
+            speedBoostInProgress = true;
         }
     }
 
     private void TrackThePath()
     {
         float speedMag = 1f;
+        float breakAngle = 60f;
+        float speedModifyer = 1f;
         Vector3 rotate;
         Vector3 relativeVector = transform.InverseTransformPoint(target.position);
+        Vector3 diff = target.position - transform.position;
 
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(target.position - transform.position), rotationSpeed * Time.deltaTime);
 
@@ -72,8 +78,15 @@ public class AI : MonoBehaviour
         rotate.y = (-transform.eulerAngles.y + relativeVector.y / relativeVector.magnitude) * rotationSpeed;
         rotate.z = (-transform.eulerAngles.z) * rotationSpeed;
 
+        float angle = Vector3.Angle(diff, transform.forward);
+
+        if(angle > 60.0f)
+        {
+            speedModifyer = 0.6f;
+        }
+
         //transform.Rotate(-rotate.y * Time.deltaTime, rotate.x * Time.deltaTime, rotate.z*Time.deltaTime, Space.Self);
-        transform.position += speed * player.transform.forward * Time.deltaTime * speedMag * 1f;
+        transform.position += speed * player.transform.forward * Time.deltaTime * speedMag * speedModifyer;
     }
 
     private void PikcUpPower()
@@ -82,14 +95,9 @@ public class AI : MonoBehaviour
         if (ClosestPowerUp == null) return;
         Transform powerUp = ClosestPowerUp.transform;
    
-        if(Vector3.Distance(powerUp.position, transform.position) < (Vector3.Distance(positions[current], transform.position))*0.3)
+        if(Vector3.Distance(powerUp.position, transform.position) < (Vector3.Distance(positions[current], transform.position))*agressive)
         {
             target.position = powerUp.position;
-        }
-
-        if(speedBoostState == true)
-        {
-            StartCoroutine(SpeedBoost());
         }
     }
 
