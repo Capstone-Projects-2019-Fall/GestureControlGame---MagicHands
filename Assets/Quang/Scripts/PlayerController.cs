@@ -5,14 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Windows.Speech;
-
-
-
-
+using Photon.Pun;
 
 public class PlayerController : MonoBehaviour
 {
-//this is test message
+    //this is test message
+
+    private PhotonView PV;
     private Rigidbody rb;
     public ParticleSystem warp;
     public ParticleSystem flame;
@@ -35,7 +34,8 @@ public class PlayerController : MonoBehaviour
     // Var needed for color manipulation
 
     void Start()
-    {  
+    {
+        PV = GetComponent<PhotonView>();
         flame.Clear();
         flame.Stop();
         warp.Clear();
@@ -81,7 +81,9 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        if (!GameManager.started)
+        if (PV.IsMine)
+        {
+            if (!GameManager.started)
         {
             return;
         }
@@ -118,6 +120,9 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("fixed delta time:" + Time.fixedDeltaTime);
         ObjVelocity = (NewPos - PrevPos) / Time.deltaTime;  // velocity = dist/time
         PrevPos = NewPos;  // update position for next frame calculation
+       
+            
+        }
     
     }
     IEnumerator SpeedBoost()
