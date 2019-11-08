@@ -52,17 +52,17 @@ public class PlayerController : MonoBehaviour
         recognizer.Start();
         //gameManagerCode = gameManager.GetComponent<GameManager>();
     }
-    void FixedUpdate()
-    {
-        float xMove = Input.GetAxis("Horizontal");
-        float zMove = Input.GetAxis("Vertical");
+    //void FixedUpdate()
+    //{
+    //    float xMove = Input.GetAxis("Horizontal");
+    //    float zMove = Input.GetAxis("Vertical");
         
-        Vector3 move = new Vector3(xMove, 0.0f, zMove);
-        //Vector3 move = new Vector3(rightForce, 0.0f, upForce).normalized;
+    //    Vector3 move = new Vector3(xMove, 0.0f, zMove);
+    //    //Vector3 move = new Vector3(rightForce, 0.0f, upForce).normalized;
 
-        rb.AddForce(move * speed);
+    //    rb.AddForce(move * speed);
 
-    }
+    //}
     void OnPhraseRecognized(PhraseRecognizedEventArgs args)
     {
         Debug.Log("Command: " + args.text);
@@ -81,13 +81,13 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        if (PV.IsMine)
-        {
+        //if (PV.IsMine)
+        //{
             if (!GameManager.started)
-        {
-            return;
-        }
-        Vector3 rotate = GameManager.controller.GetRotation();
+            {
+                return;
+            }
+            Vector3 rotate = GameManager.controller.GetRotation();
         float speedMag = GameManager.controller.GetSpeed();
 
         rotate = rotate * Time.deltaTime * rotationSpeed;
@@ -122,7 +122,7 @@ public class PlayerController : MonoBehaviour
         PrevPos = NewPos;  // update position for next frame calculation
        
             
-        }
+        //}
     
     }
     IEnumerator SpeedBoost()
