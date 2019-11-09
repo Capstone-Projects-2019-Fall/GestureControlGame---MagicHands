@@ -469,7 +469,7 @@ GameObject:
   - component: {fileID: 5474762645266993944}
   - component: {fileID: 5474762645266993947}
   - component: {fileID: 5474762645266993946}
-  - component: {fileID: 5474762645266993950}
+  - component: {fileID: 5474762645266993926}
   m_Layer: 5
   m_Name: WinLost Canvas
   m_TagString: Untagged
@@ -477,6 +477,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &5474762645266993926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5474762645266993925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d36013cc31c3e34e9cf5752ba4c3457, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  winImage: {fileID: 5474762645731833340}
+  loseImage: {fileID: 5474762646288543567}
 --- !u!223 &5474762645266993944
 Canvas:
   m_ObjectHideFlags: 0
@@ -558,20 +572,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &5474762645266993950
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5474762645266993925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa76372989a8e654a91aaabf78f52b3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  secondImage: {fileID: 5474762646288543567}
-  firstImage: {fileID: 5474762645731833340}
 --- !u!1 &5474762645558977616
 GameObject:
   m_ObjectHideFlags: 0

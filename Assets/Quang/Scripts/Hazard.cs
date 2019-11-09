@@ -12,8 +12,6 @@ public class Hazard : MonoBehaviour
         {
             
                 player.GetComponent<PlayerController>().SetHealth(10.0f);
-            
-
         }
     }
 }

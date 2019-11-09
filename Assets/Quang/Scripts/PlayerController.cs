@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Windows.Speech;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -142,7 +143,17 @@ public class PlayerController : MonoBehaviour
                 currentInvincibleTimer = maxInvincibleTimer;
             }
         }
-    
+        if (hp <= 0)
+        {
+            Time.timeScale = 1f;
+            WinLose.isWin = false;
+            SceneManager.LoadScene("WinLose");
+        }
+
+        /*psedocode
+         * need some sort of ring counter that will count each time pass through a ring
+         * so that once a ring is travelled through, it won't count anymore until a full ring circle is completed
+         * */
     }
     IEnumerator SpeedBoost()
     {

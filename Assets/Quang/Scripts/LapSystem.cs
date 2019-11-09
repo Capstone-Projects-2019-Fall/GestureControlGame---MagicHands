@@ -17,9 +17,10 @@ public class LapSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         /*psedocode
-         * on contacting the gate 3 times
-         * invoke QuitGame()
+         * need some sort of ring counter that will count each time pass through a ring
+         * 
          * */
         if (counter == 3)
         {

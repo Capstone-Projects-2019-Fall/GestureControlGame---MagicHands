@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Quang/Scenes/MainMenu.unity
     guid: b9710048711df6d409c663a30b4843db
+  - enabled: 1
+    path: Assets/Quang/Scenes/WinLose.unity
+    guid: 953eadf1d2ff19a4a92c3e70dee658c0
   m_configObjects: {}
