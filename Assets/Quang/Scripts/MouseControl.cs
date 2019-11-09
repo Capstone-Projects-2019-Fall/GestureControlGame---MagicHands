@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MouseControl : Controller
+public class MouseControl : ControllerQuang
 {
     float dummy;
     

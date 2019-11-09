@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpeedBoostPowerUp : MonoBehaviour
 {
-    public GameObject player;
     
 
     void Start()
@@ -22,14 +21,19 @@ public class SpeedBoostPowerUp : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             PlayerController.speedBoostState=true;
-            
+            //if put Destroy(gameObject) outside of these tag condition, cause too many problems
+            Destroy(gameObject);
         }
         else if(other.gameObject.tag == "Enemy")
         {
+            other.GetComponent<AI>().speedBoostState = true;
             EnemyPatrol.speedBoostState = true;
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
-        PowerUpSpawner.counter--;
+        /*if (PowerUpSpawner.counter > 0)
+        {
+            PowerUpSpawner.counter--;
+        }*/
 
 
     }

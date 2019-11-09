@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Diagnostics;
 
-public class MotionControl : Controller
+public class MotionControl : ControllerQuang
 {
 
     Thread receiveThread;
@@ -20,15 +20,20 @@ public class MotionControl : Controller
     Vector3 rightVec;
     int EllapsedTime;
     Stopwatch stopwatch;
+    String noVal = "x";
+    Vector3 leftCenter;
+    Vector3 rightCenter;
 
     public MotionControl()
     {
         port = 5065;
         InitUDP();
-        leftVec = new Vector3(0f, 0f, 0f);
-        rightVec = new Vector3(0f, 0f, 0f);
         EllapsedTime = 0;
         stopwatch = new Stopwatch();
+        leftCenter = new Vector3(-0.25f, 0f, 0f);
+        rightCenter = new Vector3(0.25f, 0f, 0f);
+        leftVec = leftCenter;
+        rightVec = rightCenter;
     }
 
     // 3. InitUDP
@@ -85,12 +90,23 @@ public class MotionControl : Controller
         var right = cords[1].Split(' ');
         try
         {
-            leftVec = new Vector3(float.Parse(left[0]), float.Parse(left[1]), 0f);
-            rightVec = new Vector3(float.Parse(right[0]), float.Parse(right[1]), 0f);
-
-            float mag = (leftVec - rightVec).magnitude;
-            Vector3 vec = (leftVec + rightVec) / 2;
-            vec.z = mag;
+            if (right[0].Equals(noVal))
+            {
+                if (left[0].Equals(noVal)) // no value at all
+                {
+                    return;
+                }
+                else // 1 value
+                {
+                    rightVec = new Vector3(float.Parse(left[0]), float.Parse(left[1]), 0f);
+                    leftVec = leftCenter;
+                }
+            }
+            else // 2 values
+            {
+                leftVec = new Vector3(float.Parse(left[0]), float.Parse(left[1]), 0f);
+                rightVec = new Vector3(float.Parse(right[0]), float.Parse(right[1]), 0f);
+            }
         }
         catch (Exception e)
         {
@@ -101,25 +117,15 @@ public class MotionControl : Controller
 
     public override Vector3 GetRotation()
     {
-        Vector3 vec = (leftVec + rightVec) / 2;
-        Vector3 leftRight = rightVec - leftVec;
-        float angle;
-        if (leftRight.magnitude == 0f)
-        {
-            angle = 0f;
-        }
-        else
-        {
-            angle = Vector3.SignedAngle(new Vector3(1f, 0f, 0f), leftRight, new Vector3(0f, 0f, 1f));
-        }
-        vec.z = angle / 360;
-        return vec*60f;
+        Vector3 vec = rightVec - rightCenter;
+        vec.z = - (leftVec - leftCenter).x;
+        return vec*30f;
     }
 
     public override float GetSpeed()
     {
-        float speed = (leftVec - rightVec).magnitude;
-        return speed;
+        Vector3 vec = leftVec - leftCenter;
+        return vec.y + 0.5f;
     }
 
     [DllImport("user32.dll")]
