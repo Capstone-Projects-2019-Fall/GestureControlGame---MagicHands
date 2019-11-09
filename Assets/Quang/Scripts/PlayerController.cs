@@ -28,6 +28,9 @@ public class PlayerController : MonoBehaviour
     Vector3 ObjVelocity;
     float speedMultiplier;
     public float hp;
+    private float currentInvincibleTimer;
+    public static bool isInvincible = false;
+    const float maxInvincibleTimer=3.0f;
     private Dictionary<string, Action> keyActs = new Dictionary<string, Action>();
     
     private KeywordRecognizer recognizer;
@@ -36,6 +39,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         PV = GetComponent<PhotonView>();
+        currentInvincibleTimer = maxInvincibleTimer;
         flame.Clear();
         flame.Stop();
         warp.Clear();
@@ -120,9 +124,19 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("fixed delta time:" + Time.fixedDeltaTime);
         ObjVelocity = (NewPos - PrevPos) / Time.deltaTime;  // velocity = dist/time
         PrevPos = NewPos;  // update position for next frame calculation
-       
-            
+
+
         //}
+        if (isInvincible == true)
+        {
+
+            currentInvincibleTimer -= Time.deltaTime;
+            if (currentInvincibleTimer <= 0)
+            {
+                isInvincible = false;
+                currentInvincibleTimer = maxInvincibleTimer;
+            }
+        }
     
     }
     IEnumerator SpeedBoost()
@@ -148,9 +162,13 @@ public class PlayerController : MonoBehaviour
         return speed;
     }
 
-    public void SetHealth(int hpnew)
+    public void SetHealth(float hpnew)
     {
-        hp = hpnew;
+        if (isInvincible == false)
+        {
+            hp = hp-hpnew;
+            isInvincible = true;
+        }
     }
    /* void OnTriggerEnter(Collider other)
     {

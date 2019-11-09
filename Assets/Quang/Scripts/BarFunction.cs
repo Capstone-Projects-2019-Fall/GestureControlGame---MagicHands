@@ -11,6 +11,7 @@ public class BarFunction : MonoBehaviour
     public GameObject player;
     private float currentSpeed;
     private float currentHP;
+    private float maxHP;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +19,7 @@ public class BarFunction : MonoBehaviour
         hp.fillAmount = 1.0f;
         powerUp.SetActive(false);
         currentSpeed = player.GetComponent<PlayerController>().GetSpeed();
+        maxHP = player.GetComponent<PlayerController>().GetHealth();
         currentHP = player.GetComponent < PlayerController>().GetHealth();
     }
 
@@ -44,10 +46,14 @@ public class BarFunction : MonoBehaviour
     public void HealthCheck()
     {
         float newHP= player.GetComponent<PlayerController>().GetHealth();
+        
         if (currentHP != newHP)
         {
-            hp.fillAmount = 1 / newHP;
+            
             currentHP = newHP;
+            Debug.Log(currentHP / maxHP);
+            hp.fillAmount = currentHP/maxHP;
+            
         }
 
     }
