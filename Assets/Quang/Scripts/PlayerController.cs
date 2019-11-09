@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem warp;
     public ParticleSystem flame;
     public float speed;
+    public GameObject projectilePrefab;
     public float rotationSpeed;
     private int count;
     //Controller controller;
@@ -104,6 +105,10 @@ public class PlayerController : MonoBehaviour
         {
             CameraShaker.Instance.ShakeOnce(10f, 10f, .5f, 1.5f);
         }
+        if (Input.GetKeyDown("c"))
+        {
+            Launch();
+        }
         if (Input.GetKeyDown("space"))
         {
             if (speedBoostState == true)
@@ -170,12 +175,16 @@ public class PlayerController : MonoBehaviour
             isInvincible = true;
         }
     }
-   /* void OnTriggerEnter(Collider other)
+    void Launch()
     {
-        if (other.CompareTag("pickUp"))
-        {
-            other.gameObject.SetActive(false);
-            count++;
-        }
-    }*/
+        Vector3 oldV = transform.forward;
+        Vector3 newV = new Vector3(transform.position.x, transform.position.y +0.5f,
+                transform.position.z);
+        GameObject projectileObject =  Instantiate(projectilePrefab, newV, Quaternion.LookRotation(newV, Vector3.forward));
+
+        Projectile projectile = projectileObject.GetComponent<Projectile>();
+        projectile.Launch(oldV, 20);
+        //projectileObject.GetComponent<Projectile>().rigidbody.velocity=newV.TransformDirection(transform.forward * 20);
+    }
+        
 }

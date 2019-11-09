@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RingSpawner : MonoBehaviour
+public class TotalSpawner : MonoBehaviour
 {
     static public int counter;
     public Transform[] RingSpawnPoint;
     public GameObject RingObject;
+    public Transform[] HazardSpawnPoint;
+    public GameObject HazardObject;
+
     // Start is called before the first frame update
     void Start()
     {
-        Spawner();
+        RingSpawner();
+        //HazardSpawner();
 
     }
 
@@ -26,7 +30,7 @@ public class RingSpawner : MonoBehaviour
             Spawner();
         }*/
     }
-    public void Spawner()
+    public void RingSpawner()
     {
         for (int i = 0; i < RingSpawnPoint.Length; i++)
         {
@@ -35,4 +39,12 @@ public class RingSpawner : MonoBehaviour
             //counter++;
         }
     }
+    /*public void HazardSpawner()
+    {
+        for (int i = 0; i < HazardSpawnPoint.Length; i++)
+        {
+            Instantiate(HazardObject, HazardSpawnPoint[i].transform.position, HazardSpawnPoint[i].transform.rotation);
+            //counter++;
+        }
+    }*/
 }

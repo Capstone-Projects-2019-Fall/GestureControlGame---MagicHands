@@ -21,11 +21,12 @@ Material:
     m_TexEnvs: []
     m_Floats:
     - _Brightness: -1.1
+    - _CLAMPOUT: 0
     - _CamScroll: 55
     - _Darkmatter: 105.8
     - _Distfading: 101.7
     - _Formuparam: 907.31
-    - _Iterations: 15
+    - _Iterations: 15.8
     - _Saturation: 72.3
     - _StepSize: 389.6
     - _Tile: 435.2
