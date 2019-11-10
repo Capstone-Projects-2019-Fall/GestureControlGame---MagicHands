@@ -10,8 +10,12 @@ using Photon.Pun;
 public class PlayerController : MonoBehaviour
 {
     //this is test message
-
+    //mp
     private PhotonView PV;
+    private CharacterController myCC;
+    //*mp
+
+
     private Rigidbody rb;
     public ParticleSystem warp;
     public ParticleSystem flame;
@@ -20,7 +24,7 @@ public class PlayerController : MonoBehaviour
     private int count;
     //Controller controller;
     //public GameObject gameManager;
-    public GameObject player;
+    //public GameObject player;
     public static bool speedBoostState = false;
     //GameManager gameManagerCode;
     Vector3 PrevPos; 
@@ -35,7 +39,12 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        //mp
         PV = GetComponent<PhotonView>();
+        myCC = GetComponent<CharacterController>();
+
+        //*mp
+
         flame.Clear();
         flame.Stop();
         warp.Clear();
@@ -52,7 +61,7 @@ public class PlayerController : MonoBehaviour
         recognizer.Start();
         //gameManagerCode = gameManager.GetComponent<GameManager>();
     }
-    void FixedUpdate()
+    /*void FixedUpdate()
     {
         float xMove = Input.GetAxis("Horizontal");
         float zMove = Input.GetAxis("Vertical");
@@ -62,7 +71,7 @@ public class PlayerController : MonoBehaviour
 
         rb.AddForce(move * speed);
 
-    }
+    }*/
     void OnPhraseRecognized(PhraseRecognizedEventArgs args)
     {
         Debug.Log("Command: " + args.text);
@@ -84,44 +93,44 @@ public class PlayerController : MonoBehaviour
         if (PV.IsMine)
         {
             if (!GameManager.started)
-        {
-            return;
-        }
-        Vector3 rotate = GameManager.controller.GetRotation();
-        float speedMag = GameManager.controller.GetSpeed();
-
-        rotate = rotate * Time.deltaTime * rotationSpeed;
-        
-        player.transform.Rotate(-rotate.y, rotate.x, rotate.z, Space.Self);
-        player.transform.position += speedMultiplier * speed * player.transform.forward * Time.deltaTime * speedMag;
-        
-
-        if (Input.GetKeyDown("v"))
-        {
-            CameraShaker.Instance.ShakeOnce(10f, 10f, .5f, 1.5f);
-        }
-        if (Input.GetKeyDown("space"))
-        {
-            if (speedBoostState == true)
             {
-                StartCoroutine(SpeedBoost());
+               return;
             }
-        }
-        if (Input.GetKeyDown("p"))
-        {
-            speedMultiplier = 0f;
-        }
-        if (Input.GetKeyUp("p"))
-        {
-            speedMultiplier = 1f;
-        }
-        NewPos = transform.position;  // each frame track the new position
-        //Debug.Log("delta time:" + Time.deltaTime);
-        //Debug.Log("fixed delta time:" + Time.fixedDeltaTime);
-        ObjVelocity = (NewPos - PrevPos) / Time.deltaTime;  // velocity = dist/time
-        PrevPos = NewPos;  // update position for next frame calculation
-       
-            
+            Vector3 rotate = GameManager.controller.GetRotation();
+            float speedMag = GameManager.controller.GetSpeed();
+
+            rotate = rotate * Time.deltaTime * rotationSpeed;
+        
+            transform.Rotate(-rotate.y, rotate.x, rotate.z, Space.Self);
+            transform.position += speedMultiplier * speed *transform.forward * Time.deltaTime * speedMag;
+        
+
+            if (Input.GetKeyDown("v"))
+            {
+                CameraShaker.Instance.ShakeOnce(10f, 10f, .5f, 1.5f);
+            }
+            if (Input.GetKeyDown("space"))
+            {
+                if (speedBoostState == true)
+                {
+                    StartCoroutine(SpeedBoost());
+                }
+            }
+            if (Input.GetKeyDown("p"))
+            {
+                speedMultiplier = 0f;
+            }
+            if (Input.GetKeyUp("p"))
+            {
+             speedMultiplier = 1f;
+            }
+            NewPos = transform.position;  // each frame track the new position
+                                      //Debug.Log("delta time:" + Time.deltaTime);
+                                      //Debug.Log("fixed delta time:" + Time.fixedDeltaTime);
+            ObjVelocity = (NewPos - PrevPos) / Time.deltaTime;  // velocity = dist/time
+            PrevPos = NewPos;  // update position for next frame calculation
+
+
         }
     
     }
