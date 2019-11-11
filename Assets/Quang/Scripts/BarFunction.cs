@@ -18,9 +18,9 @@ public class BarFunction : MonoBehaviour
         speed.fillAmount = 0.5f;
         hp.fillAmount = 1.0f;
         powerUp.SetActive(false);
-        currentSpeed = player.GetComponent<PlayerControllerM>().GetSpeed();
-        maxHP = player.GetComponent<PlayerControllerM>().GetHealth();
-        currentHP = player.GetComponent < PlayerControllerM>().GetHealth();
+        currentSpeed = player.GetComponent<PlayerController>().GetSpeed();
+        maxHP = player.GetComponent<PlayerController>().GetHealth();
+        currentHP = player.GetComponent < PlayerController>().GetHealth();
     }
 
     // Update is called once per frame
@@ -33,7 +33,7 @@ public class BarFunction : MonoBehaviour
     }
     public void SpeedCheck()
     {
-        float newSpeed=player.GetComponent<PlayerControllerM>().GetSpeed();
+        float newSpeed=player.GetComponent<PlayerController>().GetSpeed();
         if (currentSpeed< newSpeed)
         {
             speed.fillAmount = 1.0f;
@@ -45,7 +45,7 @@ public class BarFunction : MonoBehaviour
     }
     public void HealthCheck()
     {
-        float newHP= player.GetComponent<PlayerControllerM>().GetHealth();
+        float newHP= player.GetComponent<PlayerController>().GetHealth();
         
         if (currentHP != newHP)
         {

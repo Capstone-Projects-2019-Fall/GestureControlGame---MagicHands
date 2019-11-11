@@ -87,7 +87,7 @@ public class PlayerControllerM : MonoBehaviour
     }
     void Update()
     {
-        if (PV.IsMine)
+        if (!PV.IsMine)
         {
             if (!GameManager.started)
             {

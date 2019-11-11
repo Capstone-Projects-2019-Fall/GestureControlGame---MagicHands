@@ -11,7 +11,7 @@ public class Hazard : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             
-                player.GetComponent<PlayerControllerM>().SetHealth(10.0f);
+                player.GetComponent<PlayerController>().SetHealth(10.0f);
         }
     }
 }
