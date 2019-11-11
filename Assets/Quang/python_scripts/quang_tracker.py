@@ -138,6 +138,7 @@ class Keys:
         self.REVERSE = "r"
         self.BACKGROUND_OFFSET = "o"
         self.NEXT = "n"
+        self.EXPOSURE = "e"
 
 def get_trained_model(data):
     # data shape (?, 3)
@@ -592,8 +593,6 @@ while True:
         fps.update()
         fps.stop()
 
-
-
         cv2.putText(frame, "FPS: %.2f"%(fps.fps()), (10, H-20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120, 2)
 
 
@@ -632,5 +631,9 @@ while True:
         reverse = not reverse
     elif key == ord(keys.NEXT):
         is_in_data_process = True
-
+    elif key == ord(keys.EXPOSURE):
+        if not reverse: chosen_exposure += 1
+        else: chosen_exposure -= 1
+        print("exposure:",chosen_exposure)
+        vs.set(cv2.CAP_PROP_EXPOSURE, chosen_exposure)
 vs.release()
