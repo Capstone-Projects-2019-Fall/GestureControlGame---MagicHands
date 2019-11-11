@@ -25,16 +25,16 @@ public class PlayerController : MonoBehaviour
     public GameObject player;
     public static bool speedBoostState = false;
     //GameManager gameManagerCode;
-    Vector3 PrevPos; 
-    Vector3 NewPos; 
+    Vector3 PrevPos;
+    Vector3 NewPos;
     Vector3 ObjVelocity;
     float speedMultiplier;
     public float hp;
     private float currentInvincibleTimer;
     public static bool isInvincible = false;
-    const float maxInvincibleTimer=3.0f;
+    const float maxInvincibleTimer = 3.0f;
     private Dictionary<string, Action> keyActs = new Dictionary<string, Action>();
-    
+
     private KeywordRecognizer recognizer;
     // Var needed for color manipulation
 
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
         NewPos = transform.position;
         speedMultiplier = 1f;
         keyActs.Add("zoom", Zoom);
-    
+
         recognizer = new KeywordRecognizer(keyActs.Keys.ToArray());
         recognizer.OnPhraseRecognized += OnPhraseRecognized;
         recognizer.Start();
@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
     //{
     //    float xMove = Input.GetAxis("Horizontal");
     //    float zMove = Input.GetAxis("Vertical");
-        
+
     //    Vector3 move = new Vector3(xMove, 0.0f, zMove);
     //    //Vector3 move = new Vector3(rightForce, 0.0f, upForce).normalized;
 
@@ -89,18 +89,18 @@ public class PlayerController : MonoBehaviour
     {
         //if (PV.IsMine)
         //{
-            if (!GameManager.started)
-            {
-                return;
-            }
-            Vector3 rotate = GameManager.controller.GetRotation();
+        if (!GameManager.started)
+        {
+            return;
+        }
+        Vector3 rotate = GameManager.controller.GetRotation();
         float speedMag = GameManager.controller.GetSpeed();
 
         rotate = rotate * Time.deltaTime * rotationSpeed;
-        
+
         player.transform.Rotate(-rotate.y, rotate.x, rotate.z, Space.Self);
         player.transform.position += speedMultiplier * speed * player.transform.forward * Time.deltaTime * speedMag;
-        
+
 
         if (Input.GetKeyDown("v"))
         {
@@ -166,7 +166,7 @@ public class PlayerController : MonoBehaviour
         warp.Stop();
         flame.Stop();
         speed = oldspeed;
-        speedBoostState=false;
+        speedBoostState = false;
 
     }
     public float GetHealth()
@@ -182,20 +182,20 @@ public class PlayerController : MonoBehaviour
     {
         if (isInvincible == false)
         {
-            hp = hp-hpnew;
+            hp = hp - hpnew;
             isInvincible = true;
         }
     }
     void Launch()
     {
         Vector3 oldV = transform.forward;
-        Vector3 newV = new Vector3(transform.position.x, transform.position.y +0.5f,
+        Vector3 newV = new Vector3(transform.position.x, transform.position.y + 0.5f,
                 transform.position.z);
-        GameObject projectileObject =  Instantiate(projectilePrefab, newV, Quaternion.LookRotation(newV, Vector3.forward));
+        GameObject projectileObject = Instantiate(projectilePrefab, newV, Quaternion.LookRotation(newV, Vector3.forward));
 
         Projectile projectile = projectileObject.GetComponent<Projectile>();
         projectile.Launch(oldV, 20);
         //projectileObject.GetComponent<Projectile>().rigidbody.velocity=newV.TransformDirection(transform.forward * 20);
     }
-        
+
 }

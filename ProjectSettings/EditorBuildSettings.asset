@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Quang/Scenes/Menu2.unity
     guid: 00f400d945faf8e4f9bf11df76659ef7
   - enabled: 1
-    path: Assets/Quang/Scenes/multyplayer.unity
+    path: Assets/Quang/Scenes/multyplayer2.unity
     guid: 44e26a449956638448582791fbeb4571
   - enabled: 1
     path: Assets/Quang/Scenes/main.unity

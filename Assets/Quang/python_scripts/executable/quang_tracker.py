@@ -13,10 +13,10 @@ from os.path import join
 ap = argparse.ArgumentParser()
 ap.add_argument("-F", "--face", type=str, default="haarcascade_frontalface_default.xml", help="path to face cascade file")
 ap.add_argument("-H", "--hue", type=int, default=7, help="hue offset")
-ap.add_argument("-S", "--saturation", type=int, default=50, help="saturation offset")
-ap.add_argument("-V", "--value", type=int, default=50, help="value offset")
+ap.add_argument("-S", "--saturation", type=int, default=36, help="saturation offset")
+ap.add_argument("-V", "--value", type=int, default=40, help="value offset")
 ap.add_argument("-B", "--background", type=int, default=10, help="background offset")
-ap.add_argument("-C", "--custom", type=int, default=1, help="whether to use custom motion control or not")
+ap.add_argument("-C", "--custom", type=int, default=0, help="whether to use custom motion control or not")
 ap.add_argument("-O", "--output", type=str, default="", help="the directory to output data files")
 ap.add_argument("-L", "--load", type=int, default=1, help="load previously saved custom motion control")
 
@@ -138,6 +138,7 @@ class Keys:
         self.REVERSE = "r"
         self.BACKGROUND_OFFSET = "o"
         self.NEXT = "n"
+        self.EXPOSURE = "e"
 
 def get_trained_model(data):
     # data shape (?, 3)
@@ -268,8 +269,8 @@ def get_face_mask(faces, frame):
     for (x, y, w, h) in faces:
         x_center = x + w//2
         y_center = y + h//2
-        neck_width = int(0.6*w)
-        neck_height = int(h)
+        neck_width = int(0.7*w)
+        neck_height = int(1.6*h)
         # To draw a rectangle in a face
         # cv2.rectangle(pure, (x, int(y-0.15*h)), (x + w, y + int(h * 1.4)), (255, 255, 255))
         cv2.ellipse(pure, (x_center, y_center-int(h/10)), (w//2, int(h*1.4)//2), 0, 0, 360, color=(255, 255, 255))
@@ -480,7 +481,7 @@ while True:
         stats = sorted(stats, key= lambda x: -x[cv2.CC_STAT_AREA])
         fist_points = []
         for stat in stats:
-            if stat[cv2.CC_STAT_AREA] > 1500:
+            if stat[cv2.CC_STAT_AREA] > 3000:
                 fist_points.append(get_fist_point_highest(mask, stat))
             if len(fist_points) >= 2:
                 break
@@ -592,8 +593,6 @@ while True:
         fps.update()
         fps.stop()
 
-
-
         cv2.putText(frame, "FPS: %.2f"%(fps.fps()), (10, H-20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120, 2)
 
 
@@ -620,9 +619,11 @@ while True:
     elif key == ord(keys.SAT):
         if not reverse: HSV_OFFSET[1] += 1
         else: HSV_OFFSET[1] -= 1
+        print("Sat:", HSV_OFFSET[1])
     elif key == ord(keys.VAL):
         if not reverse: HSV_OFFSET[2] += 1
         else: HSV_OFFSET[2] -= 1
+        print("Val:", HSV_OFFSET[2])
     elif key == ord(keys.BACKGROUND_OFFSET):
         if not reverse: BACKGROUND_OFFSET += 1
         else: BACKGROUND_OFFSET -= 1
@@ -630,5 +631,9 @@ while True:
         reverse = not reverse
     elif key == ord(keys.NEXT):
         is_in_data_process = True
-
+    elif key == ord(keys.EXPOSURE):
+        if not reverse: chosen_exposure += 1
+        else: chosen_exposure -= 1
+        print("exposure:",chosen_exposure)
+        vs.set(cv2.CAP_PROP_EXPOSURE, chosen_exposure)
 vs.release()
