@@ -20,7 +20,7 @@ public class SpeedBoostPowerUp : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            PlayerController.speedBoostState=true;
+            PlayerControllerM.speedBoostState=true;
             //if put Destroy(gameObject) outside of these tag condition, cause too many problems
             Destroy(gameObject);
         }

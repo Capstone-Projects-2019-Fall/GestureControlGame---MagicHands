@@ -8,7 +8,7 @@ using UnityEngine.Windows.Speech;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
 
-public class PlayerController : MonoBehaviour
+public class PlayerControllerM : MonoBehaviour
 {
     //this is test message
 
@@ -87,73 +87,75 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        //if (PV.IsMine)
-        //{
-        if (!GameManager.started)
+        if (PV.IsMine)
         {
-            return;
-        }
-        Vector3 rotate = GameManager.controller.GetRotation();
-        float speedMag = GameManager.controller.GetSpeed();
-
-        rotate = rotate * Time.deltaTime * rotationSpeed;
-
-        player.transform.Rotate(-rotate.y, rotate.x, rotate.z, Space.Self);
-        player.transform.position += speedMultiplier * speed * player.transform.forward * Time.deltaTime * speedMag;
-
-
-        if (Input.GetKeyDown("v"))
-        {
-            CameraShaker.Instance.ShakeOnce(10f, 10f, .5f, 1.5f);
-        }
-        if (Input.GetKeyDown("c"))
-        {
-            Launch();
-        }
-        if (Input.GetKeyDown("space"))
-        {
-            if (speedBoostState == true)
+            if (!GameManager.started)
             {
-                StartCoroutine(SpeedBoost());
+                return;
             }
-        }
-        if (Input.GetKeyDown("p"))
-        {
-            speedMultiplier = 0f;
-        }
-        if (Input.GetKeyUp("p"))
-        {
-            speedMultiplier = 1f;
-        }
-        NewPos = transform.position;  // each frame track the new position
-        //Debug.Log("delta time:" + Time.deltaTime);
-        //Debug.Log("fixed delta time:" + Time.fixedDeltaTime);
-        ObjVelocity = (NewPos - PrevPos) / Time.deltaTime;  // velocity = dist/time
-        PrevPos = NewPos;  // update position for next frame calculation
+            Vector3 rotate = GameManager.controller.GetRotation();
+            float speedMag = GameManager.controller.GetSpeed();
+
+            rotate = rotate * Time.deltaTime * rotationSpeed;
+
+            transform.Rotate(-rotate.y, rotate.x, rotate.z, Space.Self);
+            transform.position += speedMultiplier * speed * transform.forward * Time.deltaTime * speedMag;
 
 
-        //}
-        if (isInvincible == true)
-        {
-
-            currentInvincibleTimer -= Time.deltaTime;
-            if (currentInvincibleTimer <= 0)
+            if (Input.GetKeyDown("v"))
             {
-                isInvincible = false;
-                currentInvincibleTimer = maxInvincibleTimer;
+                CameraShaker.Instance.ShakeOnce(10f, 10f, .5f, 1.5f);
             }
-        }
-        if (hp <= 0)
-        {
-            Time.timeScale = 1f;
-            WinLose.isWin = false;
-            SceneManager.LoadScene("WinLose");
-        }
+            if (Input.GetKeyDown("c"))
+            {
+                Launch();
+            }
+            if (Input.GetKeyDown("space"))
+            {
+                if (speedBoostState == true)
+                {
+                    StartCoroutine(SpeedBoost());
+                }
+            }
+            if (Input.GetKeyDown("p"))
+            {
+                speedMultiplier = 0f;
+            }
+            if (Input.GetKeyUp("p"))
+            {
+                speedMultiplier = 1f;
+            }
+            NewPos = transform.position;  // each frame track the new position
+                                          //Debug.Log("delta time:" + Time.deltaTime);
+                                          //Debug.Log("fixed delta time:" + Time.fixedDeltaTime);
+            ObjVelocity = (NewPos - PrevPos) / Time.deltaTime;  // velocity = dist/time
+            PrevPos = NewPos;  // update position for next frame calculation
 
-        /*psedocode
-         * need some sort of ring counter that will count each time pass through a ring
-         * so that once a ring is travelled through, it won't count anymore until a full ring circle is completed
-         * */
+
+            //}
+            if (isInvincible == true)
+            {
+
+                currentInvincibleTimer -= Time.deltaTime;
+                if (currentInvincibleTimer <= 0)
+                {
+                    isInvincible = false;
+                    currentInvincibleTimer = maxInvincibleTimer;
+                }
+            }
+            if (hp <= 0)
+            {
+                Time.timeScale = 1f;
+                WinLose.isWin = false;
+                SceneManager.LoadScene("WinLose");
+            }
+
+            /*psedocode
+             * need some sort of ring counter that will count each time pass through a ring
+             * so that once a ring is travelled through, it won't count anymore until a full ring circle is completed
+             * */
+
+        }
     }
     IEnumerator SpeedBoost()
     {

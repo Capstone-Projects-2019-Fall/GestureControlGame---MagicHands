@@ -115,6 +115,7 @@ GameObject:
   - component: {fileID: 4110807076397740917}
   - component: {fileID: 206625847118606784}
   - component: {fileID: 206625847118606789}
+  - component: {fileID: 2672045889529046266}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Player
@@ -203,7 +204,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 206625847118606847}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e25497a3aef7203409b36b8f911ebbb1, type: 3}
   m_Name: 
@@ -233,7 +234,28 @@ MonoBehaviour:
   warp: {fileID: 1403231432157825187}
   flame: {fileID: 1391555647353571444}
   speed: 10
+  projectilePrefab: {fileID: 0}
   rotationSpeed: 10
+  player: {fileID: 0}
+  hp: 30
+--- !u!114 &2672045889529046266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 206625847118606847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60be223f746bc0b4a806b3be6ce98a5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  warp: {fileID: 1403231432157825187}
+  flame: {fileID: 1391555647353571444}
+  speed: 10
+  projectilePrefab: {fileID: 0}
+  rotationSpeed: 10
+  player: {fileID: 0}
   hp: 30
 --- !u!1 &815469500803308821
 GameObject:
