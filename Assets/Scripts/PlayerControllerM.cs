@@ -22,7 +22,7 @@ public class PlayerControllerM : MonoBehaviour
     private int count;
     //Controller controller;
     //public GameObject gameManager;
-    public GameObject player;
+    //public GameObject player;
     public static bool speedBoostState = false;
     //GameManager gameManagerCode;
     Vector3 PrevPos;
