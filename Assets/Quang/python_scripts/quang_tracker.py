@@ -16,7 +16,7 @@ ap.add_argument("-H", "--hue", type=int, default=7, help="hue offset")
 ap.add_argument("-S", "--saturation", type=int, default=50, help="saturation offset")
 ap.add_argument("-V", "--value", type=int, default=50, help="value offset")
 ap.add_argument("-B", "--background", type=int, default=10, help="background offset")
-ap.add_argument("-C", "--custom", type=int, default=1, help="whether to use custom motion control or not")
+ap.add_argument("-C", "--custom", type=int, default=0, help="whether to use custom motion control or not")
 ap.add_argument("-O", "--output", type=str, default="", help="the directory to output data files")
 ap.add_argument("-L", "--load", type=int, default=1, help="load previously saved custom motion control")
 
@@ -620,9 +620,11 @@ while True:
     elif key == ord(keys.SAT):
         if not reverse: HSV_OFFSET[1] += 1
         else: HSV_OFFSET[1] -= 1
+        print("Sat:", HSV_OFFSET[1])
     elif key == ord(keys.VAL):
         if not reverse: HSV_OFFSET[2] += 1
         else: HSV_OFFSET[2] -= 1
+        print("Val:", HSV_OFFSET[2])
     elif key == ord(keys.BACKGROUND_OFFSET):
         if not reverse: BACKGROUND_OFFSET += 1
         else: BACKGROUND_OFFSET -= 1
