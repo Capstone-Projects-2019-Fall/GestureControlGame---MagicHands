@@ -41,9 +41,9 @@ public class LapSystem : MonoBehaviour
     }
     public void QuitGame()
     {
-        
-            Time.timeScale = 1f;
-            WinLose.isWin = true;
+        WinLose.isWin = true;
+        Time.timeScale = 1f;
+            
             SceneManager.LoadScene("WinLose");
         
     }
