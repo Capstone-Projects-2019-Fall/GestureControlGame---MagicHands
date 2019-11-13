@@ -59,7 +59,7 @@ public class BarFunction : MonoBehaviour
     }
     public void PowerUpCheck()
     {
-        if (PlayerController.speedBoostState == true)
+        if (PlayerControllerM.speedBoostState == true)
         {
             powerUp.SetActive(true);
         }
