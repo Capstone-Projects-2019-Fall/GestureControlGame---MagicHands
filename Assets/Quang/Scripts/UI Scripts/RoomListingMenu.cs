@@ -12,6 +12,18 @@ public class RoomListingMenu : MonoBehaviourPunCallbacks
 
    private List<RoomListing> _listings = new List<RoomListing>();
    
+   private RoomsCanvases _roomCanvases;
+
+   public void FirstInitialize(RoomsCanvases canvases)
+   {
+       _roomCanvases = canvases;
+   }
+   
+   public override void OnJoinedRoom()
+   {
+       _roomCanvases.CurrentRoomCanvas.Show();
+   }
+
    public override void OnRoomListUpdate(List<Photon.Realtime.RoomInfo> roomList)
    {
         foreach (RoomInfo info in roomList)
