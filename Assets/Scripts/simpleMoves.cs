@@ -20,6 +20,7 @@ public class simpleMoves : MonoBehaviour
 
     void Update()
     {
+        PV = GetComponent<PhotonView>();
         if (PV.IsMine)//the most stupid error
         {
             basics();
@@ -33,20 +34,20 @@ public class simpleMoves : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.W))
         {
-            myCC.Move(transform.forward * Time.deltaTime * moveS);
+            myCC.Move(this.transform.forward * Time.deltaTime * moveS);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            myCC.Move(transform.right * Time.deltaTime * moveS);
+            myCC.Move(this.transform.right * Time.deltaTime * moveS);
         }
         if (Input.GetKey(KeyCode.A))
         {
-            myCC.Move(-transform.right * Time.deltaTime * moveS);
+            myCC.Move(-this.transform.right * Time.deltaTime * moveS);
 
         }
         if (Input.GetKey(KeyCode.S))
         {
-            myCC.Move(-transform.forward * Time.deltaTime * moveS);
+            myCC.Move(-this.transform.forward * Time.deltaTime * moveS);
         }
     }
     void rotation()
@@ -55,6 +56,5 @@ public class simpleMoves : MonoBehaviour
         transform.Rotate(new Vector3(0, mouseX, 0));
     }
 
-    // Update is called once per frame
-    
+   
 }

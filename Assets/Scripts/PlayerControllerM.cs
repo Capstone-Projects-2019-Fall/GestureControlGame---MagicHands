@@ -13,6 +13,11 @@ public class PlayerControllerM : MonoBehaviour
     //this is test message
 
     private PhotonView PV;
+    private CharacterController myCC;
+
+
+
+
     private Rigidbody rb;
     public ParticleSystem warp;
     public ParticleSystem flame;
@@ -41,12 +46,15 @@ public class PlayerControllerM : MonoBehaviour
     void Start()
     {
         PV = GetComponent<PhotonView>();
+        myCC = GetComponent<CharacterController>();
+
+
         currentInvincibleTimer = maxInvincibleTimer;
         flame.Clear();
         flame.Stop();
         warp.Clear();
         warp.Stop();
-        rb = GetComponent<Rigidbody>();
+      //  rb = GetComponent<Rigidbody>();
         count = 0;
         PrevPos = transform.position;
         NewPos = transform.position;
@@ -99,7 +107,7 @@ public class PlayerControllerM : MonoBehaviour
             rotate = rotate * Time.deltaTime * rotationSpeed;
 
             transform.Rotate(-rotate.y, rotate.x, rotate.z, Space.Self);
-            transform.position += speedMultiplier * speed * transform.forward * Time.deltaTime * speedMag;
+            myCC. Move(speedMultiplier * speed * this.transform.forward * Time.deltaTime * speedMag);
 
 
             if (Input.GetKeyDown("v"))
