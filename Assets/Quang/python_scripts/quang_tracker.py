@@ -51,6 +51,20 @@ class MyLinearRegression:
     def loss(self):
         return np.sqrt(np.mean((self.y - self.predict(self.X))**2))
 
+class PCA:
+    def __init__(self):
+        pass
+
+    def fit(self, x):
+        cov = np.cov(x.T)
+        e_val, e_vec = np.linalg.eig(cov)
+        sorted_idx = np.argsort(-np.abs(e_val))
+        self.sorted_e_vec = e_vec[:, sorted_idx]
+
+    def transform(self, x, num_components=1):
+        return x.dot(self.sorted_e_vec[:,:num_components])
+
+
 def get_fore_ground_mask(frame, background, offset):
     a = np.any(np.greater(frame, background + offset), axis=-1)
     b = np.any(np.less(frame, background - offset), axis=-1)
@@ -115,8 +129,8 @@ data_names_list = list(data_names.keys())
 current_data_index = 0
 is_preparing_for_data_collection = False
 is_in_data_collection = False
-preparing_time = 5
-collecting_time = 5
+preparing_time = 3
+collecting_time = 2
 preparing_start = None
 collecting_start = None
 levels = list(range(-2,3))
@@ -126,6 +140,12 @@ load = args["load"] == 1
 finished_training = False
 models = {}
 
+tutorial_sentences = {"right": ["turning left a lot", "turning left a little", "no turning left or right", "turning right a little", "turning right a lot"],
+                      "up":    ["turning down a lot", "turning down a little", "no turning up or down", "turning up a little", "turning up a lot"],
+                      "roll":  ["rolling left fast", "rolling left slow", "no rolling", "rolling right slow", "rolling right fast"],
+                      "speed": ["speed level 1/5", "speed level 2/5",  "speed level 3/5", "speed level 4/5", "speed level 5/5"]}
+
+tutorial_directions = ["turning left-right", "turning up-down", "rolling left-right", "controlling speed"]
 
 class Keys:
     def __init__(self):
@@ -139,12 +159,35 @@ class Keys:
         self.BACKGROUND_OFFSET = "o"
         self.NEXT = "n"
         self.EXPOSURE = "e"
+        self.COLLECT = "c"
 
 def get_trained_model(data):
     # data shape (?, 3)
     model = MyLinearRegression(data[:,:-1], data[:,-1])
     model.fit()
     return model
+
+
+class PCAModel:
+    def __init__(self, pca, model):
+        self.pca = pca
+        self.model = model
+
+    def predict(self, data):
+        if len(data.shape) < 2:
+            data = np.expand_dims(data, 0)
+        sub_data = self.pca.transform(data)
+        return self.model.predict(sub_data)
+
+def get_trained_pca_model(data):
+    # data shape (?, 3)
+    pca = PCA()
+    pca.fit(data[:, :-1])
+    sub_x = pca.transform(data[:,:-1])
+    model = MyLinearRegression(sub_x, data[:, -1])
+    model.fit()
+    pcaModel = PCAModel(pca, model)
+    return pcaModel
 
 keys = Keys()
 
@@ -401,7 +444,7 @@ while True:
         # count down from 5
         sec = sampling_time - (time.time() - sampling_start)
         cv2.putText(frame, str(math.ceil(sec)), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
-        cv2.putText(frame, "make a fist, put each square inside a fist", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+        cv2.putText(frame, "put each green square inside one hand", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
         if sec < 0:
             sampling_color = False
             started = True
@@ -513,8 +556,11 @@ while True:
 
         if not is_in_data_process and not done_with_data:
             if current_data_index < len(data_names):
-                cv2.putText(frame, f"next is {data_names_list[current_data_index]}, press {keys.NEXT.upper()}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120, 2)
-
+                # cv2.putText(frame, f"next is {data_names_list[current_data_index]}, press {keys.NEXT.upper()}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120, 2)
+                cv2.putText(frame, f"prepare to collect data for", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120, 2)
+                cv2.putText(frame,
+                            f"{tutorial_directions[current_data_index]}, press {keys.NEXT.upper()} to start",
+                            (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120, 2)
 
         if is_in_data_process and not done_with_data:
             # print(is_in_data_process)
@@ -522,20 +568,23 @@ while True:
                 is_preparing_for_data_collection = True
                 preparing_start = time.time()
             if is_preparing_for_data_collection:
-                sec_preparing = preparing_time - (time.time() - preparing_start)
-                cv2.putText(frame, str(math.ceil(sec_preparing)), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120, 2)
-                cv2.putText(frame, f"prepare for {data_names_list[current_data_index]} level {levels[current_level_index]}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX,
-                            0.6, 120, 2)
-                if sec_preparing <= 0:
-                    is_preparing_for_data_collection = False
-                    is_in_data_collection = True
-                    collecting_start = time.time()
+                # sec_preparing = preparing_time - (time.time() - preparing_start)
+                # cv2.putText(frame, str(math.ceil(sec_preparing)), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120, 2)
+                # # cv2.putText(frame, f"prepare for {data_names_list[current_data_index]} level {levels[current_level_index]}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX,0.6, 120, 2)
+                # cv2.putText(frame, f"prepare for {tutorial_sentences[data_names_list[current_data_index]][current_level_index]}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX,0.6, 120, 2)
+                cv2.putText(frame, "place your hand at the position for", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120, 2)
+                cv2.putText(frame, f"{tutorial_sentences[data_names_list[current_data_index]][current_level_index]} and press {keys.COLLECT}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX,0.6, 120, 2)
+                # if sec_preparing <= 0:
+                #     is_preparing_for_data_collection = False
+                #     is_in_data_collection = True
+                #     collecting_start = time.time()
+
             if is_in_data_collection:
                 sec_collecting = collecting_time - (time.time() - collecting_start)
-                cv2.putText(frame, str(math.ceil(sec_collecting)), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120,
-                            2)
+                cv2.putText(frame, str(math.ceil(sec_collecting)), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120,2)
                 cv2.putText(frame,
-                            f"collecting {data_names_list[current_data_index]} level {levels[current_level_index]}",
+                            # f"collecting {data_names_list[current_data_index]} level {levels[current_level_index]}",
+                            f"collecting {tutorial_sentences[data_names_list[current_data_index]][current_level_index]}",
                             (10, 50), cv2.FONT_HERSHEY_SIMPLEX,
                             0.6, 120, 2)
                 if len(normalized_fist_points) > 0:
@@ -555,7 +604,7 @@ while True:
         if done_with_data and not finished_training and custom_control==1:
             for name in data_names:
                 model_data = my_read_csv(join(args['output'],f"{name}.csv"))
-                models[name] = get_trained_model(model_data)
+                models[name] = get_trained_pca_model(model_data)
             finished_training = True
 
         normalized_fist_points = sorted(normalized_fist_points)
@@ -636,4 +685,9 @@ while True:
         else: chosen_exposure -= 1
         print("exposure:",chosen_exposure)
         vs.set(cv2.CAP_PROP_EXPOSURE, chosen_exposure)
+    elif key == ord(keys.COLLECT):
+        is_preparing_for_data_collection = False
+        is_in_data_collection = True
+        collecting_start = time.time()
+
 vs.release()
