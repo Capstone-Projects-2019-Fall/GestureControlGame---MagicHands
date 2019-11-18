@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public GameObject projectilePrefab;
     public float rotationSpeed;
     private int count;
+    public GameObject[] planeType;
     //Controller controller;
     //public GameObject gameManager;
     public GameObject player;
@@ -56,6 +57,7 @@ public class PlayerController : MonoBehaviour
         recognizer = new KeywordRecognizer(keyActs.Keys.ToArray());
         recognizer.OnPhraseRecognized += OnPhraseRecognized;
         recognizer.Start();
+        PlaneTypeCheck();
         //gameManagerCode = gameManager.GetComponent<GameManager>();
     }
     //void FixedUpdate()
@@ -196,6 +198,34 @@ public class PlayerController : MonoBehaviour
         Projectile projectile = projectileObject.GetComponent<Projectile>();
         projectile.Launch(oldV, 20);
         //projectileObject.GetComponent<Projectile>().rigidbody.velocity=newV.TransformDirection(transform.forward * 20);
+    }
+    void SetPlaneType(int planeNum)
+    {
+        planeType[planeNum].SetActive(true);
+        for(int i = 0; i < planeType.Length; i++)
+        {
+            if (i != planeNum)
+            {
+                planeType[i].SetActive(false);
+            }
+        }
+    }
+    void PlaneTypeCheck()
+    {
+        int counter = 0;
+        Debug.Log("this is planeType.Length " + planeType.Length);
+        for (int i = 0; i < planeType.Length; i++)
+        {
+            if (!planeType[i].activeSelf)
+            {
+                counter++;
+            }
+        }
+        Debug.Log("this is counter" + counter);
+        if (counter== planeType.Length)
+        {
+            planeType[0].SetActive(true);
+        }
     }
 
 }

@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class ControlSelectionMenu : MonoBehaviour
 {
+    public GameObject ControlSelectionMenuObject;
+    public GameObject MechMenu;
     public void Start()
     {
         Debug.Log("started");
@@ -85,5 +87,10 @@ public class ControlSelectionMenu : MonoBehaviour
         // Start the process
         process.Start();
         SceneManager.LoadScene("main");
+    }
+    public void OpenMechMenu()
+    {
+        ControlSelectionMenuObject.SetActive(false);
+        MechMenu.SetActive(true);
     }
 }
