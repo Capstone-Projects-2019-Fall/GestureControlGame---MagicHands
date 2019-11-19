@@ -107,29 +107,30 @@ public class PlayerControllerM : MonoBehaviour
             rotate = rotate * Time.deltaTime * rotationSpeed;
 
             transform.Rotate(-rotate.y, rotate.x, rotate.z, Space.Self);
+            transform.position += speedMultiplier * speed * transform.forward * Time.deltaTime * speedMag;
             myCC. Move(speedMultiplier * speed * this.transform.forward * Time.deltaTime * speedMag);
 
 
-            if (Input.GetKeyDown("v"))
+            if (Input.GetKey(KeyCode.V))
             {
                 CameraShaker.Instance.ShakeOnce(10f, 10f, .5f, 1.5f);
             }
-            if (Input.GetKeyDown("c"))
+            if (Input.GetKey(KeyCode.C))
             {
                 Launch();
             }
-            if (Input.GetKeyDown("space"))
+            if (Input.GetKey(KeyCode.Space))
             {
                 if (speedBoostState == true)
                 {
                     StartCoroutine(SpeedBoost());
                 }
             }
-            if (Input.GetKeyDown("p"))
+            if (Input.GetKey(KeyCode.P))
             {
                 speedMultiplier = 0f;
             }
-            if (Input.GetKeyUp("p"))
+            if (Input.GetKey(KeyCode.S))
             {
                 speedMultiplier = 1f;
             }
