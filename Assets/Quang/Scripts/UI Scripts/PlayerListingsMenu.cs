@@ -13,9 +13,19 @@ public class PlayerListingsMenu : MonoBehaviourPunCallbacks
    
    private List<PlayerListing> _listings = new List<PlayerListing>();
   
+   private RoomsCanvases _roomsCanvases;
    private void Awake()
    {
        GetCurrentRoomPlayers();
+   }
+
+   public void FirstInitialize(RoomsCanvases canvases)
+   {
+       _roomsCanvases = canvases;
+   }
+   public override void OnLeftRoom()
+   {
+       _content.DestroyChildren();
    }
 
    private void GetCurrentRoomPlayers()
