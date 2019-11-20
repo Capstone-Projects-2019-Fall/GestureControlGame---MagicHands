@@ -17,7 +17,7 @@ public class PlayerControllerM : MonoBehaviour
 
 
 
-
+    [SerializeField] Camera avatarCamera;
     private Rigidbody rb;
     public ParticleSystem warp;
     public ParticleSystem flame;
@@ -38,6 +38,7 @@ public class PlayerControllerM : MonoBehaviour
     private float currentInvincibleTimer;
     public static bool isInvincible = false;
     const float maxInvincibleTimer = 3.0f;
+    
     private Dictionary<string, Action> keyActs = new Dictionary<string, Action>();
 
     private KeywordRecognizer recognizer;
@@ -45,9 +46,14 @@ public class PlayerControllerM : MonoBehaviour
 
     void Start()
     {
+        
         PV = GetComponent<PhotonView>();
         myCC = GetComponent<CharacterController>();
-
+        //avatarCamera = Camera.main;
+       /* if (!PV.IsMine)
+        {
+            Destroy(avatarCamera);
+        }*/
 
         currentInvincibleTimer = maxInvincibleTimer;
         flame.Clear();

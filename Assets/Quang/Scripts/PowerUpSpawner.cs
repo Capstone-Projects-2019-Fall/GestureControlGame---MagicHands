@@ -30,7 +30,7 @@ public class PowerUpSpawner : MonoBehaviour
     {
         for (int i = 0; i < SpeedBoostSpawnPoint.Length; i++)
         {
-            Debug.Log("this is i " + i);
+            //Debug.Log("this is i " + i);
             Instantiate(SpeedBoostPowerUpObject, SpeedBoostSpawnPoint[i].transform.position, Quaternion.identity);
             //counter++;
         }
