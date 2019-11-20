@@ -23,6 +23,7 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    //change this to raycast
     public void Launch(Vector3 direction, float force)
     {
         rigidbody.velocity = direction *force;
@@ -30,6 +31,10 @@ public class Projectile : MonoBehaviour
     public void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
+        {
+            Destroy(gameObject);
+        }
+        if(other.gameObject.tag == "PowerUp")
         {
             Destroy(gameObject);
         }
