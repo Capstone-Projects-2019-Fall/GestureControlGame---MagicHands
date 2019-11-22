@@ -65,11 +65,11 @@ public class PlayerControllerM : MonoBehaviour
         PrevPos = transform.position;
         NewPos = transform.position;
         speedMultiplier = 1f;
-        keyActs.Add("zoom", Zoom);
+        //keyActs.Add("zoom", Zoom);
 
-        recognizer = new KeywordRecognizer(keyActs.Keys.ToArray());
-        recognizer.OnPhraseRecognized += OnPhraseRecognized;
-        recognizer.Start();
+     //   recognizer = new KeywordRecognizer(keyActs.Keys.ToArray());
+     //   recognizer.OnPhraseRecognized += OnPhraseRecognized;
+     //   recognizer.Start();
         //gameManagerCode = gameManager.GetComponent<GameManager>();
     }
     //void FixedUpdate()
@@ -83,11 +83,11 @@ public class PlayerControllerM : MonoBehaviour
     //    rb.AddForce(move * speed);
 
     //}
-    void OnPhraseRecognized(PhraseRecognizedEventArgs args)
+    /*void OnPhraseRecognized(PhraseRecognizedEventArgs args)
     {
         Debug.Log("Command: " + args.text);
         keyActs[args.text].Invoke();
-    }
+    }*/
     void Zoom()
     {
         if (speedBoostState == true)
