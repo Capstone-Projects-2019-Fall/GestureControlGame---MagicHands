@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Quang/Scenes/Tutorial.unity
     guid: dab36f61e903a1b4497db5f1a241cab5
-  - enabled: 0
+  - enabled: 1
     path: Assets/Quang/Scenes/MainMenu.unity
     guid: b9710048711df6d409c663a30b4843db
   - enabled: 0
