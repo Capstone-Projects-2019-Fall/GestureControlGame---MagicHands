@@ -9,6 +9,7 @@ public class ControlSelectionMenu : MonoBehaviour
 {
     public GameObject ControlSelectionMenuObject;
     public GameObject MechMenu;
+    string sceneToLoad = "Menu2";
     public void Start()
     {
         Debug.Log("started");
@@ -19,7 +20,7 @@ public class ControlSelectionMenu : MonoBehaviour
     {
         GameManager.UpdateController(false, false);
         GameManager.UpdateInMenu(isInMenu: false);
-        UnityEngine.SceneManagement.SceneManager.LoadScene("main");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);
     }
 
     public void UsePredefinedMotionControl()
@@ -41,7 +42,7 @@ public class ControlSelectionMenu : MonoBehaviour
 
         // Start the process
         process.Start();
-        SceneManager.LoadScene("main");
+        SceneManager.LoadScene("Menu2");
     }
 
     public void UseCustomMotionControl()
@@ -64,7 +65,7 @@ public class ControlSelectionMenu : MonoBehaviour
 
         // Start the process
         process.Start();
-        SceneManager.LoadScene("main");
+        SceneManager.LoadScene(sceneToLoad);
     }
 
     public void UseSavedCustomMotionControl()
@@ -86,7 +87,7 @@ public class ControlSelectionMenu : MonoBehaviour
 
         // Start the process
         process.Start();
-        SceneManager.LoadScene("main");
+        SceneManager.LoadScene(sceneToLoad);
     }
     public void OpenMechMenu()
     {

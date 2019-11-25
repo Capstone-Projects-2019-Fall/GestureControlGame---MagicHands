@@ -67,3 +67,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myAvatar: {fileID: 0}
+  myCamera: {fileID: 0}
