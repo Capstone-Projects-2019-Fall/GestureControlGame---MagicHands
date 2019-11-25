@@ -11,7 +11,6 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     //this is test message
-
     private PhotonView PV;
     private Rigidbody rb;
     public ParticleSystem warp;
@@ -156,6 +155,7 @@ public class PlayerController : MonoBehaviour
          * need some sort of ring counter that will count each time pass through a ring
          * so that once a ring is travelled through, it won't count anymore until a full ring circle is completed
          * */
+         
     }
     IEnumerator SpeedBoost()
     {
