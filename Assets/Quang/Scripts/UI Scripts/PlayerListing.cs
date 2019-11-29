@@ -9,20 +9,30 @@ public class PlayerListing : MonoBehaviour
     [SerializeField]
     private Text _text;
 
+    private int playerNumber;
+
     public Player Player {get; private set;}
 
     public bool Ready = false;
 
     public void SetPlayerInfo(Player player)
     {   
-       int result = -1;
+       //int result = -1;
        Player = player;
 
-       if(player.CustomProperties.ContainsKey("RandomNumber"))
-            result = (int) player.CustomProperties["RandomNumber"];
-       
-       _text.text = result.ToString() + ", " + player.NickName;
+       playerNumber = player.ActorNumber;
 
+       print(playerNumber);
+
+       /*if(player.CustomProperties.ContainsKey("RandomNumber"))
+            result = (int) player.CustomProperties["RandomNumber"];*/
+       
+       _text.text = /*result.ToString() + ", " +*/ player.NickName;
+    }
+
+    public int getActorNumber()
+    {
+        return playerNumber;
     }
 
 }

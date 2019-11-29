@@ -36,7 +36,6 @@ public class PlayerController : MonoBehaviour
     private Dictionary<string, Action> keyActs = new Dictionary<string, Action>();
 
     private KeywordRecognizer recognizer;
-    // Var needed for color manipulation
 
     void Start()
     {
