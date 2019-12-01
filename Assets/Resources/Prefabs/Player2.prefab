@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60be223f746bc0b4a806b3be6ce98a5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 3871832237736337940, guid: 6fa404c62abbaa74caedc925c36252e7,
+  projectilePrefab: {fileID: 2034661817402693902, guid: 4b0317e3936f0c54d9ddd80df484befa,
     type: 3}
   avatarCamera: {fileID: 0}
   warp: {fileID: 1403231432157825187}
