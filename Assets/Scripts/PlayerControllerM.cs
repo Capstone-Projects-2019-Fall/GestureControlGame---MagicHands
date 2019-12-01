@@ -198,12 +198,19 @@ public class PlayerControllerM : MonoBehaviour
         Vector3 oldV = transform.forward;
         Vector3 newV = new Vector3(transform.position.x, transform.position.y + 0.5f,
                 transform.position.z);
-        GameObject projectileObject = Instantiate(projectilePrefab, newV, Quaternion.LookRotation(newV, Vector3.forward));
-
+        GameObject projectileObject = PV.RPC("RPC_CreateBullet", RpcTarget.All);
         Projectile projectile = projectileObject.GetComponent<Projectile>();
         projectile.Launch(oldV, 20);
         //projectileObject.GetComponent<Projectile>().rigidbody.velocity=newV.TransformDirection(transform.forward * 20);
     }
+
+    [PunRPC]
+    private GameObject RPC_CreateBullet()
+    {
+        PhotonNetwork.Instantiate(Path.Combine("Prefabs", "projectileM"),
+            transform.position, Quaternion.identity, 0);
+    }
+
     public float GetSpeed()
     {
         return speed;
