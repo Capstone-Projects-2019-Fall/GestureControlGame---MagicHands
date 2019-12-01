@@ -6,11 +6,11 @@ using Photon.Realtime;
 
 public class NetworkTesting : MonoBehaviourPunCallbacks
 {
-    // Start is called before the first frame update
     private void Start()
     {   
         
         print("Connecting to Server.");
+        PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.NickName = MasterManager.GameSettings.NickName;
         PhotonNetwork.GameVersion = MasterManager.GameSettings.GameVersion;
         PhotonNetwork.ConnectUsingSettings();
