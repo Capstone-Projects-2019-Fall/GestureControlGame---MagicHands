@@ -16,7 +16,7 @@ public class BarFunctionM : MonoBehaviour
     private float maxHP;
     private PhotonView PV;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         PV = GetComponent<PhotonView>();
         speed.fillAmount = 0.5f;
