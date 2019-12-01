@@ -13,6 +13,8 @@ public class LobbyController : MonoBehaviourPunCallbacks,  IInRoomCallbacks
     //[SerializeField]
     //private GameObject startButton; //button used for creating and joining a game.
     [SerializeField]
+    private Text _roomName;
+    [SerializeField]
     private GameObject cancelButton; //button used to stop searching for a game to join.
     [SerializeField]
     private byte RoomSize; //Manual set the number of player in the room at one time.
@@ -40,6 +42,7 @@ public class LobbyController : MonoBehaviourPunCallbacks,  IInRoomCallbacks
         int myInt = int.Parse(sizeRoom.text);
         byte myByte = (byte)myInt;
         RoomSize = (byte)myByte;
+        
         MultyplayerSettings.multyplayerSettings.maxPlayers = myByte;
         Debug.Log("Creating room now, size "+ RoomSize);
         CreateRoom();
