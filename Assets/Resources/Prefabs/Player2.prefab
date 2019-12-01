@@ -121,11 +121,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60be223f746bc0b4a806b3be6ce98a5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 2034661817402693902, guid: 4b0317e3936f0c54d9ddd80df484befa,
+    type: 3}
   avatarCamera: {fileID: 0}
   warp: {fileID: 1403231432157825187}
   flame: {fileID: 1391555647353571444}
   speed: 10
-  projectilePrefab: {fileID: 0}
   rotationSpeed: 10
   hp: 30
 --- !u!33 &206625847118606784
@@ -5151,16 +5152,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 206625847118606787}
     m_Modifications:
-    - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
-        type: 3}
-      propertyPath: m_Name
-      value: Airplane 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
-        type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
     - target: {fileID: 7070571767430528400, guid: bf06b65ee976ca043b8333a9f87b0a60,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5230,6 +5221,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
+        type: 3}
+      propertyPath: m_Name
+      value: Airplane 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7070571768524680335, guid: bf06b65ee976ca043b8333a9f87b0a60,
         type: 3}
