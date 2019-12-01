@@ -16,7 +16,7 @@ public class MainMenu : MonoBehaviour
     public void SinglePlayer()
     {
         Debug.Log("Single player pressed");
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("main");
 
     }
 
