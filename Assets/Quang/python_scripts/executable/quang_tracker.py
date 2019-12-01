@@ -129,6 +129,7 @@ data_names_list = list(data_names.keys())
 current_data_index = 0
 is_preparing_for_data_collection = False
 is_in_data_collection = False
+showing_tutorial = False
 preparing_time = 3
 collecting_time = 2
 preparing_start = None
@@ -160,6 +161,7 @@ class Keys:
         self.NEXT = "n"
         self.EXPOSURE = "e"
         self.COLLECT = "c"
+        self.TUTORIAL = "t"
 
 def get_trained_model(data):
     # data shape (?, 3)
@@ -554,6 +556,34 @@ while True:
         cv2.circle(frame, (W // 4, H // 2), 5, 120, -1)
         cv2.circle(frame, (3 * W // 4, H // 2), 5, 120, -1)
 
+
+        if showing_tutorial:
+            cv2.putText(frame, f"press {keys.TUTORIAL.upper()} to close tutorial", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120, 2)
+
+            cv2.putText(frame, "turn right", (int(0.8*W),int(0.4*H)), cv2.FONT_HERSHEY_COMPLEX, 0.4, 120, 1)
+            cv2.arrowedLine(frame, (int(0.8*W), H//2), (int(0.95*W), H//2), 120)
+
+            cv2.putText(frame, "turn left", (int(0.55 * W), int(0.4 * H)), cv2.FONT_HERSHEY_COMPLEX, 0.4, 120, 1)
+            cv2.arrowedLine(frame, (int(0.7 * W), H // 2), (int(0.55 * W), H // 2), 120)
+
+            cv2.putText(frame, "turn up", (int(0.8 * W), int(0.2 * H)), cv2.FONT_HERSHEY_COMPLEX, 0.4, 120, 1)
+            cv2.arrowedLine(frame, (int(0.75 * W), int(0.45*H)), (int(0.75 * W), int(0.2*H)), 120)
+
+            cv2.putText(frame, "turn down", (int(0.8 * W), int(0.8 * H)), cv2.FONT_HERSHEY_COMPLEX, 0.4, 120, 1)
+            cv2.arrowedLine(frame, (int(0.75 * W), int(0.55*H)), (int(0.75 * W), int(0.8*H)), 120)
+
+            cv2.putText(frame, "roll right", (int(0.3 * W), int(0.4 * H)), cv2.FONT_HERSHEY_COMPLEX, 0.4, 120, 1)
+            cv2.arrowedLine(frame, (int(0.3 * W), H // 2), (int(0.45 * W), H // 2), 120)
+
+            cv2.putText(frame, "roll left", (int(0.05 * W), int(0.4 * H)), cv2.FONT_HERSHEY_COMPLEX, 0.4, 120, 1)
+            cv2.arrowedLine(frame, (int(0.2 * W), H // 2), (int(0.05 * W), H // 2), 120)
+
+            cv2.putText(frame, "speed up", (int(0.3 * W), int(0.2 * H)), cv2.FONT_HERSHEY_COMPLEX, 0.4, 120, 1)
+            cv2.arrowedLine(frame, (int(0.25 * W), int(0.45*H)), (int(0.25 * W), int(0.2*H)), 120)
+
+            cv2.putText(frame, "slow down", (int(0.3 * W), int(0.8 * H)), cv2.FONT_HERSHEY_COMPLEX, 0.4, 120, 1)
+            cv2.arrowedLine(frame, (int(0.25 * W), int(0.55*H)), (int(0.25 * W), int(0.8*H)), 120)
+
         if not is_in_data_process and not done_with_data:
             if current_data_index < len(data_names):
                 # cv2.putText(frame, f"next is {data_names_list[current_data_index]}, press {keys.NEXT.upper()}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, 120, 2)
@@ -657,6 +687,8 @@ while True:
         background_int32 = background.astype(np.int32)
         if custom_control == 0 or load==True:
             done_with_data = True
+        if custom_control == 0:
+            showing_tutorial = True
     elif key == ord(keys.SAMPLE_HAND): # get hands' color
         # give the user 5 secs to put their hands in the box
         sampling_color = True
@@ -689,5 +721,7 @@ while True:
         is_preparing_for_data_collection = False
         is_in_data_collection = True
         collecting_start = time.time()
+    elif key == ord(keys.TUTORIAL):
+        showing_tutorial = not showing_tutorial
 
 vs.release()
