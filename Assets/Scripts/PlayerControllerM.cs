@@ -15,14 +15,15 @@ public class PlayerControllerM : MonoBehaviour
     private PhotonView PV;
     private CharacterController myCC;
 
-
-
-    [SerializeField] Camera avatarCamera;
+    [SerializeField]
+    public GameObject projectilePrefab;
+    [SerializeField]
+    Camera avatarCamera;
     private Rigidbody rb;
     public ParticleSystem warp;
     public ParticleSystem flame;
     public float speed;
-    public GameObject projectilePrefab;
+    
     public float rotationSpeed;
     private int count;
     //Controller controller;
@@ -140,6 +141,7 @@ public class PlayerControllerM : MonoBehaviour
             {
                 speedMultiplier = 1f;
             }
+            
             NewPos = transform.position;  // each frame track the new position
                                           //Debug.Log("delta time:" + Time.deltaTime);
                                           //Debug.Log("fixed delta time:" + Time.fixedDeltaTime);
@@ -190,6 +192,18 @@ public class PlayerControllerM : MonoBehaviour
     {
         return hp;
     }
+
+    void Launch()
+    {
+        Vector3 oldV = transform.forward;
+        Vector3 newV = new Vector3(transform.position.x, transform.position.y + 0.5f,
+                transform.position.z);
+        GameObject projectileObject = Instantiate(projectilePrefab, newV, Quaternion.LookRotation(newV, Vector3.forward));
+
+        Projectile projectile = projectileObject.GetComponent<Projectile>();
+        projectile.Launch(oldV, 20);
+        //projectileObject.GetComponent<Projectile>().rigidbody.velocity=newV.TransformDirection(transform.forward * 20);
+    }
     public float GetSpeed()
     {
         return speed;
@@ -203,16 +217,6 @@ public class PlayerControllerM : MonoBehaviour
             isInvincible = true;
         }
     }
-    void Launch()
-    {
-        Vector3 oldV = transform.forward;
-        Vector3 newV = new Vector3(transform.position.x, transform.position.y + 0.5f,
-                transform.position.z);
-        GameObject projectileObject = Instantiate(projectilePrefab, newV, Quaternion.LookRotation(newV, Vector3.forward));
 
-        Projectile projectile = projectileObject.GetComponent<Projectile>();
-        projectile.Launch(oldV, 20);
-        //projectileObject.GetComponent<Projectile>().rigidbody.velocity=newV.TransformDirection(transform.forward * 20);
-    }
 
 }
