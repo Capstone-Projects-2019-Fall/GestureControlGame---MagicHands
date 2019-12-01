@@ -77,6 +77,7 @@ public class AI : MonoBehaviour
         Vector3 rotate;
         //Vector3 relativeVector = transform.InverseTransformPoint(target.position);
         Vector3 diff = target.position - transform.position;
+        // Debug.Log(diff);
 
         float angle = Vector3.Angle(diff, transform.forward);
 
@@ -94,10 +95,10 @@ public class AI : MonoBehaviour
         {
             speed += acc;
         }
-
+        
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(diff.normalized), rotationSpeed * Time.deltaTime);
-        rb.velocity = transform.forward * speed;
-        //transform.position += speed * player.transform.forward * Time.deltaTime * speedMag * speedModifyer;
+        //rb.velocity = transform.forward * speed;
+        transform.position += MaxSpeed * player.transform.forward * Time.deltaTime * speedMag * speedModifyer;
     }
 
     private void PikcUpPower()
