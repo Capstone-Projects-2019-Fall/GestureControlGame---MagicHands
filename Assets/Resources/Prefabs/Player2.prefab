@@ -5162,6 +5162,8 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+<<<<<<< HEAD
+=======
     - target: {fileID: 7070571767819040928, guid: bf06b65ee976ca043b8333a9f87b0a60,
         type: 3}
       propertyPath: m_TagString
@@ -5172,6 +5174,7 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+>>>>>>> 274a61acbdc610b7956aa4132be7061951cd95cf
     - target: {fileID: 7070571767430528400, guid: bf06b65ee976ca043b8333a9f87b0a60,
         type: 3}
       propertyPath: m_LocalPosition.x
