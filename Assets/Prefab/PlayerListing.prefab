@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 383664908555713140}
   - component: {fileID: 2408317378041629728}
   - component: {fileID: 3513648079941076382}
+  - component: {fileID: -1134513034069177152}
   m_Layer: 0
   m_Name: PlayerListing
   m_TagString: Untagged
@@ -108,6 +109,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _text: {fileID: 56619946598649871}
+  Ready: 0
+--- !u!114 &-1134513034069177152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6486553890086981715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 10, y: -10}
+  m_UseGraphicAlpha: 1
 --- !u!1 &6752562238025127692
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,6 +22,8 @@ public class AI : MonoBehaviour
 
     private Rigidbody rb;
     public GameObject player;
+
+    private float speedModifyer = 0.6f;
     
 
     void Start()
@@ -73,7 +75,8 @@ public class AI : MonoBehaviour
     {
         float speedMag = 1f;
         float breakAngle = 60f;
-        float speedModifyer = 1f;
+
+        speedModifyer = 1f;
         Vector3 rotate;
         //Vector3 relativeVector = transform.InverseTransformPoint(target.position);
         Vector3 diff = target.position - transform.position;
@@ -95,10 +98,18 @@ public class AI : MonoBehaviour
         {
             speed += acc;
         }
+
+        speed = MaxSpeed;
         
+        if(angle > 60.0f)
+        {
+            speedModifyer = 0.45f; 
+        }
+
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(diff.normalized), rotationSpeed * Time.deltaTime);
         //rb.velocity = transform.forward * speed;
         transform.position += MaxSpeed * player.transform.forward * Time.deltaTime * speedMag * speedModifyer;
+        
     }
 
     private void PikcUpPower()

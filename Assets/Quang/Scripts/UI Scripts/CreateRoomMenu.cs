@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
+
 public class CreateRoomMenu : MonoBehaviourPunCallbacks
 {
     [SerializeField]
@@ -21,9 +23,16 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             return;
             
         RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 2;
+        options.MaxPlayers = 4;
         PhotonNetwork.JoinOrCreateRoom(_roomName.text, options, TypedLobby.Default);
         
+    }
+    
+    public void OnClick_Leave()
+    {
+        SceneManager.LoadScene("Menu2");
+        
+
     }
 
     public override void OnCreatedRoom()

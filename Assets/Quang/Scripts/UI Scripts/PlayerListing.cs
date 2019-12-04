@@ -22,7 +22,7 @@ public class PlayerListing : MonoBehaviour
 
        playerNumber = player.ActorNumber;
 
-       print(playerNumber);
+       print("Actor Number " + playerNumber);
 
        /*if(player.CustomProperties.ContainsKey("RandomNumber"))
             result = (int) player.CustomProperties["RandomNumber"];*/
