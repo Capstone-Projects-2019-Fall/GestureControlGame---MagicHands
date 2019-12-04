@@ -9,9 +9,6 @@ EditorBuildSettings:
     path: Assets/Quang/Scenes/Menu2.unity
     guid: 00f400d945faf8e4f9bf11df76659ef7
   - enabled: 1
-    path: Assets/Quang/Scenes/multyplayer2.unity
-    guid: 44e26a449956638448582791fbeb4571
-  - enabled: 1
     path: Assets/Quang/Scenes/main.unity
     guid: 7769f33fb4fa2e5458344a36556ad760
   - enabled: 1
@@ -23,9 +20,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Quang/Scenes/WinLose.unity
     guid: 953eadf1d2ff19a4a92c3e70dee658c0
-  - enabled: 0
+  - enabled: 1
     path: Assets/Quang/Scenes/Jin's test scene.unity
     guid: 79b9f8ab12bfb69438aeb75c789bc2a7
+  - enabled: 0
+    path: Assets/Quang/Scenes/multyplayer2.unity
+    guid: 44e26a449956638448582791fbeb4571
   - enabled: 1
     path: Assets/Quang/Scenes/Jin's test scene 2.unity
     guid: 89cd44cdc4a85744592d037607cbc6d8

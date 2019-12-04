@@ -14,11 +14,11 @@ public class PauseMenu : MonoBehaviour
     private KeywordRecognizer recognizer;
     public static bool isPaused = false;
 
+
     public GameObject pauseMenu;
 
     void Start()
     {
-        
         pauseMenu.SetActive(false);
 
         keyActs.Add("stop", Pause);
@@ -29,12 +29,13 @@ public class PauseMenu : MonoBehaviour
         recognizer.OnPhraseRecognized += OnPhraseRecognized;
         recognizer.Start();
     }
+
     void OnPhraseRecognized(PhraseRecognizedEventArgs args)
     {
         Debug.Log("Command: " + args.text);
         keyActs[args.text].Invoke();
     }
-
+  
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
@@ -88,5 +89,10 @@ public class PauseMenu : MonoBehaviour
             //Application.Quit();
         }
 
+    }
+
+    public KeywordRecognizer GetVoiceControl()
+    {
+        return recognizer;
     }
 }

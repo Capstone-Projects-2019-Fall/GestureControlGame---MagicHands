@@ -44,11 +44,9 @@ public class PlayerControllerM : MonoBehaviour
     private Dictionary<string, Action> keyActs = new Dictionary<string, Action>();
 
     private KeywordRecognizer recognizer;
-    // Var needed for color manipulation
-
+    private PauseMenu pauseMenu;
     void Start()
     {
-        
         PV = GetComponent<PhotonView>();
         myCC = GetComponent<CharacterController>();
         //avatarCamera = Camera.main;
@@ -67,12 +65,13 @@ public class PlayerControllerM : MonoBehaviour
         PrevPos = transform.position;
         NewPos = transform.position;
         speedMultiplier = 1f;
-        //keyActs.Add("zoom", Zoom);
+       // keyActs.Add("zoom", Zoom);
 
-     //   recognizer = new KeywordRecognizer(keyActs.Keys.ToArray());
-     //   recognizer.OnPhraseRecognized += OnPhraseRecognized;
-     //   recognizer.Start();
+        // recognizer = new KeywordRecognizer(keyActs.Keys.ToArray());
+        // recognizer.OnPhraseRecognized += OnPhraseRecognized;
+        // recognizer.Start();
         //gameManagerCode = gameManager.GetComponent<GameManager>();
+        
     }
     //void FixedUpdate()
     //{
@@ -85,24 +84,28 @@ public class PlayerControllerM : MonoBehaviour
     //    rb.AddForce(move * speed);
 
     //}
-    /*void OnPhraseRecognized(PhraseRecognizedEventArgs args)
+    void OnPhraseRecognized(PhraseRecognizedEventArgs args)
     {
         Debug.Log("Command: " + args.text);
         keyActs[args.text].Invoke();
-    }*/
-    void Zoom()
+    }
+    // void Zoom()
+    // {
+    //     if (speedBoostState == true)
+    //     {
+    //         StartCoroutine(SpeedBoost());
+    //     }
+    //     else
+    //     {
+    //         Debug.Log("No powerup");
+    //     }
+    // }
+    public void StartSpeedBoost()
     {
-        if (speedBoostState == true)
-        {
-            StartCoroutine(SpeedBoost());
-        }
-        else
-        {
-            Debug.Log("No powerup");
-        }
+        StartCoroutine(SpeedBoost());
     }
     void Update()
-    {
+    {   
         if (PV.IsMine)
         {
             if (!GameManager.started)
@@ -166,6 +169,13 @@ public class PlayerControllerM : MonoBehaviour
                 Time.timeScale = 1f;
                 WinLose.isWin = false;
                 SceneManager.LoadScene("WinLose");
+            }
+            if (Input.GetKeyDown("space"))
+            {
+                if (speedBoostState == true)
+                {
+                    StartCoroutine(SpeedBoost());
+                }
             }
 
             /*psedocode
