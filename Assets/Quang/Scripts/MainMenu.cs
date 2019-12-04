@@ -9,8 +9,8 @@ public class MainMenu : MonoBehaviour
     public void Multyplayer()
     {
         Debug.Log("Multyplayer pressed");
+        SceneManager.LoadScene("LobbyScene");
         
-
     }
 
     public void SinglePlayer()
@@ -24,6 +24,12 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Log("Tutorial pressed");
         SceneManager.LoadScene("Tutorial");
+    }
+
+    public void Settings()
+    {
+        Debug.Log("Settings pressed");
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void ExitGame()
