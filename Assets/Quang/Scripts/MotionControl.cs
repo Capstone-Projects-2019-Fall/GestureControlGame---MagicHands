@@ -9,6 +9,7 @@ using UnityEngine;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Diagnostics;
+using Debug = UnityEngine.Debug;
 
 public class MotionControl : ControllerQuang
 {
@@ -23,10 +24,15 @@ public class MotionControl : ControllerQuang
     String noVal = "x";
     Vector3 leftCenter;
     Vector3 rightCenter;
+    Queue<double> delays = new Queue<double>(30);
+    bool destroyed = false;
+    bool portDestroyed = false;
+
 
     public MotionControl()
     {
-        port = 5065;
+        port = GameManager.port;
+        client = GameManager.client;
         InitUDP();
         EllapsedTime = 0;
         stopwatch = new Stopwatch();
@@ -35,6 +41,8 @@ public class MotionControl : ControllerQuang
         leftVec = leftCenter;
         rightVec = rightCenter;
     }
+
+  
 
     // 3. InitUDP
     private void InitUDP()
@@ -48,8 +56,8 @@ public class MotionControl : ControllerQuang
     // 4. Receive Data
     private void ReceiveData()
     {
-        client = new UdpClient(port);
-        while (true)
+        //client = new UdpClient(port);
+        while (!destroyed)
         {
             try
             {
@@ -58,11 +66,14 @@ public class MotionControl : ControllerQuang
                 string text = Encoding.UTF8.GetString(data);
  
                 UpdateLeftRightVec(text);
+                var delay = GetDelay(text);
+                delays.Enqueue(delay);
+                Debug.Log("delay in ms: " + 1000 * QueueAverage(delays));
             }
 
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Debug.Log(e.ToString());
                 //print(e.ToString());
             }
 
@@ -71,7 +82,31 @@ public class MotionControl : ControllerQuang
                 UpdateMouse();
             }
         }
+        client.Close();
+        portDestroyed = true;
+        Debug.Log("successfully destroyed the old predefined motion controller");
+    }
 
+    double QueueAverage(Queue<double> q)
+    {
+        double sum = 0;
+        int count = 0;
+        IEnumerator<double> enumerator = q.GetEnumerator();
+        while (enumerator.MoveNext())
+        {
+            sum += enumerator.Current;
+            count += 1;
+        }
+        return sum / count;
+    }
+
+    double GetDelay(String signal)
+    {
+        var startTime = double.Parse(signal.Split('_')[1]);
+        TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
+        double secondsSinceEpoch = t.TotalSeconds;
+        var delay = secondsSinceEpoch - startTime;
+        return delay;
     }
 
     void UpdateMouse()
@@ -84,7 +119,8 @@ public class MotionControl : ControllerQuang
 
     void UpdateLeftRightVec(string signal)
     {
-        var cords = signal.Split(',');
+        var pieces = signal.Split('_');
+        var cords = pieces[0].Split(',');
 
         var left = cords[0].Split(' ');
         var right = cords[1].Split(' ');
@@ -132,4 +168,14 @@ public class MotionControl : ControllerQuang
     public static extern bool SetCursorPos(int X, int Y);
     [DllImport("user32.dll")]
     public static extern bool GetCursorPos(out Point pos);
+
+    public override void Destroy()
+    {
+        destroyed = true;   
+    }
+
+    public override bool GetPortDestroyed()
+    {
+        return portDestroyed;
+    }
 }

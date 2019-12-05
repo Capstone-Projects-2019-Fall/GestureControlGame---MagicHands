@@ -1,5 +1,4 @@
 from imutils.video import FPS
-import imutils
 import cv2
 import socket
 import time
@@ -19,7 +18,7 @@ ap.add_argument("-B", "--background", type=int, default=10, help="background off
 ap.add_argument("-C", "--custom", type=int, default=0, help="whether to use custom motion control or not")
 ap.add_argument("-O", "--output", type=str, default="", help="the directory to output data files")
 ap.add_argument("-L", "--load", type=int, default=1, help="load previously saved custom motion control")
-
+ap.add_argument("--port", type=int, default=5066, help="port to send message")
 args = vars(ap.parse_args())
 
 class MyLinearRegression:
@@ -402,11 +401,12 @@ chosen_exposure = adjust_exposure(vs, 50)
 
 
 UDP_IP = "127.0.0.1"
-UDP_PORT = 5065
+UDP_PORT = args["port"]
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 while True:
+    frame_start_time = time.time()
     vs.set(cv2.CAP_PROP_EXPOSURE, chosen_exposure)
     # vs.set(10, 120)
     # print(HSV_OFFSET)
@@ -642,6 +642,7 @@ while True:
         normalized_left_center = [-0.25, 0]
         normalized_right_center = [0.25, 0]
         if not is_in_data_process and done_with_data:
+            message = None
             if custom_control == 1:
                 if len(normalized_fist_points) == 0:
                     normalized_fist_points = [normalized_left_center, normalized_right_center]
@@ -652,7 +653,8 @@ while True:
                 right_ = models["right"].predict(normalized_fist_points[1])[0,0]
                 roll_ = models["roll"].predict(normalized_fist_points[0])[0,0]
                 speed_ = models["speed"].predict(normalized_fist_points[0])[0,0]
-                sock.sendto(f"{right_/4} {up_/4} {roll_/4} {speed_/4}".encode(), (UDP_IP, UDP_PORT))
+                message = f"{right_/4} {up_/4} {roll_/4} {speed_/4}"
+                # sock.sendto(f"{right_/4} {up_/4} {roll_/4} {speed_/4}t{time.time()}".encode(), (UDP_IP, UDP_PORT))
                 print(f"right: {right_}, up: {up_}, roll: {roll_}, speed: {speed_}")
 
             else:
@@ -661,9 +663,11 @@ while True:
                     normalize.append(f"{a} {b}")
                 for i in range(len(normalize), 2):
                     normalize.append("x x")
-
-                sock.sendto(",".join(normalize).encode(), (UDP_IP, UDP_PORT))
-
+                message = ",".join(normalize)
+                # sock.sendto(",".join(normalize).encode(), (UDP_IP, UDP_PORT))
+            message = f"{message}_{frame_start_time}"
+            print(message)
+            sock.sendto(message.encode(), (UDP_IP, UDP_PORT))
         # frame = frame * np.expand_dims(mask, axis=-1)
         # frame = frame.astype(np.uint8)
 
