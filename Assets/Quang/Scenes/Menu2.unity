@@ -2959,14 +2959,6 @@ MonoBehaviour:
   m_Script: {fileID: 1453722849, guid: 89f0137620f6af44b9ba852b4190e64e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
-  delayStart: 1
-  maxPlayers: 2
-  menuScene: 0
-  multyplayerScene: 1
---- !u!4 &1792351595
-Transform:
-=======
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
@@ -3072,7 +3064,6 @@ Transform:
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1572300998
 CanvasRenderer:
->>>>>>> 274a61acbdc610b7956aa4132be7061951cd95cf
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
