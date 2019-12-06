@@ -30,6 +30,7 @@ public class PlayerControllerM : MonoBehaviour
     //Controller controller;
     //public GameObject gameManager;
     //public GameObject player;
+    private int i = 0;
     public static bool speedBoostState = false;
     //GameManager gameManagerCode;
     Vector3 PrevPos;
@@ -65,11 +66,15 @@ public class PlayerControllerM : MonoBehaviour
         PrevPos = transform.position;
         NewPos = transform.position;
         speedMultiplier = 1f;
-       // keyActs.Add("zoom", Zoom);
+        if(PV.IsMine)
+        {
+            keyActs.Add("zoom", Zoom);
+            keyActs.Add("shoot", Shoot);
 
-        // recognizer = new KeywordRecognizer(keyActs.Keys.ToArray());
-        // recognizer.OnPhraseRecognized += OnPhraseRecognized;
-        // recognizer.Start();
+            recognizer = new KeywordRecognizer(keyActs.Keys.ToArray());
+            recognizer.OnPhraseRecognized += OnPhraseRecognized;
+            recognizer.Start();
+        }
         //gameManagerCode = gameManager.GetComponent<GameManager>();
         
     }
@@ -89,17 +94,22 @@ public class PlayerControllerM : MonoBehaviour
         Debug.Log("Command: " + args.text);
         keyActs[args.text].Invoke();
     }
-    // void Zoom()
-    // {
-    //     if (speedBoostState == true)
-    //     {
-    //         StartCoroutine(SpeedBoost());
-    //     }
-    //     else
-    //     {
-    //         Debug.Log("No powerup");
-    //     }
-    // }
+    void Zoom()
+    {
+        if (speedBoostState == true)
+        {
+            StartCoroutine(SpeedBoost());
+        }
+        else
+        {
+            Debug.Log("No powerup");
+        }
+    }
+    void Shoot()
+    {  
+        Launch();
+    }
+
     public void StartSpeedBoost()
     {
         StartCoroutine(SpeedBoost());

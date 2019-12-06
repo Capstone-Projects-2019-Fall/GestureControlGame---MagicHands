@@ -6,7 +6,8 @@ using Photon.Realtime;
  public class NameAbovePlayer : MonoBehaviourPunCallbacks
  {
      public GUISkin guiSkin; // choose a guiStyle (Important!)
- 
+    
+     private PhotonView PV;
      public string text;
  
      public Color color = Color.white;   // choose font color/size
@@ -23,8 +24,13 @@ using Photon.Realtime;
  
      Vector2 boxPosition;
      void Start()
-     {  
-         text = PhotonNetwork.NickName;
+     {           
+         PV = GetComponent<PhotonView>();
+         if(PV.IsMine)
+            text = PhotonNetwork.NickName;
+         else
+            text = "Player";
+
          if(messagePermanent)
          {
              messageDuration = 1;
