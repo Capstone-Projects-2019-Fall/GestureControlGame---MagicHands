@@ -15,10 +15,10 @@ ap.add_argument("-H", "--hue", type=int, default=7, help="hue offset")
 ap.add_argument("-S", "--saturation", type=int, default=36, help="saturation offset")
 ap.add_argument("-V", "--value", type=int, default=40, help="value offset")
 ap.add_argument("-B", "--background", type=int, default=10, help="background offset")
-ap.add_argument("-C", "--custom", type=int, default=0, help="whether to use custom motion control or not")
+ap.add_argument("-C", "--custom", type=int, default=1, help="whether to use custom motion control or not")
 ap.add_argument("-O", "--output", type=str, default="", help="the directory to output data files")
 ap.add_argument("-L", "--load", type=int, default=1, help="load previously saved custom motion control")
-ap.add_argument("--port", type=int, default=5066, help="port to send message")
+ap.add_argument("--port", type=int, default=5065, help="port to send message")
 args = vars(ap.parse_args())
 
 class MyLinearRegression:
@@ -645,14 +645,20 @@ while True:
             message = None
             if custom_control == 1:
                 if len(normalized_fist_points) == 0:
-                    normalized_fist_points = [normalized_left_center, normalized_right_center]
+                    up_, right_, roll_, speed_ = 0, 0, 0, 0
+                    # normalized_fist_points = [normalized_left_center, normalized_right_center]
                 elif len(normalized_fist_points) == 1: # only right hand
                     normalized_fist_points = [normalized_left_center] + normalized_fist_points
-                normalized_fist_points = np.array(normalized_fist_points, np.float32)
-                up_ = models["up"].predict(normalized_fist_points[1])[0,0]
-                right_ = models["right"].predict(normalized_fist_points[1])[0,0]
-                roll_ = models["roll"].predict(normalized_fist_points[0])[0,0]
-                speed_ = models["speed"].predict(normalized_fist_points[0])[0,0]
+                    normalized_fist_points = np.array(normalized_fist_points, np.float32)
+                    up_ = models["up"].predict(normalized_fist_points[1])[0, 0]
+                    right_ = models["right"].predict(normalized_fist_points[1])[0, 0]
+                    roll_, speed_ = 0, 0
+                else:
+                    normalized_fist_points = np.array(normalized_fist_points, np.float32)
+                    up_ = models["up"].predict(normalized_fist_points[1])[0,0]
+                    right_ = models["right"].predict(normalized_fist_points[1])[0,0]
+                    roll_ = models["roll"].predict(normalized_fist_points[0])[0,0]
+                    speed_ = models["speed"].predict(normalized_fist_points[0])[0,0]
                 message = f"{right_/4} {up_/4} {roll_/4} {speed_/4}"
                 # sock.sendto(f"{right_/4} {up_/4} {roll_/4} {speed_/4}t{time.time()}".encode(), (UDP_IP, UDP_PORT))
                 print(f"right: {right_}, up: {up_}, roll: {roll_}, speed: {speed_}")

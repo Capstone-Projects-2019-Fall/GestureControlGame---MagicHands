@@ -130,7 +130,8 @@ public class MotionControl : ControllerQuang
             {
                 if (left[0].Equals(noVal)) // no value at all
                 {
-                    return;
+                    rightVec = rightCenter;
+                    leftVec = leftCenter;
                 }
                 else // 1 value
                 {
