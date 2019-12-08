@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem warp;
     public ParticleSystem flame;
     public float speed;
-    public GameObject projectilePrefab;
+    //public GameObject projectilePrefab;
     public float rotationSpeed;
     private int count;
     public GameObject[] planeType;
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
         recognizer = new KeywordRecognizer(keyActs.Keys.ToArray());
         recognizer.OnPhraseRecognized += OnPhraseRecognized;
         recognizer.Start();
-        PlaneTypeCheck();
+        //PlaneTypeCheck();
         //gameManagerCode = gameManager.GetComponent<GameManager>();
     }
     //void FixedUpdate()
@@ -87,6 +87,7 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        SetPlaneType();
         //if (PV.IsMine)
         //{
         if (!GameManager.started)
@@ -106,10 +107,10 @@ public class PlayerController : MonoBehaviour
         {
             CameraShaker.Instance.ShakeOnce(10f, 10f, .5f, 1.5f);
         }
-        if (Input.GetKeyDown("c"))
+        /*if (Input.GetKeyDown("c"))
         {
             Launch();
-        }
+        }*/
         if (Input.GetKeyDown("space"))
         {
             if (speedBoostState == true)
@@ -187,7 +188,7 @@ public class PlayerController : MonoBehaviour
             isInvincible = true;
         }
     }
-    void Launch()
+    /*void Launch()
     {
         Vector3 oldV = transform.forward;
         Vector3 newV = new Vector3(transform.position.x, transform.position.y + 0.5f,
@@ -197,17 +198,29 @@ public class PlayerController : MonoBehaviour
         Projectile projectile = projectileObject.GetComponent<Projectile>();
         projectile.Launch(oldV, 20);
         //projectileObject.GetComponent<Projectile>().rigidbody.velocity=newV.TransformDirection(transform.forward * 20);
-    }
-    void SetPlaneType(int planeNum)
+    }*/
+    void SetPlaneType(/*int planeNum*/)
     {
-        planeType[planeNum].SetActive(true);
+
+        if (MechSelection.mechChoice3 == true)
+        {
+            planeType[2].SetActive(true);
+        }
+        else if(MechSelection.mechChoice2 == true)
+        {
+            planeType[1].SetActive(true);
+        }
+        else { planeType[0].SetActive(true);
+        }
+
+        /*planeType[planeNum].SetActive(true);
         for(int i = 0; i < planeType.Length; i++)
         {
             if (i != planeNum)
             {
                 planeType[i].SetActive(false);
             }
-        }
+        }*/
     }
     void PlaneTypeCheck()
     {

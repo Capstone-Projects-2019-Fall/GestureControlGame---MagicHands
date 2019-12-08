@@ -14,7 +14,7 @@ public class MechMenuOpenAndBack : MonoBehaviour
         ControlSelectionMenu.SetActive(false);
             MechMenu.SetActive(true);
     }
-    /*void OnMouseDown()
+    void OnMouseDown()
     {
         Debug.Log("clicked");
         if (ControlSelectionMenu.activeSelf)
@@ -27,5 +27,5 @@ public class MechMenuOpenAndBack : MonoBehaviour
             ControlSelectionMenu.SetActive(true);
             MechMenu.SetActive(false);
         }
-    }*/
+    }
 }

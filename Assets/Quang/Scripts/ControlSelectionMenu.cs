@@ -11,6 +11,7 @@ public class ControlSelectionMenu : MonoBehaviour
 {
     public GameObject ControlSelectionMenuObject;
     public GameObject MechMenu;
+    public GameObject BulletMenu;
     string sceneToLoad = "Menu2";
     int port = 5065;
     public void Start()
@@ -102,6 +103,19 @@ public class ControlSelectionMenu : MonoBehaviour
     {
         ControlSelectionMenuObject.SetActive(false);
         MechMenu.SetActive(true);
+        BulletMenu.SetActive(false);
+    }
+    public void OpenBuletMenu()
+    {
+        ControlSelectionMenuObject.SetActive(false);
+        MechMenu.SetActive(false);
+        BulletMenu.SetActive(true);
+    }
+    public void ReturnSelectionMenu()
+    {
+        ControlSelectionMenuObject.SetActive(true);
+        MechMenu.SetActive(false);
+        BulletMenu.SetActive(false);
     }
 
     UdpClient GetFreeClient()

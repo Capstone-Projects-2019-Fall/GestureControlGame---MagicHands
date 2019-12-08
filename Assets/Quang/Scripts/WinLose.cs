@@ -18,6 +18,7 @@ public class WinLose : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isWin = LapSystem.isWin;   
         Debug.Log(isWin);
         if (isWin == true)
         {

@@ -7,11 +7,13 @@ public class LapSystem : MonoBehaviour
 {
     int counter;
     bool isWait;
+    public static bool isWin;
     // Start is called before the first frame update
     void Start()
     {
         counter = 0;
         isWait = false;
+        isWin = false;
     }
 
     // Update is called once per frame
@@ -41,7 +43,7 @@ public class LapSystem : MonoBehaviour
     }
     public void QuitGame()
     {
-        WinLose.isWin = true;
+        isWin = true;
         Time.timeScale = 1f;
             
             SceneManager.LoadScene("WinLose");

@@ -25,6 +25,12 @@ public class PlayerControllerM : MonoBehaviour
     public ParticleSystem flame;
     public float speed;
     
+    
+    public ParticleSystem muzzleFlash;
+    public GameObject impactEffect;
+    public float damage = 10.0f;
+    public float range = 100.0f;
+
     public float rotationSpeed;
     private int count;
     //Controller controller;
@@ -153,6 +159,11 @@ public class PlayerControllerM : MonoBehaviour
             {
                 Launch();
             }
+            if (Input.GetKey(KeyCode.M))
+            {
+                ShootPlasma();
+            
+            }
             if (Input.GetKey(KeyCode.Space))
             {
                 if (speedBoostState == true)
@@ -239,11 +250,30 @@ public class PlayerControllerM : MonoBehaviour
         projectile.Launch(oldV, 20);
         //projectileObject.GetComponent<Projectile>().rigidbody.velocity=newV.TransformDirection(transform.forward * 20);
     }
+    void ShootPlasma()
+    {
+        //muzzleFlash.Play();
+        RaycastHit hit;
+        if (Physics.Raycast(avatarCamera.transform.position, avatarCamera.transform.forward, out hit, range))
+        {
+            Debug.Log(hit.transform.name);
+            //Target target = hit.transform.GetComponent<Target>();
+            GameObject imEf = PhotonNetwork.Instantiate(Path.Combine("Prefabs", "impactEffect"), hit.point, Quaternion.LookRotation(hit.normal));
+            Destroy(imEf, 2.0f);
+        }
+
+    }
 
     [PunRPC]
     private void RPC_CreateBullet()
     {
         PhotonNetwork.Instantiate(Path.Combine("Prefabs", "projectileM"),
+            transform.position, Quaternion.identity, 0);
+    }
+    [PunRPC]
+    private void RPC_CreatePlasma()
+    {
+        PhotonNetwork.Instantiate(Path.Combine("Prefabs", "impactEffect"),
             transform.position, Quaternion.identity, 0);
     }
 
