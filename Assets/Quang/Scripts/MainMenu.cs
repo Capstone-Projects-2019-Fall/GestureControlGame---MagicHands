@@ -2,9 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+
+    public static string photonNickname;
+
+    
+    public Text nickname;
+
+    public InputField inputField;
+
+    void Start()
+    {
+        inputField.text = photonNickname;
+    }
 
     public void Multyplayer()
     {
@@ -38,12 +51,14 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
 
     }
+    public void SetUsername()
+    {
+        photonNickname = nickname.text.ToString();
+        print(photonNickname);
+    }
 
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+
 
     // Update is called once per frame
     void Update()

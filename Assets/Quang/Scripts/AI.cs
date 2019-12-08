@@ -146,12 +146,13 @@ public class AI : MonoBehaviour
 
     IEnumerator SpeedBoost()
     {
-
-        float oldspeed = speed;
-        float newspeed = speed * 2;
-        speed = newspeed;
+    
+        Debug.Log("Power up boject picked up");
+        float oldspeed = MaxSpeed;
+        float newspeed = MaxSpeed * 2;
+        MaxSpeed = newspeed;
         yield return new WaitForSeconds(3);
-        speed = oldspeed;
+        MaxSpeed = oldspeed;
         speedBoostState = false;
 
     }

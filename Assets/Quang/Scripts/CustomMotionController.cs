@@ -9,6 +9,9 @@ using UnityEngine;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Diagnostics;
+using UnityEngine;
+using Debug = UnityEngine.Debug;
+
 
 public class CustomMotionController : ControllerQuang
 {
@@ -25,10 +28,14 @@ public class CustomMotionController : ControllerQuang
     Vector3 rightCenter;
     Vector3 rotation;
     float speed;
+    Queue<double> delays = new Queue<double>(30);
+    bool destroyed = false;
+    bool portDestroyed = false;
 
     public CustomMotionController()
     {
-        port = 5065;
+        port = GameManager.port;
+        client = GameManager.client;
         InitUDP();
         EllapsedTime = 0;
         stopwatch = new Stopwatch();
@@ -38,7 +45,7 @@ public class CustomMotionController : ControllerQuang
         rightVec = rightCenter;
         rotation = new Vector3(0f, 0f, 0f);
         speed = 0.5f;
-        UnityEngine.Debug.Log("init custom motion controller");
+        Debug.Log("init custom motion controller");
     }
 
     // 3. InitUDP
@@ -53,16 +60,19 @@ public class CustomMotionController : ControllerQuang
     // 4. Receive Data
     private void ReceiveData()
     {
-        client = new UdpClient(port);
-        while (true)
+        //client = new UdpClient(port);
+        while (!destroyed)
         {
             try
             {
                 IPEndPoint anyIP = new IPEndPoint(IPAddress.Parse("0.0.0.0"), port);
                 byte[] data = client.Receive(ref anyIP);
                 string text = Encoding.UTF8.GetString(data);
-                UnityEngine.Debug.Log("signal: " + text);
+                Debug.Log("signal: " + text);
                 UpdateControl(text);
+                var delay = GetDelay(text);
+                delays.Enqueue(delay);
+                Debug.Log("delay in ms: " + 1000 * QueueAverage(delays));
             }
 
             catch (Exception e)
@@ -76,7 +86,31 @@ public class CustomMotionController : ControllerQuang
                 UpdateMouse();
             }
         }
+        client.Close();
+        portDestroyed = true;
+        Debug.Log("successfully destroyed the old custom motion controller");
+    }
 
+    double QueueAverage(Queue<double> q)
+    {
+        double sum = 0;
+        int count = 0;
+        IEnumerator<double> enumerator = q.GetEnumerator();
+        while (enumerator.MoveNext())
+        {
+            sum += enumerator.Current;
+            count += 1;
+        }
+        return sum / count;
+    }
+
+    double GetDelay(String signal)
+    {
+        var startTime = double.Parse(signal.Split('_')[1]);
+        TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
+        double secondsSinceEpoch = t.TotalSeconds;
+        var delay = secondsSinceEpoch - startTime;
+        return delay;
     }
 
     void UpdateMouse()
@@ -89,9 +123,10 @@ public class CustomMotionController : ControllerQuang
 
     void UpdateControl(string signal)
     {
-        UnityEngine.Debug.Log(signal);
+        var pieces = signal.Split('_');
+        Debug.Log(signal);
         // the signal is never empty
-        var controlVec = signal.Split(' ');
+        var controlVec = pieces[0].Split(' ');
         rotation.x = float.Parse(controlVec[0]);
         rotation.y = float.Parse(controlVec[1]);
         rotation.z = -float.Parse(controlVec[2]);
@@ -113,4 +148,14 @@ public class CustomMotionController : ControllerQuang
     public static extern bool SetCursorPos(int X, int Y);
     [DllImport("user32.dll")]
     public static extern bool GetCursorPos(out Point pos);
+
+    public override void Destroy()
+    {
+        destroyed = true;
+    }
+
+    public override bool GetPortDestroyed()
+    {
+        return portDestroyed;
+    }
 }

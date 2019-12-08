@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,6 +12,7 @@ public class ControlSelectionMenu : MonoBehaviour
     public GameObject ControlSelectionMenuObject;
     public GameObject MechMenu;
     string sceneToLoad = "Menu2";
+    int port = 5065;
     public void Start()
     {
         Debug.Log("started");
@@ -25,6 +28,8 @@ public class ControlSelectionMenu : MonoBehaviour
 
     public void UsePredefinedMotionControl()
     {
+        GameManager.client = GetFreeClient();
+        GameManager.port = port;
         GameManager.UpdateController(true, false);
         GameManager.UpdateInMenu(isInMenu: false);
 
@@ -36,7 +41,7 @@ public class ControlSelectionMenu : MonoBehaviour
         process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
         process.StartInfo.FileName = exeDir + "/quang_tracker.exe";
         Debug.Log(exeDir);
-        string argument = "-F \"" + exeDir + "/haarcascade_frontalface_default.xml\" -H 7 -C 0";
+        string argument = "-F \"" + exeDir + "/haarcascade_frontalface_default.xml\" -H 7 -C 0" + " --port " + port;
         Debug.Log(argument);
         process.StartInfo.Arguments = argument;
 
@@ -47,6 +52,8 @@ public class ControlSelectionMenu : MonoBehaviour
 
     public void UseCustomMotionControl()
     {
+        GameManager.client = GetFreeClient();
+        GameManager.port = port;
         Debug.Log("use custom motion control");
         GameManager.UpdateController(true, true);
         GameManager.UpdateInMenu(isInMenu: false);
@@ -59,7 +66,7 @@ public class ControlSelectionMenu : MonoBehaviour
         process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
         process.StartInfo.FileName = exeDir + "/quang_tracker.exe";
         Debug.Log(exeDir);
-        string argument = "-F \"" + exeDir + "/haarcascade_frontalface_default.xml\" -H 7 -C 1 -L 0 -O \""+ Application.dataPath + "/Quang/python_scripts\"";
+        string argument = "-F \"" + exeDir + "/haarcascade_frontalface_default.xml\" -H 7 -C 1 -L 0 -O \""+ Application.dataPath + "/Quang/python_scripts\"" + " --port " + port;
         Debug.Log(argument);
         process.StartInfo.Arguments = argument;
 
@@ -70,6 +77,8 @@ public class ControlSelectionMenu : MonoBehaviour
 
     public void UseSavedCustomMotionControl()
     {
+        GameManager.client = GetFreeClient();
+        GameManager.port = port;
         GameManager.UpdateController(true, true);
         GameManager.UpdateInMenu(isInMenu: false);
 
@@ -81,7 +90,7 @@ public class ControlSelectionMenu : MonoBehaviour
         process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
         process.StartInfo.FileName = exeDir + "/quang_tracker.exe";
         Debug.Log(exeDir);
-        string argument = "-F \"" + exeDir + "/haarcascade_frontalface_default.xml\" -H 7 -C 1 -L 1 -O \"" + Application.dataPath + "/Quang/python_scripts\"";
+        string argument = "-F \"" + exeDir + "/haarcascade_frontalface_default.xml\" -H 7 -C 1 -L 1 -O \"" + Application.dataPath + "/Quang/python_scripts\"" + " --port " + port;
         Debug.Log(argument);
         process.StartInfo.Arguments = argument;
 
@@ -93,5 +102,27 @@ public class ControlSelectionMenu : MonoBehaviour
     {
         ControlSelectionMenuObject.SetActive(false);
         MechMenu.SetActive(true);
+    }
+
+    UdpClient GetFreeClient()
+    {
+        UdpClient client;
+        bool clientFound = false;
+        while (!clientFound)
+        {
+            try
+            {
+                client = new UdpClient(port);
+                Debug.Log("using port " + port);
+                clientFound = true;
+                return client;
+            }
+            catch (Exception e)
+            {
+                Debug.Log("port " + port + " not available");
+                port += 1;
+            }
+        }
+        return null;
     }
 }

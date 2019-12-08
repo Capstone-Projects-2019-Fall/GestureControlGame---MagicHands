@@ -12,4 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f77008ae2e8d749b2d73cef1dd34f9, type: 3}
   m_Name: MasterManager
   m_EditorClassIdentifier: 
-  _gameSettings: {fileID: 11400000, guid: 185d5fc6cff2b7a4287638b2fd09cb99, type: 2}
+  _gameSettings: {fileID: 11400000, guid: 590eead890d8b434cb249f4e8f115781, type: 2}
+  _networkedPrefabs:
+  - Prefab: {fileID: 140850, guid: 15f43343ba0a60e47a63d28496373c3f, type: 3}
+    Path: BigAsteroid
+  - Prefab: {fileID: 100030, guid: fe764102aa5aa431795da15fa2dec0e2, type: 3}
+    Path: My Robot Kyle
+  - Prefab: {fileID: 174002, guid: c9248d8e58293473bb27cf2f5505f88b, type: 3}
+    Path: Player Controller
+  - Prefab: {fileID: 5827677791774365050, guid: e6944e4c855753a4e82165a1f0eb5ab8,
+      type: 3}
+    Path: Prefabs/Cube
+  - Prefab: {fileID: 2401710465544137513, guid: 451e97fd4e35c69488ad14f430d51447,
+      type: 3}
+    Path: Prefabs/NetworkPlayer2
+  - Prefab: {fileID: 206625847118606847, guid: ad15b97cf269dce4d806c6d65cb7535e, type: 3}
+    Path: Prefabs/Player2
+  - Prefab: {fileID: 2034661817402693902, guid: 4b0317e3936f0c54d9ddd80df484befa,
+      type: 3}
+    Path: Prefabs/projectileM
+  - Prefab: {fileID: 435321944936990315, guid: 6e2ac092e89fa554c8f03649074c025c, type: 3}
+    Path: Prefabs/TempEnemy
+  - Prefab: {fileID: 151774, guid: 18a79aea49b60d342b7a672b7a34edbe, type: 3}
+    Path: SmallAsteroid
+  - Prefab: {fileID: 178952, guid: 775dd0a15ad25a544b33ad40ef0da1f0, type: 3}
+    Path: Spaceship
+  - Prefab: {fileID: 7031120525636453170, guid: 1beed895d6ca21c4ca16cb23df174029,
+      type: 3}
+    Path: Temp/Capsule

@@ -23,10 +23,13 @@ public class MotionControlIntuitive : ControllerQuang
     String noVal = "x";
     Vector3 leftCenter;
     Vector3 rightCenter;
+    bool destroyed = false;
+    bool portDestroyed = false;
 
     public MotionControlIntuitive()
     {
-        port = 5065;
+        port = GameManager.port;
+        client = GameManager.client;
         InitUDP();
         EllapsedTime = 0;
         leftCenter = new Vector3(-0.25f, 0f, 0f);
@@ -48,8 +51,8 @@ public class MotionControlIntuitive : ControllerQuang
     // 4. Receive Data
     private void ReceiveData()
     {
-        client = new UdpClient(port);
-        while (true)
+        //client = new UdpClient(port);
+        while (!destroyed)
         {
             try
             {
@@ -84,7 +87,8 @@ public class MotionControlIntuitive : ControllerQuang
 
     void UpdateLeftRightVec(string signal)
     {
-        var cords = signal.Split(',');
+        var pieces = signal.Split('_');
+        var cords = pieces[0].Split(',');
 
         var left = cords[0].Split(' ');
         var right = cords[1].Split(' ');
@@ -108,6 +112,8 @@ public class MotionControlIntuitive : ControllerQuang
             Console.WriteLine(e.ToString());
             //print(e.ToString());
         }
+        client.Close();
+        portDestroyed = true;
     }
 
     public override Vector3 GetRotation()
@@ -137,4 +143,14 @@ public class MotionControlIntuitive : ControllerQuang
     public static extern bool SetCursorPos(int X, int Y);
     [DllImport("user32.dll")]
     public static extern bool GetCursorPos(out Point pos);
+
+    public override void Destroy()
+    {
+        destroyed = true;
+    }
+
+    public override bool GetPortDestroyed()
+    {
+        return portDestroyed;
+    }
 }

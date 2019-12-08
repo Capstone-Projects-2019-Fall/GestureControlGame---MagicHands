@@ -10,7 +10,11 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     private Text _roomName;
+    [SerializeField]
+    private Text _roomSize;
     private RoomsCanvases _roomCanvases;
+    [SerializeField]
+    private InputField sizeInputField;
 
     public void FirstInitialize(RoomsCanvases canvases)
     {
@@ -23,16 +27,24 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             return;
             
         RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 4;
+        options.MaxPlayers = (byte) int.Parse(Mathf.Clamp(float.Parse(_roomSize.text), 2, 8).ToString());
         PhotonNetwork.JoinOrCreateRoom(_roomName.text, options, TypedLobby.Default);
         
     }
+
     
     public void OnClick_Leave()
-    {
+    {   
+        PhotonNetwork.Disconnect();
         SceneManager.LoadScene("Menu2");
-        
 
+    }
+
+    public void OnClick_SetRoomSize()
+    {
+        sizeInputField.text =  Mathf.Clamp(float.Parse(_roomSize.text), 2, 8).ToString();
+
+        print(_roomSize.text);
     }
 
     public override void OnCreatedRoom()

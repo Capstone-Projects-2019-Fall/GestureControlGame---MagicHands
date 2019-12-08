@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Windows.Speech;
 using System.Linq;
 using System;
-
+using Photon.Pun;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -83,6 +83,8 @@ public class PauseMenu : MonoBehaviour
     {   
         if(isPaused)
         {
+            if(PhotonNetwork.InRoom)
+                PhotonNetwork.LeaveRoom(true);
             Time.timeScale = 1f;
             SceneManager.LoadScene("Menu2");
             Debug.Log("Quitting Scene");
@@ -90,6 +92,7 @@ public class PauseMenu : MonoBehaviour
         }
 
     }
+    
 
     public KeywordRecognizer GetVoiceControl()
     {
