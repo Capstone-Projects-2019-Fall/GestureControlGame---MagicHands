@@ -12,9 +12,11 @@ public class MainMenu : MonoBehaviour
     
     public Text nickname;
 
+    public InputField inputField;
+
     void Start()
     {
-        
+        inputField.text = photonNickname;
     }
 
     public void Multyplayer()

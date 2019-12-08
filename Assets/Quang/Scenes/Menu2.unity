@@ -1076,6 +1076,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nickname: {fileID: 994300203}
+  inputField: {fileID: 724011322}
 --- !u!1 &779370304
 GameObject:
   m_ObjectHideFlags: 0

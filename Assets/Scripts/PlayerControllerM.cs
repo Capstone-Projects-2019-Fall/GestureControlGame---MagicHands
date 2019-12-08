@@ -107,7 +107,20 @@ public class PlayerControllerM : MonoBehaviour
     }
     void Shoot()
     {  
-        Launch();
+        StartCoroutine(Shooting());  
+
+    }
+    IEnumerator Shooting()
+    {
+        while(i<5)
+        {
+            Launch();
+            yield return null;
+            i++;
+        }
+
+        i = 0;
+
     }
 
     public void StartSpeedBoost()
