@@ -11,6 +11,16 @@ public class MouseControl : ControllerQuang
         dummy = 1f;
     }
 
+    public override void Destroy()
+    {
+        Debug.Log("old mouse control successfully destroyed");
+    }
+
+    public override bool GetPortDestroyed()
+    {
+        return true;
+    }
+
     public override Vector3 GetRotation()
     {
         Vector3 rotate = Input.mousePosition;

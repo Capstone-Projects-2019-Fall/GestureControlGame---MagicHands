@@ -7,12 +7,13 @@ public class AI : MonoBehaviour
 
     public Transform path;
     public Transform target;
-    public float speed;
+    public float MaxSpeed;
+    public float speed = 0;
+    public float acc;
     public float rotationSpeed;
     public float agressive;
     public bool speedBoostState = false;
     public bool speedBoostInProgress = false;
-    Vector3 positionCorrection = new Vector3(0f, -2f, 0f);
 
     private List<Transform> nodes;
     List<Vector3> positions;
@@ -21,13 +22,19 @@ public class AI : MonoBehaviour
 
     private Rigidbody rb;
     public GameObject player;
+
+    private float speedModifyer = 0.6f;
     
 
     void Start()
     {
+        Vector3 positionCorrection = new Vector3(0f, -1.5f, 0f);
+
         Transform[] pathTransform = path.GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
         positions = new List<Vector3>();
+
+        rb = GetComponent<Rigidbody>();
 
         for (int i = 0; i < pathTransform.Length; i++)
         {
@@ -35,13 +42,14 @@ public class AI : MonoBehaviour
             {
                 nodes.Add(pathTransform[i]);
                 positions.Add(pathTransform[i].position + positionCorrection);
+                Debug.Log("target Position: " + (pathTransform[i].position + positionCorrection));
             }
         }
     }
 
     private void Update()
     {
-        if (Vector3.Distance(transform.position, positions[current]) > 1f)
+        if (Vector3.Distance(transform.position, positions[current]) > 1.5f)
         {
             //Vector3 pos = Vector3.MoveTowards(transform.position, nodes[current].position, speed * Time.deltaTime);
             //GetComponent<Rigidbody>().MovePosition(pos);
@@ -55,6 +63,7 @@ public class AI : MonoBehaviour
         {
             current = (current + 1) % positions.Count;
         }
+
         if (speedBoostState == true && speedBoostInProgress == false)
         {
             StartCoroutine(SpeedBoost());
@@ -66,27 +75,41 @@ public class AI : MonoBehaviour
     {
         float speedMag = 1f;
         float breakAngle = 60f;
-        float speedModifyer = 1f;
+
+        speedModifyer = 1f;
         Vector3 rotate;
-        Vector3 relativeVector = transform.InverseTransformPoint(target.position);
+        //Vector3 relativeVector = transform.InverseTransformPoint(target.position);
         Vector3 diff = target.position - transform.position;
-
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(target.position - transform.position), rotationSpeed * Time.deltaTime);
-
-
-        rotate.x = (-transform.eulerAngles.x + relativeVector.x / relativeVector.magnitude) * rotationSpeed;
-        rotate.y = (-transform.eulerAngles.y + relativeVector.y / relativeVector.magnitude) * rotationSpeed;
-        rotate.z = (-transform.eulerAngles.z) * rotationSpeed;
+        // Debug.Log(diff);
 
         float angle = Vector3.Angle(diff, transform.forward);
 
-        if(angle > 60.0f)
+        if((angle > 60.0f) && (speed > (MaxSpeed * 0.6)))
         {
-            speedModifyer = 0.6f;
+            speed -= acc;
+        } else if(rb.velocity.magnitude < MaxSpeed)
+        {
+            speed += acc;
         }
 
         //transform.Rotate(-rotate.y * Time.deltaTime, rotate.x * Time.deltaTime, rotate.z*Time.deltaTime, Space.Self);
-        transform.position += speed * player.transform.forward * Time.deltaTime * speedMag * speedModifyer;
+
+        if(rb.velocity.magnitude < MaxSpeed)
+        {
+            speed += acc;
+        }
+
+        speed = MaxSpeed;
+        
+        if(angle > 60.0f)
+        {
+            speedModifyer = 0.45f; 
+        }
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(diff.normalized), rotationSpeed * Time.deltaTime);
+        //rb.velocity = transform.forward * speed;
+        transform.position += MaxSpeed * player.transform.forward * Time.deltaTime * speedMag * speedModifyer;
+        
     }
 
     private void PikcUpPower()
@@ -123,12 +146,13 @@ public class AI : MonoBehaviour
 
     IEnumerator SpeedBoost()
     {
-
-        float oldspeed = speed;
-        float newspeed = speed * 2;
-        speed = newspeed;
+    
+        Debug.Log("Power up boject picked up");
+        float oldspeed = MaxSpeed;
+        float newspeed = MaxSpeed * 2;
+        MaxSpeed = newspeed;
         yield return new WaitForSeconds(3);
-        speed = oldspeed;
+        MaxSpeed = oldspeed;
         speedBoostState = false;
 
     }

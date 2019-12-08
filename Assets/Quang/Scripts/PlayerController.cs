@@ -6,39 +6,39 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Windows.Speech;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
     //this is test message
-
     private PhotonView PV;
     private Rigidbody rb;
     public ParticleSystem warp;
     public ParticleSystem flame;
     public float speed;
-    public GameObject projectilePrefab;
+    //public GameObject projectilePrefab;
     public float rotationSpeed;
     private int count;
+    public GameObject[] planeType;
     //Controller controller;
     //public GameObject gameManager;
     public GameObject player;
     public static bool speedBoostState = false;
     //GameManager gameManagerCode;
-    Vector3 PrevPos; 
-    Vector3 NewPos; 
+    Vector3 PrevPos;
+    Vector3 NewPos;
     Vector3 ObjVelocity;
     float speedMultiplier;
     public float hp;
     private float currentInvincibleTimer;
     public static bool isInvincible = false;
-    const float maxInvincibleTimer=3.0f;
+    const float maxInvincibleTimer = 3.0f;
     private Dictionary<string, Action> keyActs = new Dictionary<string, Action>();
-    
+
     private KeywordRecognizer recognizer;
-    // Var needed for color manipulation
 
     void Start()
-    {
+    {   
         PV = GetComponent<PhotonView>();
         currentInvincibleTimer = maxInvincibleTimer;
         flame.Clear();
@@ -51,17 +51,18 @@ public class PlayerController : MonoBehaviour
         NewPos = transform.position;
         speedMultiplier = 1f;
         keyActs.Add("zoom", Zoom);
-    
+
         recognizer = new KeywordRecognizer(keyActs.Keys.ToArray());
         recognizer.OnPhraseRecognized += OnPhraseRecognized;
         recognizer.Start();
+        //PlaneTypeCheck();
         //gameManagerCode = gameManager.GetComponent<GameManager>();
     }
     //void FixedUpdate()
     //{
     //    float xMove = Input.GetAxis("Horizontal");
     //    float zMove = Input.GetAxis("Vertical");
-        
+
     //    Vector3 move = new Vector3(xMove, 0.0f, zMove);
     //    //Vector3 move = new Vector3(rightForce, 0.0f, upForce).normalized;
 
@@ -86,29 +87,30 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        SetPlaneType();
         //if (PV.IsMine)
         //{
-            if (!GameManager.started)
-            {
-                return;
-            }
-            Vector3 rotate = GameManager.controller.GetRotation();
+        if (!GameManager.started)
+        {
+            return;
+        }
+        Vector3 rotate = GameManager.controller.GetRotation();
         float speedMag = GameManager.controller.GetSpeed();
 
         rotate = rotate * Time.deltaTime * rotationSpeed;
-        
+
         player.transform.Rotate(-rotate.y, rotate.x, rotate.z, Space.Self);
         player.transform.position += speedMultiplier * speed * player.transform.forward * Time.deltaTime * speedMag;
-        
+
 
         if (Input.GetKeyDown("v"))
         {
             CameraShaker.Instance.ShakeOnce(10f, 10f, .5f, 1.5f);
         }
-        if (Input.GetKeyDown("c"))
+        /*if (Input.GetKeyDown("c"))
         {
             Launch();
-        }
+        }*/
         if (Input.GetKeyDown("space"))
         {
             if (speedBoostState == true)
@@ -142,7 +144,18 @@ public class PlayerController : MonoBehaviour
                 currentInvincibleTimer = maxInvincibleTimer;
             }
         }
-    
+        if (hp <= 0)
+        {
+            Time.timeScale = 1f;
+            WinLose.isWin = false;
+            SceneManager.LoadScene("WinLose");
+        }
+
+        /*psedocode
+         * need some sort of ring counter that will count each time pass through a ring
+         * so that once a ring is travelled through, it won't count anymore until a full ring circle is completed
+         * */
+         
     }
     IEnumerator SpeedBoost()
     {
@@ -155,7 +168,7 @@ public class PlayerController : MonoBehaviour
         warp.Stop();
         flame.Stop();
         speed = oldspeed;
-        speedBoostState=false;
+        speedBoostState = false;
 
     }
     public float GetHealth()
@@ -171,20 +184,60 @@ public class PlayerController : MonoBehaviour
     {
         if (isInvincible == false)
         {
-            hp = hp-hpnew;
+            hp = hp - hpnew;
             isInvincible = true;
         }
     }
-    void Launch()
+    /*void Launch()
     {
         Vector3 oldV = transform.forward;
-        Vector3 newV = new Vector3(transform.position.x, transform.position.y +0.5f,
+        Vector3 newV = new Vector3(transform.position.x, transform.position.y + 0.5f,
                 transform.position.z);
-        GameObject projectileObject =  Instantiate(projectilePrefab, newV, Quaternion.LookRotation(newV, Vector3.forward));
+        GameObject projectileObject = Instantiate(projectilePrefab, newV, Quaternion.LookRotation(newV, Vector3.forward));
 
         Projectile projectile = projectileObject.GetComponent<Projectile>();
         projectile.Launch(oldV, 20);
         //projectileObject.GetComponent<Projectile>().rigidbody.velocity=newV.TransformDirection(transform.forward * 20);
+    }*/
+    void SetPlaneType(/*int planeNum*/)
+    {
+
+        if (MechSelection.mechChoice3 == true)
+        {
+            planeType[2].SetActive(true);
+        }
+        else if(MechSelection.mechChoice2 == true)
+        {
+            planeType[1].SetActive(true);
+        }
+        else { planeType[0].SetActive(true);
+        }
+
+        /*planeType[planeNum].SetActive(true);
+        for(int i = 0; i < planeType.Length; i++)
+        {
+            if (i != planeNum)
+            {
+                planeType[i].SetActive(false);
+            }
+        }*/
     }
-        
+    void PlaneTypeCheck()
+    {
+        int counter = 0;
+        Debug.Log("this is planeType.Length " + planeType.Length);
+        for (int i = 0; i < planeType.Length; i++)
+        {
+            if (!planeType[i].activeSelf)
+            {
+                counter++;
+            }
+        }
+        Debug.Log("this is counter" + counter);
+        if (counter== planeType.Length)
+        {
+            planeType[0].SetActive(true);
+        }
+    }
+
 }

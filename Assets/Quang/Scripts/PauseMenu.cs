@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Windows.Speech;
 using System.Linq;
 using System;
-
+using Photon.Pun;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -14,11 +14,11 @@ public class PauseMenu : MonoBehaviour
     private KeywordRecognizer recognizer;
     public static bool isPaused = false;
 
+
     public GameObject pauseMenu;
 
     void Start()
     {
-        
         pauseMenu.SetActive(false);
 
         keyActs.Add("stop", Pause);
@@ -29,12 +29,13 @@ public class PauseMenu : MonoBehaviour
         recognizer.OnPhraseRecognized += OnPhraseRecognized;
         recognizer.Start();
     }
+
     void OnPhraseRecognized(PhraseRecognizedEventArgs args)
     {
         Debug.Log("Command: " + args.text);
         keyActs[args.text].Invoke();
     }
-
+  
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
@@ -82,11 +83,19 @@ public class PauseMenu : MonoBehaviour
     {   
         if(isPaused)
         {
+            if(PhotonNetwork.InRoom)
+                PhotonNetwork.LeaveRoom(true);
             Time.timeScale = 1f;
             SceneManager.LoadScene("Menu2");
             Debug.Log("Quitting Scene");
             //Application.Quit();
         }
 
+    }
+    
+
+    public KeywordRecognizer GetVoiceControl()
+    {
+        return recognizer;
     }
 }

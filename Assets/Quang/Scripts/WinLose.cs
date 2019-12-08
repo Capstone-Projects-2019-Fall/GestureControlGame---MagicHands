@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class WinLose : MonoBehaviour
 {
     public static bool isWin;
+    
     public GameObject winImage;
     public GameObject loseImage;
     // Start is called before the first frame update
@@ -17,6 +18,8 @@ public class WinLose : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isWin = LapSystem.isWin;   
+        Debug.Log(isWin);
         if (isWin == true)
         {
             winImage.SetActive(true);

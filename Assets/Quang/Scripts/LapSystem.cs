@@ -7,19 +7,22 @@ public class LapSystem : MonoBehaviour
 {
     int counter;
     bool isWait;
+    public static bool isWin;
     // Start is called before the first frame update
     void Start()
     {
         counter = 0;
         isWait = false;
+        isWin = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+
         /*psedocode
-         * on contacting the gate 3 times
-         * invoke QuitGame()
+         * need some sort of ring counter that will count each time pass through a ring
+         * 
          * */
         if (counter == 3)
         {
@@ -40,9 +43,9 @@ public class LapSystem : MonoBehaviour
     }
     public void QuitGame()
     {
-        
-            Time.timeScale = 1f;
-            WinLose.isWin = true;
+        isWin = true;
+        Time.timeScale = 1f;
+            
             SceneManager.LoadScene("WinLose");
         
     }
