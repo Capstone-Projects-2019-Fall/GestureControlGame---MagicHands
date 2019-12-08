@@ -22,12 +22,15 @@ public class AI : MonoBehaviour
 
     private Rigidbody rb;
     public GameObject player;
+    private int hp;
 
     private float speedModifyer = 0.6f;
     
 
     void Start()
     {
+        hp = 100;
+
         Vector3 positionCorrection = new Vector3(0f, -1.5f, 0f);
 
         Transform[] pathTransform = path.GetComponentsInChildren<Transform>();
@@ -49,6 +52,10 @@ public class AI : MonoBehaviour
 
     private void Update()
     {
+        if (hp < 1)
+        {
+            destroyed();
+        }
         if (Vector3.Distance(transform.position, positions[current]) > 1.5f)
         {
             //Vector3 pos = Vector3.MoveTowards(transform.position, nodes[current].position, speed * Time.deltaTime);
@@ -142,6 +149,11 @@ public class AI : MonoBehaviour
             }
         }
         return closest;
+    }
+
+    private void destroyed()
+    {
+        Destroy(this.gameObject);
     }
 
     IEnumerator SpeedBoost()
