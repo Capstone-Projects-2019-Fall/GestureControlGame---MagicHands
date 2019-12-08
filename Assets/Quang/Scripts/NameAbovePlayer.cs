@@ -29,7 +29,7 @@ using Photon.Realtime;
          if(PV.IsMine)
             text = PhotonNetwork.NickName;
          else
-            text = "Player";
+            text = PV.Owner.NickName;
 
          if(messagePermanent)
          {
@@ -59,4 +59,5 @@ using Photon.Realtime;
              GUI.Box(new Rect(boxPosition.x - content.x / 2 * offsetX, boxPosition.y + offsetY, content.x, content.y), text);
          }
      }
- }
+
+}

@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     private KeywordRecognizer recognizer;
 
     void Start()
-    {
+    {   
         PV = GetComponent<PhotonView>();
         currentInvincibleTimer = maxInvincibleTimer;
         flame.Clear();

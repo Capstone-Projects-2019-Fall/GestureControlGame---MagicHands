@@ -5067,14 +5067,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 11434294, guid: e7bf315d1e93042fabab137d1e5098b6, type: 3}
-      propertyPath: Speed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 11434294, guid: e7bf315d1e93042fabab137d1e5098b6, type: 3}
-      propertyPath: WarpDistortion
-      value: -2
-      objectReference: {fileID: 0}
     - target: {fileID: 19812840, guid: e7bf315d1e93042fabab137d1e5098b6, type: 3}
       propertyPath: ShapeModule.angle
       value: 12
@@ -5147,6 +5139,14 @@ PrefabInstance:
       propertyPath: ShapeModule.arc.speed.scalar
       value: 111
       objectReference: {fileID: 0}
+    - target: {fileID: 11434294, guid: e7bf315d1e93042fabab137d1e5098b6, type: 3}
+      propertyPath: Speed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11434294, guid: e7bf315d1e93042fabab137d1e5098b6, type: 3}
+      propertyPath: WarpDistortion
+      value: -2
+      objectReference: {fileID: 0}
     - target: {fileID: 19953178, guid: e7bf315d1e93042fabab137d1e5098b6, type: 3}
       propertyPath: m_LengthScale
       value: 2
@@ -5172,6 +5172,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 206625847118606787}
     m_Modifications:
+    - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
+        type: 3}
+      propertyPath: m_Name
+      value: Airplane 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
         type: 3}
       propertyPath: m_Name
@@ -5252,17 +5262,17 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.2
       objectReference: {fileID: 0}
-    - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
-        type: 3}
-      propertyPath: m_Name
-      value: Airplane 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
+    - target: {fileID: 7070571767819040928, guid: bf06b65ee976ca043b8333a9f87b0a60,
         type: 3}
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7070571767819040928, guid: bf06b65ee976ca043b8333a9f87b0a60,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7070571767519843054, guid: bf06b65ee976ca043b8333a9f87b0a60,
         type: 3}
       propertyPath: m_TagString
       value: Player
@@ -5273,16 +5283,6 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7070571768524680335, guid: bf06b65ee976ca043b8333a9f87b0a60,
-        type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7070571767519843054, guid: bf06b65ee976ca043b8333a9f87b0a60,
-        type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7070571767819040928, guid: bf06b65ee976ca043b8333a9f87b0a60,
         type: 3}
       propertyPath: m_TagString
       value: Player
