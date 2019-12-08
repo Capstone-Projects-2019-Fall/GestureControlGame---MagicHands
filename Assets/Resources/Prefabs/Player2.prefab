@@ -125,7 +125,7 @@ MonoBehaviour:
   guiSkin: {fileID: 11400000, guid: 6c695beab55cb6448ad18f8bf064c2e1, type: 2}
   text: 
   color: {r: 1, g: 1, b: 1, a: 1}
-  fontSize: 15
+  fontSize: 20
   offsetX: 0.65
   offsetY: -30
   messagePermanent: 1
@@ -5172,26 +5172,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 206625847118606787}
     m_Modifications:
-    - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
-        type: 3}
-      propertyPath: m_Name
-      value: Airplane 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
-        type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
-        type: 3}
-      propertyPath: m_Name
-      value: Airplane 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
-        type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
     - target: {fileID: 7070571767430528400, guid: bf06b65ee976ca043b8333a9f87b0a60,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5261,6 +5241,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
+        type: 3}
+      propertyPath: m_Name
+      value: Airplane 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
+        type: 3}
+      propertyPath: m_Name
+      value: Airplane 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7070571767430528415, guid: bf06b65ee976ca043b8333a9f87b0a60,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7070571767819040928, guid: bf06b65ee976ca043b8333a9f87b0a60,
         type: 3}
