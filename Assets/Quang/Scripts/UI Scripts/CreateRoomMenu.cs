@@ -28,7 +28,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
         TimeCounter.timeCounter.lastTime = Time.realtimeSinceStartup;
         RoomOptions options = new RoomOptions();
-        options.MaxPlayers = (byte) int.Parse(Mathf.Clamp(float.Parse(_roomSize.text), 2, 8).ToString());
+        options.MaxPlayers = (byte) int.Parse(Mathf.Clamp(float.Parse(_roomSize.text), 2, 4).ToString());
         PhotonNetwork.JoinOrCreateRoom(_roomName.text, options, TypedLobby.Default);
         
     }
@@ -43,7 +43,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     public void OnClick_SetRoomSize()
     {
-        sizeInputField.text =  Mathf.Clamp(float.Parse(_roomSize.text), 2, 8).ToString();
+        sizeInputField.text =  Mathf.Clamp(float.Parse(_roomSize.text), 2, 4).ToString();
 
         print(_roomSize.text);
     }
