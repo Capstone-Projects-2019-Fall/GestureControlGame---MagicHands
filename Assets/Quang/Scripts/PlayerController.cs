@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     //public GameObject gameManager;
     public GameObject player;
     public static bool speedBoostState = false;
+    private int i = 0;
     //GameManager gameManagerCode;
     Vector3 PrevPos;
     Vector3 NewPos;
@@ -51,6 +52,7 @@ public class PlayerController : MonoBehaviour
         NewPos = transform.position;
         speedMultiplier = 1f;
         keyActs.Add("zoom", Zoom);
+        keyActs.Add("shoot", Shoot);
 
         recognizer = new KeywordRecognizer(keyActs.Keys.ToArray());
         recognizer.OnPhraseRecognized += OnPhraseRecognized;
@@ -84,6 +86,23 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("No powerup");
         }
+    }
+    void Shoot()
+    {
+        StartCoroutine(Shooting());
+    }
+
+    IEnumerator Shooting()
+    {
+        while(i<5)
+        {
+            Launch();
+            yield return null;
+            i++;
+        }
+
+        i = 0;
+
     }
     void Update()
     {

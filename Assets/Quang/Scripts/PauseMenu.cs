@@ -32,7 +32,7 @@ public class PauseMenu : MonoBehaviour
 
     void OnPhraseRecognized(PhraseRecognizedEventArgs args)
     {
-        Debug.Log("Command: " + args.text);
+        Debug.Log("Command: " + args.text + " " + Time.time);
         keyActs[args.text].Invoke();
     }
   
