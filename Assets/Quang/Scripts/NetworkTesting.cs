@@ -21,7 +21,10 @@ public class NetworkTesting : MonoBehaviourPunCallbacks
         print("Connected to server");
         print(PhotonNetwork.LocalPlayer.NickName);
         if (!PhotonNetwork.InLobby)
+        {
+            Debug.Log("time spent for connecting to server: " + (Time.realtimeSinceStartup - TimeCounter.timeCounter.lastTime) + " seconds");
             PhotonNetwork.JoinLobby();
+        }
     }
     public override void OnDisconnected(DisconnectCause cause)
     {

@@ -68,6 +68,7 @@ public class PlayerControllerM : MonoBehaviour
         speedMultiplier = 1f;
         if(PV.IsMine)
         {
+            Debug.Log("time spent for loading scene and stating game: " + (Time.realtimeSinceStartup - TimeCounter.timeCounter.lastTime) + " seconds");
             keyActs.Add("zoom", Zoom);
             keyActs.Add("shoot", Shoot);
 

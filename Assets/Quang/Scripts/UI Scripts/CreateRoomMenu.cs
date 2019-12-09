@@ -25,7 +25,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     {
         if(!PhotonNetwork.IsConnected)
             return;
-            
+
+        TimeCounter.timeCounter.lastTime = Time.realtimeSinceStartup;
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = (byte) int.Parse(Mathf.Clamp(float.Parse(_roomSize.text), 2, 8).ToString());
         PhotonNetwork.JoinOrCreateRoom(_roomName.text, options, TypedLobby.Default);
@@ -49,6 +50,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
 
     public override void OnCreatedRoom()
     {
+        Debug.Log("time spent for creating room: " + (Time.realtimeSinceStartup - TimeCounter.timeCounter.lastTime) + " seconds");
         Debug.Log("Created Room succesfully.", this);
         _roomCanvases.CurrentRoomCanvas.Show();
     }

@@ -23,6 +23,7 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Log("Multyplayer pressed");
         SceneManager.LoadScene("LobbyScene");
+        TimeCounter.timeCounter.lastTime = Time.realtimeSinceStartup;
         
     }
 

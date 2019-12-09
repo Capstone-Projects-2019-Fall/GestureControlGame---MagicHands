@@ -116,6 +116,7 @@ public class PlayerListingsMenu : MonoBehaviourPunCallbacks
 
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
+            TimeCounter.timeCounter.lastTime = Time.realtimeSinceStartup;
             PhotonNetwork.LoadLevel(6);
         }
    }
